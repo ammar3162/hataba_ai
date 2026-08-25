@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>حطبة — HATABA</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{taj:['Tajawal','sans-serif']},colors:{b:{bg:'#0A0A0A',bg2:'#111111',card:'#161616',card2:'#1C1C1C',border:'#262626',border2:'#333',gold:'#D4A853',goldH:'#E0B865',goldDim:'rgba(212,168,83,0.12)',txt:'#F0EBE0',txt2:'#A39E93',muted:'#6B665C',ok:'#5CB870',err:'#D95550'}}}}}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--safe-b:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;background:#0A0A0A;color:#F0EBE0}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+.screen{position:fixed;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;transform:translateY(12px);display:flex;flex-direction:column}
+.screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
+
+/* === لاندينغ === */
+#landing{background:#0A0A0A;justify-content:center;align-items:center;overflow:hidden}
+.landing-bg{position:absolute;inset:0;z-index:0}
+.landing-bg img{width:100%;height:100%;object-fit:cover;opacity:.25;filter:saturate(.7)}
+.landing-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.3) 0%,rgba(10,10,10,.7) 50%,#0A0A0A 100%)}
+.landing-content{position:relative;z-index:1;text-align:center;padding:2rem 1.5rem}
+.landing-logo{font-size:clamp(3.5rem,12vw,7rem);font-weight:900;letter-spacing:.08em;line-height:1;background:linear-gradient(135deg,#F0EBE0 30%,#D4A853 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn 1s ease-out both}
+.landing-tag{font-size:clamp(1rem,3vw,1.35rem);color:#A39E93;font-weight:300;margin-top:.5rem;animation:fadeUp 1s .3s ease-out both}
+.landing-ctas{margin-top:2.5rem;display:flex;flex-direction:column;gap:.75rem;align-items:center;animation:fadeUp 1s .6s ease-out both}
+.btn-primary{background:#D4A853;color:#0A0A0A;font-weight:700;font-size:1.1rem;padding:.9rem 2.5rem;border:none;border-radius:60px;cursor:pointer;transition:all .25s;width:100%;max-width:300px;font-family:inherit}
+.btn-primary:hover{background:#E0B865;transform:scale(1.03)}
+.btn-primary:active{transform:scale(.97)}
+.btn-secondary{background:transparent;color:#A39E93;font-weight:500;font-size:.95rem;padding:.75rem 2rem;border:1px solid #333;border-radius:60px;cursor:pointer;transition:all .25s;width:100%;max-width:300px;font-family:inherit}
+.btn-secondary:hover{border-color:#D4A853;color:#D4A853}
+.landing-deco{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:1;color:#333;animation:bounce 2s infinite}
+@keyframes logoIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+
+/* === شات === */
+.chat-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid #1C1C1C;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);flex-shrink:0;z-index:5}
+.chat-header .back-btn{background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem;transition:color .2s}
+.chat-header .back-btn:hover{color:#F0EBE0}
+.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#D4A853,#B8903A);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#0A0A0A;flex-shrink:0}
+.ai-name{font-weight:700;font-size:.95rem;display:block;line-height:1.3}
+.ai-status{font-size:.7rem;color:#5CB870;display:flex;align-items:center;gap:4px}
+.ai-status::before{content:'';width:6px;height:6px;border-radius:50%;background:#5CB870;display:inline-block}
+.chat-header .cart-btn{margin-right:auto;background:none;border:none;color:#A39E93;font-size:1.15rem;cursor:pointer;position:relative;padding:.4rem;transition:color .2s}
+.chat-header .cart-btn:hover{color:#D4A853}
+.cart-badge{position:absolute;top:-2px;right:-6px;background:#D4A853;color:#0A0A0A;font-size:.6rem;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s}
+.cart-badge.pop{animation:popBadge .4s ease}
+@keyframes popBadge{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
+
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.5rem;scroll-behavior:smooth}
+.msg{max-width:85%;animation:msgIn .35s ease-out both}
+.msg-ai{align-self:flex-start}
+.msg-user{align-self:flex-end}
+.msg-bubble{padding:.7rem 1rem;border-radius:18px;font-size:.92rem;line-height:1.65;white-space:pre-wrap}
+.msg-ai .msg-bubble{background:#161616;border:1px solid #222;border-bottom-right-radius:4px;color:#F0EBE0}
+.msg-user .msg-bubble{background:#D4A853;color:#0A0A0A;border-bottom-left-radius:4px;font-weight:500}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.typing-indicator{display:flex;gap:4px;padding:.7rem 1rem;align-self:flex-start}
+.typing-indicator span{width:7px;height:7px;background:#444;border-radius:50%;animation:typeDot 1.2s infinite}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes typeDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+/* بطاقة منتج داخل الشات */
+.product-card{background:#161616;border:1px solid #262626;border-radius:16px;overflow:hidden;margin-top:.5rem;max-width:320px;width:100%;cursor:default;transition:border-color .2s}
+.product-card:hover{border-color:#333}
+.pc-img{width:100%;height:160px;object-fit:cover;background:#111}
+.pc-body{padding:.85rem 1rem}
+.pc-name-ar{font-weight:800;font-size:1.05rem;margin-bottom:.15rem}
+.pc-name-en{font-size:.72rem;color:#6B665C;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+.pc-ingredients{font-size:.78rem;color:#A39E93;line-height:1.5;margin-bottom:.6rem}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.pc-price{font-weight:800;font-size:1.15rem;color:#D4A853}
+.pc-price span{font-size:.75rem;font-weight:400;color:#6B665C}
+.pc-actions{display:flex;gap:.4rem}
+.pc-btn{padding:.45rem .85rem;border-radius:20px;font-size:.78rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.pc-btn-add{background:#D4A853;color:#0A0A0A}
+.pc-btn-add:hover{background:#E0B865}
+.pc-btn-alt{background:transparent;color:#A39E93;border:1px solid #333}
+.pc-btn-alt:hover{border-color:#D4A853;color:#D4A853}
+.pc-badge{display:inline-block;padding:.15rem .5rem;border-radius:8px;font-size:.65rem;font-weight:700;margin-bottom:.4rem}
+.pc-badge.new{background:rgba(212,168,83,.15);color:#D4A853}
+.pc-badge.bestseller{background:rgba(92,184,112,.15);color:#5CB870}
+
+/* أكشن سريع */
+.quick-actions{flex-shrink:0;padding:.5rem 1rem .25rem;display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.quick-actions::-webkit-scrollbar{display:none}
+.qa-chip{flex-shrink:0;padding:.5rem 1rem;border-radius:20px;font-size:.8rem;font-weight:500;border:1px solid #262626;background:#111;color:#A39E93;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.qa-chip:hover{border-color:#D4A853;color:#D4A853;background:rgba(212,168,83,.06)}
+.qa-chip:active{transform:scale(.95)}
+
+.chat-input-area{flex-shrink:0;display:flex;gap:.5rem;padding:.6rem 1rem calc(.6rem + var(--safe-b));border-top:1px solid #1C1C1C;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.chat-input-area input{flex:1;background:#161616;border:1px solid #262626;border-radius:24px;padding:.65rem 1.1rem;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
+.chat-input-area input::placeholder{color:#444}
+.chat-input-area input:focus{border-color:#D4A853}
+.send-btn{width:42px;height:42px;border-radius:50%;background:#D4A853;border:none;color:#0A0A0A;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.send-btn:hover{background:#E0B865;transform:scale(1.05)}
+.send-btn:active{transform:scale(.93)}
+
+/* === منيو === */
+.menu-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid #1C1C1C;background:rgba(10,10,10,.95);flex-shrink:0}
+.menu-header h2{font-weight:800;font-size:1.1rem;flex:1}
+.menu-cats{display:flex;gap:.5rem;padding:.75rem 1rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0;background:#0D0D0D}
+.menu-cats::-webkit-scrollbar{display:none}
+.cat-tab{flex-shrink:0;padding:.5rem 1.1rem;border-radius:20px;font-size:.8rem;font-weight:600;border:1px solid #262626;background:transparent;color:#6B665C;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.cat-tab.active{background:#D4A853;color:#0A0A0A;border-color:#D4A853}
+.cat-tab:not(.active):hover{border-color:#444;color:#A39E93}
+.menu-grid{flex:1;overflow-y:auto;padding:.5rem 1rem 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;align-content:start}
+.menu-item{background:#161616;border:1px solid #1E1E1E;border-radius:14px;overflow:hidden;transition:all .25s;animation:menuItemIn .4s ease-out both}
+.menu-item:hover{border-color:#333;transform:translateY(-2px)}
+@keyframes menuItemIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mi-img{width:100%;height:140px;object-fit:cover;background:#111}
+.mi-no-img{width:100%;height:100px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#111,#1A1A1A);color:#333;font-size:2rem}
+.mi-body{padding:.75rem}
+.mi-top{display:flex;justify-content:space-between;align-items:start;gap:.5rem;margin-bottom:.25rem}
+.mi-name{font-weight:700;font-size:.95rem;line-height:1.3}
+.mi-price{font-weight:800;color:#D4A853;font-size:.95rem;white-space:nowrap}
+.mi-ingredients{font-size:.75rem;color:#6B665C;line-height:1.5;margin-bottom:.5rem}
+.mi-add{width:100%;padding:.5rem;border-radius:10px;background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.2);color:#D4A853;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.mi-add:hover{background:rgba(212,168,83,.2)}
+.mi-add:active{transform:scale(.97)}
+.mi-badges{display:flex;gap:.3rem;margin-bottom:.3rem}
+
+/* === سلة === */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-panel{position:fixed;top:0;left:0;bottom:0;width:min(400px,90vw);background:#111;z-index:51;transform:translateX(-100%);transition:transform .35s ease;display:flex;flex-direction:column;border-right:1px solid #1C1C1C}
+.cart-panel.open{transform:translateX(0)}
+.cart-panel-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #1C1C1C;flex-shrink:0}
+.cart-panel-header h2{font-weight:800;font-size:1.05rem}
+.cart-close{background:none;border:none;color:#6B665C;font-size:1.3rem;cursor:pointer;transition:color .2s}
+.cart-close:hover{color:#F0EBE0}
+.cart-items{flex:1;overflow-y:auto;padding:.75rem}
+.cart-empty{text-align:center;color:#444;padding:3rem 1rem;font-size:.9rem}
+.ci-item{display:flex;gap:.75rem;padding:.65rem 0;border-bottom:1px solid #1A1A1A;align-items:center}
+.ci-img{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#1A1A1A;flex-shrink:0}
+.ci-no-img{width:52px;height:52px;border-radius:10px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;color:#333;font-size:1.1rem;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{font-size:.8rem;color:#D4A853;font-weight:600}
+.ci-qty{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.ci-qty button{width:26px;height:26px;border-radius:50%;border:1px solid #333;background:transparent;color:#A39E93;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ci-qty button:hover{border-color:#D4A853;color:#D4A853}
+.ci-qty span{font-weight:600;font-size:.85rem;min-width:18px;text-align:center}
+.ci-remove{background:none;border:none;color:#444;font-size:.8rem;cursor:pointer;padding:.3rem;transition:color .2s}
+.ci-remove:hover{color:#D95550}
+.cart-footer{padding:1rem;border-top:1px solid #1C1C1C;flex-shrink:0;padding-bottom:calc(1rem + var(--safe-b))}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.cart-total-label{color:#A39E93;font-size:.9rem}
+.cart-total-val{font-weight:800;font-size:1.2rem;color:#D4A853}
+.checkout-btn{width:100%;padding:.8rem;border-radius:14px;background:#D4A853;color:#0A0A0A;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.checkout-btn:hover{background:#E0B865}
+.checkout-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* === تسجيل الطلب === */
+.checkout-screen{background:#0A0A0A}
+.checkout-body{flex:1;overflow-y:auto;padding:1rem}
+.checkout-body h2{font-weight:800;font-size:1.15rem;margin-bottom:1rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.82rem;color:#A39E93;margin-bottom:.35rem;font-weight:500}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:.7rem 1rem;background:#161616;border:1px solid #262626;border-radius:12px;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#D4A853}
+.form-group textarea{resize:none;height:70px}
+.form-group select option{background:#161616}
+.delivery-toggle{display:flex;gap:.5rem;margin-bottom:1rem}
+.dt-btn{flex:1;padding:.65rem;border-radius:12px;border:1px solid #262626;background:transparent;color:#A39E93;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.dt-btn.active{background:#D4A853;color:#0A0A0A;border-color:#D4A853}
+.order-summary-box{background:#161616;border:1px solid #222;border-radius:14px;padding:1rem;margin-top:1rem;margin-bottom:1rem}
+.osb-title{font-weight:700;font-size:.85rem;margin-bottom:.5rem;color:#A39E93}
+.osb-item{display:flex;justify-content:space-between;font-size:.85rem;padding:.3rem 0;color:#F0EBE0}
+.osb-item span:last-child{color:#A39E93}
+.osb-total{display:flex;justify-content:space-between;font-size:.95rem;padding:.5rem 0 0;border-top:1px solid #262626;margin-top:.4rem;font-weight:800}
+.osb-total span:last-child{color:#D4A853}
+
+/* === نجاح === */
+.success-screen{background:#0A0A0A;justify-content:center;align-items:center;text-align:center;padding:2rem}
+.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(92,184,112,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#5CB870;animation:successPop .6s ease-out both}
+@keyframes successPop{from{transform:scale(0);opacity:0}60%{transform:scale(1.15)}to{transform:scale(1);opacity:1}}
+.success-screen h2{font-weight:800;font-size:1.4rem;margin-bottom:.5rem}
+.success-screen p{color:#A39E93;font-size:.95rem;margin-bottom:2rem;max-width:300px}
+
+/* === توست === */
+.toast-container{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+.toast{padding:.6rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:600;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast-ok{background:#1a2e1f;color:#5CB870;border:1px solid #2a4a32}
+.toast-err{background:#2e1a1a;color:#D95550;border:1px solid #4a2a2a}
+
+@media(min-width:640px){
+  .menu-grid{grid-template-columns:repeat(2,1fr);padding:1rem 1.5rem 2rem}
+  .msg{max-width:65%}
+  .product-card{max-width:360px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== لاندينغ ===== -->
+<div id="landing" class="screen active">
+  <div class="landing-bg">
+    <img src="https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png" alt="" onerror="this.style.display='none'">
+    <div></div>
+  </div>
+  <div class="landing-content">
+    <div class="landing-logo">HATABA</div>
+    <p class="landing-tag">نعرف البرقر.. ونعرفك</p>
+    <div class="landing-ctas">
+      <button class="btn-primary" onclick="openChat()">خلنا نختار لك</button>
+      <button class="btn-secondary" onclick="openMenu()">أبي أشوف المنيو</button>
+    </div>
+  </div>
+  <div class="landing-deco"><i class="fas fa-chevron-down"></i></div>
+</div>
+
+<!-- ===== شات ===== -->
+<div id="chat" class="screen">
+  <div class="chat-header">
+    <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-right"></i></button>
+    <div class="ai-avatar">ح</div>
+    <div><span class="ai-name">حطبة</span><span class="ai-status">متصل</span></div>
+    <button class="cart-btn" onclick="toggleCart()"><i class="fas fa-bag-shopping"></i><span class="cart-badge" id="chat-badge" style="display:none">0</span></button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="quick-actions" id="quickActions"></div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="اكتب رسالتك..." autocomplete="off">
+    <button class="send-btn" onclick="sendMessage()"><i class="fas fa-arrow-left"></i></button>
+  </div>
+</div>
+
+<!-- ===== منيو ===== -->
+<div id="menu" class="screen">
+  <div class="menu-header">
+    <button class="back-btn" onclick="goHome()" style="background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem"><i class="fas fa-arrow-right"></i></button>
+    <h2>المنيو</h2>
+    <button onclick="toggleCart()" style="margin-right:auto;background:none;border:none;color:#A39E93;font-size:1.15rem;cursor:pointer;position:relative;padding:.4rem"><i class="fas fa-bag-shopping"></i><span class="cart-badge" id="menu-badge" style="display:none">0</span></button>
+  </div>
+  <div class="menu-cats" id="menuCats"></div>
+  <div class="menu-grid" id="menuGrid"></div>
+</div>
+
+<!-- ===== تسجيل الطلب ===== -->
+<div id="checkout" class="screen checkout-screen">
+  <div class="menu-header">
+    <button class="back-btn" onclick="closeCartPanel()" style="background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem"><i class="fas fa-arrow-right"></i></button>
+    <h2>إتمام الطلب</h2>
+    <div style="width:32px"></div>
+  </div>
+  <div class="checkout-body" id="checkoutBody"></div>
+</div>
+
+<!-- ===== نجاح ===== -->
+<div id="success" class="screen success-screen">
+  <div class="success-icon"><i class="fas fa-check"></i></div>
+  <h2>تم تسجيل طلبك</h2>
+  <p>رح نوصل لك الطلب في أقرب وقت. شكراً لثقتك بحطبة.</p>
+  <button class="btn-primary" onclick="goHome()" style="max-width:240px">الرئيسية</button>
+</div>
+
+<!-- ===== سلة جانبية ===== -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-panel-header"><h2>سلة الطلبات</h2><button class="cart-close" onclick="toggleCart()"><i class="fas fa-xmark"></i></button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row"><span class="cart-total-label">المجموع</span><span class="cart-total-val" id="cartTotal">0 ر.س</span></div>
+    <button class="checkout-btn" id="cartCheckoutBtn" onclick="goToCheckout()" disabled>إتمام الطلب</button>
+  </div>
+</div>
+
+<!-- توست -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ============================================================
+   بيانات المنيو - المصدر الوحيد للحقيقة
+   ============================================================ */
+const MENU = [
+  // منتجات جديدة
+  {id:'hataba-truffle',nameAr:'حطبه ترافل',nameEn:'HATABA TRUFFLE',price:25,category:'new',type:'burger',protein:'beef',tags:['truffle','rich'],ingredients:['90g Angus Beef','Cheddar','Caramelized Onions','Truffle Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787277211160.png',isNew:true,bestSeller:false},
+  {id:'creamy-truffle-fries',nameAr:'كريمي ترافل فرايز',nameEn:'CREAMY TRUFFLE FRIES',price:19,category:'new',type:'side',protein:null,tags:['truffle','rich'],ingredients:['French Fries','Creamy Truffle Sauce','Caramelized Onions','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369018540.png',isNew:true,bestSeller:false},
+  {id:'truffle-fries',nameAr:'ترافل فرايز',nameEn:'TRUFFLE FRIES',price:21,category:'new',type:'side',protein:null,tags:['truffle','rich'],ingredients:['Thin-Cut Fries','Truffle Oil','Signature Seasoning','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369540136.png',isNew:true,bestSeller:false},
+  // بيف برقر
+  {id:'hataba-beef',nameAr:'حطبه بيف',nameEn:'HATABA BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','bestseller'],ingredients:['90g Angus Beef','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267562725.png',isNew:false,bestSeller:true},
+  {id:'smash-beef',nameAr:'سماش بيف',nameEn:'SMASH BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','smash'],ingredients:['90g Angus Beef','Smashed on the griddle','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png',isNew:false,bestSeller:false},
+  // تشيكن برقر
+  {id:'hataba-chicken',nameAr:'حطبه تشيكن',nameEn:'HATABA CHICKEN',price:23,category:'chicken',type:'burger',protein:'chicken',tags:['classic','bestseller'],ingredients:['80g Ground Chicken','Cheddar','Lettuce','Classic Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267610360.png',isNew:false,bestSeller:true},
+  {id:'crispy-chicken',nameAr:'كرسبي تشيكن',nameEn:'CRISPY CHICKEN',price:23,category:'chicken',type:'burger',protein:'chicken',tags:['crispy','creamy'],ingredients:['Crispy Chicken','Coleslaw','Creamy Cheese Sauce','Classic Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267642771.png',isNew:false,bestSeller:false},
+  // فرايز
+  {id:'french-fries',nameAr:'فرنش فرايز',nameEn:'FRENCH FRIES',price:7,category:'fries',type:'side',protein:null,tags:['classic'],ingredients:['French Fries'],image:null,isNew:false,bestSeller:false},
+  {id:'seasoned-fries',nameAr:'فرايز مبهر',nameEn:'SEASONED FRIES',price:8,category:'fries',type:'side',protein:null,tags:['classic','bestseller'],ingredients:['Seasoned Fries'],image:null,isNew:false,bestSeller:true},
+  {id:'sweet-fries',nameAr:'فرايز حلوه',nameEn:'SWEET FRIES',price:10,category:'fries',type:'side',protein:null,tags:['sweet'],ingredients:['Sweet Fries'],image:null,isNew:false,bestSeller:false},
+  {id:'cheese-fries',nameAr:'تشيز فرايز',nameEn:'CHEESE FRIES',price:10,category:'fries',type:'side',protein:null,tags:['cheese'],ingredients:['Fries with Cheese Sauce'],image:null,isNew:false,bestSeller:false},
+  // أطباق جانبية
+  {id:'chicken-fries-hataba',nameAr:'تشيكن فرايز حطبه',nameEn:'HATABA CHICKEN FRIES',price:18,category:'appetizers',type:'side',protein:'chicken',tags:['bestseller','loaded'],ingredients:['Fries topped with Chicken'],image:null,isNew:false,bestSeller:true},
+  {id:'beef-fries-hataba',nameAr:'بيف فرايز حطبه',nameEn:'HATABA BEEF FRIES',price:20,category:'appetizers',type:'side',protein:'beef',tags:['bestseller','loaded'],ingredients:['Fries topped with Beef'],image:null,isNew:false,bestSeller:true},
+  {id:'bbq-wings',nameAr:'أجنحة دجاج باربكيو',nameEn:'BBQ CHICKEN WINGS',price:15,category:'appetizers',type:'side',protein:'chicken',tags:['bestseller','bbq'],ingredients:['Chicken Wings','BBQ Sauce'],image:null,isNew:false,bestSeller:true},
+  {id:'seasoned-corn',nameAr:'ذرة مبهرة',nameEn:'SEASONED CORN',price:13,category:'appetizers',type:'side',protein:null,tags:['bestseller'],ingredients:['Seasoned Corn'],image:null,isNew:false,bestSeller:true},
+  // صوصات
+  {id:'s-truffle',nameAr:'صوص ترافل',nameEn:'TRUFFLE SAUCE',price:4,category:'sauces',type:'sauce',protein:null,tags:['truffle'],ingredients:['Truffle Sauce'],image:null,isNew:false,bestSeller:false},
+  {id:'s-hataba',nameAr:'صوص حطبه',nameEn:'HATABA SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['classic','bestseller'],ingredients:['Hataba Signature Sauce'],image:null,isNew:false,bestSeller:true},
+  {id:'s-classic',nameAr:'صوص كلاسيك',nameEn:'CLASSIC SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['classic'],ingredients:['Classic Sauce'],image:null,isNew:false,bestSeller:false},
+  {id:'s-cheese',nameAr:'صوص جبن',nameEn:'CHEESE SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['cheese'],ingredients:['Cheese Sauce'],image:null,isNew:false,bestSeller:false},
+  {id:'s-spicy',nameAr:'صوص سبايسي',nameEn:'SPICY SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['spicy'],ingredients:['Spicy Sauce'],image:null,isNew:false,bestSeller:false},
+  {id:'s-ranch',nameAr:'صوص رانش',nameEn:'RANCH SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['classic'],ingredients:['Ranch Sauce'],image:null,isNew:false,bestSeller:false},
+  {id:'s-bbq',nameAr:'صوص باربكيو مدخن',nameEn:'SMOKED BBQ SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['bbq'],ingredients:['Smoked BBQ Sauce'],image:null,isNew:false,bestSeller:false},
+  // إضافات
+  {id:'a-beef',nameAr:'شريحة لحم',nameEn:'EXTRA BEEF PATTY',price:9,category:'additions',type:'addition',protein:'beef',tags:[],ingredients:['Extra Beef Patty'],image:null,isNew:false,bestSeller:false},
+  {id:'a-chicken',nameAr:'شريحة دجاج',nameEn:'EXTRA CHICKEN',price:8,category:'additions',type:'addition',protein:'chicken',tags:[],ingredients:['Extra Chicken Patty'],image:null,isNew:false,bestSeller:false},
+  {id:'a-cheese',nameAr:'شريحة جبن',nameEn:'EXTRA CHEESE',price:3,category:'additions',type:'addition',protein:null,tags:['cheese'],ingredients:['Extra Cheese Slice'],image:null,isNew:false,bestSeller:false},
+  {id:'a-onion',nameAr:'بصل مكرمل',nameEn:'CARAMELIZED ONIONS',price:3,category:'additions',type:'addition',protein:null,tags:['rich'],ingredients:['Caramelized Onions'],image:null,isNew:false,bestSeller:false},
+  {id:'a-pickle',nameAr:'مخلل',nameEn:'PICKLES',price:2,category:'additions',type:'addition',protein:null,tags:['classic'],ingredients:['Pickles'],image:null,isNew:false,bestSeller:false},
+  {id:'a-jalapeno',nameAr:'هالابينو',nameEn:'JALAPENO',price:2,category:'additions',type:'addition',protein:null,tags:['spicy'],ingredients:['Jalapeno Peppers'],image:null,isNew:false,bestSeller:false},
+  {id:'a-lettuce',nameAr:'خس',nameEn:'LETTUCE',price:2,category:'additions',type:'addition',protein:null,tags:[],ingredients:['Lettuce'],image:null,isNew:false,bestSeller:false},
+  // مشروبات
+  {id:'d-cola',nameAr:'كولا',nameEn:'COLA',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Cola 330ml'],image:null,isNew:false,bestSeller:false},
+  {id:'d-cola-lite',nameAr:'كولا لايت',nameEn:'DIET COLA',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Diet Cola 330ml'],image:null,isNew:false,bestSeller:false},
+  {id:'d-sprite',nameAr:'سبرايت',nameEn:'SPRITE',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Sprite 330ml'],image:null,isNew:false,bestSeller:false},
+  {id:'d-citrus',nameAr:'حمضيات',nameEn:'CITRUS',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Citrus Drink'],image:null,isNew:false,bestSeller:false},
+  {id:'d-sun-cola',nameAr:'سن كولا',nameEn:'SUN COLA',price:3,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Sun Cola'],image:null,isNew:false,bestSeller:false},
+  {id:'d-rabie',nameAr:'عصير ربيع',nameEn:'RABIE JUICE',price:3,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Rabie Juice'],image:null,isNew:false,bestSeller:false},
+  {id:'d-water',nameAr:'ماء',nameEn:'WATER',price:1,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Water'],image:null,isNew:false,bestSeller:false},
+];
+
+const CATEGORIES = [
+  {id:'new',nameAr:'المنتجات الجديدة',icon:'fa-star'},
+  {id:'beef',nameAr:'بيف برقر',icon:'fa-fire'},
+  {id:'chicken',nameAr:'تشيكن برقر',icon:'fa-drumstick-bite'},
+  {id:'fries',nameAr:'الفرايز',icon:'fa-bowl-food'},
+  {id:'appetizers',nameAr:'الأطباق الجانبية',icon:'fa-utensils'},
+  {id:'sauces',nameAr:'الصوصات',icon:'fa-droplet'},
+  {id:'additions',nameAr:'الإضافات',icon:'fa-circle-plus'},
+  {id:'drinks',nameAr:'المشروبات',icon:'fa-glass-water'},
+];
+
+/* ============================================================
+   حالة التطبيق
+   ============================================================ */
+let cart = [];
+let currentScreen = 'landing';
+let activeCategory = 'new';
+let deliveryType = 'delivery';
+
+/* ============================================================
+   محرك الذكاء الاصطناعي
+   ============================================================ */
+class HatabaAI {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.prefs = {
+      budget: null,
+      protein: null,
+      flavor: null,
+      truffle: false,
+      spicy: false,
+      hunger: null,
+      people: 1,
+      goal: null,
+      mealType: null,
+      calorieConscious: false,
+    };
+    this.asked = new Set();
+    this.lastRecommendation = null;
+    this.messageCount = 0;
+    this.awaitingAddResponse = null;
+  }
+
+  /* معالجة الرسالة الرئيسية */
+  process(msg) {
+    this.messageCount++;
+    const m = msg.trim();
+    if (!m) return null;
+
+    // إذا كان ينتظر رد على إضافة للسلة
+    if (this.awaitingAddResponse) {
+      const r = this.awaitingAddResponse;
+      this.awaitingAddResponse = null;
+      if (this.isAffirmative(m)) return r.onYes;
+      if (this.isNegative(m)) return r.onNo;
+      // إذا قال شيء آخر، نعامله كرسالة عادية
+    }
+
+    // 1. كشف المواضيع خارج النطاق
+    if (this.isOffTopic(m)) return this.respOffTopic();
+
+    // 2. كشف شكوى من السعر
+    if (this.isPriceComplaint(m)) return this.respPriceComplaint();
+
+    // 3. استخراج الكيانات
+    this.extractEntities(m);
+
+    // 4. طلب مباشر لمنتج باسمه
+    const named = this.findProductByName(m);
+    if (named && this.messageCount <= 2) {
+      return {
+        text: `${named.nameAr}، اختيار ممتاز. سعرها ${named.price} ريال.\nتبغى تضيفها للطلب؟`,
+        products: [named],
+        quickActions: ['أضف للطلب', 'أبي أشوف خيارات ثانية']
+      };
+    }
+
+    // 5. طلبات محددة
+    if (this.hasIntent(m, ['ترافل'])) { this.prefs.truffle = true; return this.respTruffle(); }
+    if (this.hasIntent(m, ['أكثر مبيع','أعلى مبيع','الأكثر مبيعا','best seller','الأفضل'])) return this.respBestSeller();
+    if (this.hasIntent(m, ['جديد','جديدين','حديث','مستجد'])) return this.respNew();
+    if (this.hasIntent(m, ['حار','حاره','حري','سبايسي','حريق'])) { this.prefs.spicy = true; return this.respSpicy(); }
+    if (this.hasIntent(m, ['فرايز','بطاطس'])) return this.respFries();
+    if (this.hasIntent(m, ['منيو','المنيو',' اقلب','اقلب'])) return { text: 'تمام، تقدر تشوف المنيو من الزر فوق. أو قولي وش تبغى وأنا ألخص لك.', quickActions: this.getQuickActions() };
+    if (this.hasIntent(m, ['سلة','السلة','طلباتي','طلب'])) return { text: 'تقدر تفتح السلة من أيقونة الشنطة فوق.', quickActions: this.getQuickActions() };
+
+    // 6. كشف السعرات/دايت
+    if (this.hasIntent(m, ['سعرات','كالوري','دايت','حمية','صحي','خفيف من','أخف','قليل السعرات'])) {
+      this.prefs.calorieConscious = true;
+      return { text: 'ما عندي معلومات السعرات لهذا الصنف حالياً، لكن أقدر أساعدك تختار شيء أخف من ناحية المكونات.\nمثلاً حطبه تشيكن أخف من حطبه بيف.', quickActions: ['أبي حطبه تشيكن', 'عادي ما يهم'] };
+    }
+
+    // 7. كشف عدد الأشخاص
+    const peopleMatch = m.match(/نحن\s*(\d+)|(\d+)\s*(أشخاص|اشخاص|شخص)/);
+    if (peopleMatch) {
+      this.prefs.people = parseInt(peopleMatch[1] || peopleMatch[2]);
+      return { text: `تمام، ${this.prefs.people} أشخاص.\nتحبون كل واحد يختار برقره ولا تبغون تشكيلة نتشاركها؟`, quickActions: ['كل واحد يختار', 'تشكيلة نتشاركها'] };
+    }
+
+    // 8. هل نستطيع التوصية الآن؟
+    if (this.shouldRecommend()) return this.recommend();
+
+    // 9. نسأل السؤال التالي
+    return this.askNext();
+  }
+
+  /* استخراج الكيانات */
+  extractEntities(m) {
+    // الميزانية
+    const budgetPatterns = [
+      /معي\s*(؟)?\s*(\d+)/, /ميزانيتي?\s*(؟)?\s*(\d+)/, /بـ?\s*(\d+)\s*ريال/,
+      /(\d+)\s*ريال/, /حد\s*(؟)?\s*(\d+)/, /أقصى\s*(؟)?\s*(\d+)/,
+      /ما\s*[أا]بغى\s*[أا]خرج\s*عن\s*(\d+)/, /ما\s*[أا]بي\s*[أا]طلع\s*عن\s*(\d+)/
+    ];
+    for (const p of budgetPatterns) {
+      const match = m.match(p);
+      if (match) { this.prefs.budget = parseInt(match[match.length - 1]); break; }
+    }
+    // رقم لوحده = ميزانية
+    if (/^\d+$/.test(m.trim()) && !this.prefs.budget) {
+      this.prefs.budget = parseInt(m.trim());
+    }
+
+    // البروتين
+    if (this.hasIntent(m, ['بيف','لحم','beef'])) this.prefs.protein = 'beef';
+    if (this.hasIntent(m, ['تشيكن','دجاج','chicken'])) this.prefs.protein = 'chicken';
+
+    // الجوع
+    if (this.hasIntent(m, ['مشبع','شبعان','جوعان','أكل ضخم','وجبة كاملة','ويان'])) this.prefs.hunger = 'high';
+    if (this.hasIntent(m, ['خفيف','قليل','سناك','وجبة خفيفة','ما أبي كثير'])) this.prefs.hunger = 'low';
+
+    // الهدف
+    if (this.hasIntent(m, ['يستاهل','قيمة','مقابل سعر','أفضل قيمة','وفر'])) this.prefs.goal = 'best_value';
+    if (this.hasIntent(m, ['مهما كان السعر','أفضل شيء','الممتاز','الفخم','الاحترافي'])) this.prefs.goal = 'best_experience';
+    if (this.hasIntent(m, ['أجرب','شيء جديد','تجربة جديدة','ما جربت'])) this.prefs.goal = 'try_new';
+
+    // النكهة
+    if (this.hasIntent(m, ['كلاسيك','عادي','بسيط','معتاد','العادة'])) this.prefs.flavor = 'classic';
+    if (this.hasIntent(m, ['مختلف','تجربة','مميز','خاص','يجم','يجنن','قوي'])) this.prefs.flavor = 'adventurous';
+
+    // نوع الوجبة
+    if (this.hasIntent(m, ['برقر','برجر','ساندويش','ساندوتش'])) this.prefs.mealType = 'burger';
+    if (this.hasIntent(m, ['وجبة','كمبو','سيت','meal'])) this.prefs.mealType = 'full_meal';
+
+    // الترافل
+    if (this.hasIntent(m, ['ترافل','truffle'])) this.prefs.truffle = true;
+
+    // الحار
+    if (this.hasIntent(m, ['حار','حاره','حري','سبايسي'])) this.prefs.spicy = true;
+  }
+
+  /* هل نستطيع التوصية؟ */
+  shouldRecommend() {
+    const p = this.prefs;
+    // إذا عنده ميزانية + بروتين
+    if (p.budget && p.protein) return true;
+    // إذا عنده ميزانية + هدف
+    if (p.budget && p.goal) return true;
+    // إذا عنده بروتين + نكهة
+    if (p.protein && p.flavor) return true;
+    // إذا عنده بروتين + ترافل
+    if (p.protein && p.truffle) return true;
+    // إذا عنده ميزانية فقط (بعد سؤالين على الأقل)
+    if (p.budget && this.messageCount >= 3) return true;
+    // إذا عنده بروتين + جوع عالي
+    if (p.protein && p.hunger === 'high') return true;
+    return false;
+  }
+
+  /* السؤال التالي */
+  askNext() {
+    const p = this.prefs;
+    if (!p.protein && !p.mealType && !p.truffle && !p.spicy && !p.goal) {
+      this.asked.add('protein');
+      return { text: 'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟', quickActions: ['برقر', 'شيء خفيف', 'أبي الأكثر مبيعاً'] };
+    }
+    if (!p.protein && !p.truffle) {
+      this.asked.add('protein');
+      return { text: 'بيف ولا تشيكن؟', quickActions: ['بيف', 'تشيكن', 'لا يهم'] };
+    }
+    if (!p.flavor && !p.truffle && !p.goal) {
+      this.asked.add('flavor');
+      return { text: 'تحب النكهة الكلاسيكية ولا ودك نجرب شيء مختلف؟', quickActions: ['كلاسيكية', 'شيء مختلف', 'أبي ترافل'] };
+    }
+    if (!p.budget) {
+      this.asked.add('budget');
+      return { text: 'ميزانيتك تقريباً كم؟ عشان أضبط لك الخيارات.', quickActions: ['معي 20 ريال', 'معي 25 ريال', 'معي 30 ريال', 'أبي أفضل شيء مهما كان السعر'] };
+    }
+    // fallback
+    return this.recommend();
+  }
+
+  /* التوصية الرئيسية */
+  recommend() {
+    const p = this.prefs;
+    let candidates = [];
+
+    // إذا عنده ميزانية، نبني كمبات
+    if (p.budget) {
+      candidates = this.buildSmartCombos(p.budget);
+    } else {
+      // فلترة بدون ميزانية
+      candidates = this.filterAndScore(MENU.filter(i => i.type === 'burger'), p);
+    }
+
+    if (candidates.length === 0) {
+      return { text: 'للأسف ما لقيت شيء يناسب اللي تبغاه بهالميزانية. تبغى تزيد الميزانية شوي؟', quickActions: ['زود 5 ريال', 'أبي أشوف المنيو'] };
+    }
+
+    // نأخذ أفضل 1-2 خيارات
+    const top = candidates.slice(0, 2);
+    const mainProducts = top.map(c => c.items[0]);
+    const uniqueProducts = [...new Map(mainProducts.map(p => [p.id, p])).values()];
+
+    // نص التوصية
+    let reason = this.buildReason(top[0], p);
+    let text = '';
+    if (uniqueProducts.length === 1 && top[0].items.length === 1) {
+      text = `أعتقد هذا أقرب شيء لذوقك 👇\n${reason}`;
+    } else if (top.length === 1 && top[0].items.length > 1) {
+      text = `عندك وجبة كاملة ضمن ميزانيتك 👇\n${reason}`;
+    } else {
+      text = `عندك خيارين حلوين:\n${reason}`;
+    }
+
+    this.lastRecommendation = top;
+
+    // أكشن سريع بعد التوصية
+    const qa = ['أشوف خيارات ثانية'];
+    if (top[0].items.length === 1 && p.budget && top[0].total < p.budget) {
+      qa.unshift('أضيف له فرايز');
+    }
+
+    return { text, products: uniqueProducts, quickActions: qa };
+  }
+
+  /* بناء كمبات ذكية */
+  buildSmartCombos(budget) {
+    const p = this.prefs;
+    const burgers = MENU.filter(i => i.type === 'burger');
+    const sides = MENU.filter(i => i.type === 'side' && i.category !== 'sauces');
+    const drinks = MENU.filter(i => i.type === 'drink');
+    const combos = [];
+
+    for (const burger of burgers) {
+      if (burger.price > budget) continue;
+
+      // البرقر لوحده
+      combos.push({ items: [burger], total: burger.price, score: this.scoreItem(burger, p) });
+
+      const rem = budget - burger.price;
+
+      // برقر + جانب
+      for (const side of sides) {
+        if (side.price <= rem) {
+          const s = this.scoreItem(burger, p) + this.scoreItem(side, p) * 0.5 + 10;
+          combos.push({ items: [burger, side], total: burger.price + side.price, score: s });
+
+          // برقر + جانب + مشروب
+          const rem2 = rem - side.price;
+          for (const drink of drinks) {
+            if (drink.price <= rem2) {
+              const s2 = this.scoreItem(burger, p) + this.scoreItem(side, p) * 0.5 + this.scoreItem(drink, p) * 0.2 + 20;
+              combos.push({ items: [burger, side, drink], total: burger.price + side.price + drink.price, score: s2 });
+            }
+          }
+        }
+      }
+
+      // برقر + مشروب فقط
+      for (const drink of drinks) {
+        if (drink.price <= rem) {
+          const s = this.scoreItem(burger, p) + this.scoreItem(drink, p) * 0.2 + 5;
+          combos.push({ items: [burger, drink], total: burger.price + drink.price, score: s });
+        }
+      }
+    }
+
+    // ترتيب: نفضل الكمبات الأقرب للميزانية والأعلى تقييماً
+    combos.sort((a, b) => {
+      const aUsage = a.total / budget;
+      const bUsage = b.total / budget;
+      const aBonus = aUsage >= 0.8 && aUsage <= 1.0 ? 15 : aUsage >= 0.6 ? 5 : -10;
+      const bBonus = bUsage >= 0.8 && bUsage <= 1.0 ? 15 : bUsage >= 0.6 ? 5 : -10;
+      return (b.score + bBonus) - (a.score + aBonus);
+    });
+
+    // نزيل التكرارات (نفس البرقر الأساسي)
+    const seen = new Set();
+    return combos.filter(c => {
+      const key = c.items.map(i => i.id).sort().join(',');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 4);
+  }
+
+  /* تقييم منتج واحد */
+  scoreItem(item, p) {
+    let s = 0;
+    if (p.protein && item.protein === p.protein) s += 15;
+    if (p.protein && item.protein && item.protein !== p.protein) s -= 20;
+    if (p.truffle && item.tags.includes('truffle')) s += 15;
+    if (p.spicy && item.tags.includes('spicy')) s += 12;
+    if (p.flavor === 'classic' && item.tags.includes('classic')) s += 10;
+    if (p.flavor === 'adventurous' && (item.tags.includes('truffle') || item.tags.includes('loaded'))) s += 12;
+    if (p.goal === 'best_value' && item.bestSeller) s += 8;
+    if (p.goal === 'best_experience' && item.tags.includes('truffle')) s += 10;
+    if (p.goal === 'try_new' && item.isNew) s += 12;
+    if (item.bestSeller) s += 4;
+    if (item.isNew && !p.goal) s += 2;
+    return s;
+  }
+
+  /* فلترة وتقييم */
+  filterAndScore(items, p) {
+    return items.map(item => ({ items: [item], total: item.price, score: this.scoreItem(item, p) }))
+      .filter(c => c.score > 0)
+      .sort((a, b) => b.score - a.score);
+  }
+
+  /* سبب التوصية */
+  buildReason(combo, p) {
+    const main = combo.items[0];
+    const reasons = [];
+
+    if (p.truffle && main.tags.includes('truffle')) reasons.push('لأنك تحب الترافل');
+    if (p.protein === 'beef' && main.protein === 'beef') reasons.push('بيف كما تبغى');
+    if (p.protein === 'chicken' && main.protein === 'chicken') reasons.push('تشيكن كما تبغى');
+    if (p.flavor === 'classic' && main.tags.includes('classic')) reasons.push('نكهة كلاسيكية');
+    if (p.flavor === 'adventurous') reasons.push('نكهة مميزة ومختلفة');
+    if (p.goal === 'best_value') reasons.push('أفضل قيمة مقابل السعر');
+    if (p.goal === 'best_experience') reasons.push('أفضل تجربة لدينا');
+    if (p.goal === 'try_new') reasons.push('من المنتجات الجديدة');
+    if (main.bestSeller && !reasons.length) reasons.push('الأكثر مبيعاً عندنا');
+
+    if (combo.items.length > 1) reasons.push(`وجبة كاملة بـ${combo.total} ريال`);
+    else reasons.push(`سعرها ${main.price} ريال`);
+
+    return reasons.join('، ');
+  }
+
+  /* === استجابات خاصة === */
+  respTruffle() {
+    const truffleItems = MENU.filter(i => i.tags.includes('truffle'));
+    if (this.prefs.budget) {
+      const within = truffleItems.filter(i => i.price <= this.prefs.budget);
+      if (within.length) return { text: 'ذوقك ممتاز 👏 هذي خيارات الترافل اللي تناسب ميزانيتك 👇', products: within, quickActions: ['أشوف خيارات ثانية'] };
+    }
+    return { text: 'ذوقك ممتاز 👏 عندنا خيارات ترافل حلوة. ميزانيتك تقريباً كم؟', products: truffleItems, quickActions: ['معي 25 ريال', 'معي 30 ريال', 'أبي أفضل شيء'] };
+  }
+
+  respBestSeller() {
+    const best = MENU.filter(i => i.bestSeller && i.type === 'burger');
+    this.prefs.goal = 'best_value';
+    return { text: 'هذي الأكثر مبيعاً عندنا 👇', products: best, quickActions: ['أبي شيء مختلف', 'أبي فرايز معه'] };
+  }
+
+  respNew() {
+    const newItems = MENU.filter(i => i.isNew);
+    this.prefs.goal = 'try_new';
+    return { text: 'هذي آخر شيء أضفناه 👇', products: newItems, quickActions: ['أبي الأكثر مبيعاً', 'كم سعرها؟'] };
+  }
+
+  respSpicy() {
+    const spicy = MENU.filter(i => i.tags.includes('spicy'));
+    if (spicy.length === 0) return { text: 'ما عندنا برقر حار جاهز، لكن تقدر تضيف صوص سبايسي لأي برقر.\nتبغى أبني لك وجبة مع صوص حار؟', quickActions: ['أيوا أبني لي', 'لا يهم'] };
+    return { text: 'عندنا صوص سبايسي ممتاز، تقدر تضيفه لأي برقر. تبغى تختار برقر أولاً؟', quickActions: ['بيف', 'تشيكن'] };
+  }
+
+  respFries() {
+    const fries = MENU.filter(i => i.category === 'fries');
+    return { text: 'هذي خيارات الفرايز 👇', products: fries, quickActions: ['أبي برقر مع فرايز', 'رجع للبرقرات'] };
+  }
+
+  respPriceComplaint() {
+    this.prefs.budget = null;
+    return { text: 'معك حق، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟', quickActions: ['15 ريال', '20 ريال', '25 ريال'] };
+  }
+
+  respOffTopic() {
+    const responses = [
+      'هههه سؤال بعيد عن البرقر 😄 أنا شغلي أخليك تطلع من حطبة مبسوط. خلنا نضبط طلبك.',
+      'خلنا نخلي المواضيع الثانية على جنب 😄 أنا هنا عشان أساعدك تختار طلبك من حطبة.',
+      'يا أخي هذا مو تخصصي 😄 خلنا نرجع للمهم: وش تبغى تأكل؟',
+    ];
+    return { text: responses[Math.floor(Math.random() * responses.length)], quickActions: this.getQuickActions() };
+  }
+
+  /* === أدوات مساعدة === */
+  hasIntent(m, keywords) {
+    return keywords.some(k => m.includes(k));
+  }
+
+  isOffTopic(m) {
+    const offTopic = ['سيارة','سيارات','مباراة','كرة','فريق','انتخابات','سياسة','برمجة','كود','مدرسة','جامعة','طب','دكتور','علاج','دواء','طقس','حرارة','مطر','سهم','أسهم','تداول','بنك','قرض','فلوس','راتب','وظيفة','سفر','طيران','فندق','حجز','زواج','طلاق','دين','فتوى','قرآن','صلاة'];
+    // فقط نكشف إذا كانت الرسالة قصيرة ومحددة عن موضوع خارجي
+    if (m.length > 40) return false;
+    return offTopic.some(k => m.includes(k));
+  }
+
+  isPriceComplaint(m) {
+    return this.hasIntent(m, ['غالي','سعره عالي','مكلف','أغلى','ما يستاهل','مبالغ فيه','سعر غريب']);
+  }
+
+  isAffirmative(m) {
+    return this.hasIntent(m, ['ايوا','نعم','أيوا','تمام','حلو','زين','ok','أكيد','طبعا','هلا','نعم']);
+  }
+
+  isNegative(m) {
+    return this.hasIntent(m, ['لا','لاا','أبدا','ما أبي','ما أبغى','خلاص','لا يهم']);
+  }
+
+  findProductByName(m) {
+    return MENU.find(item => m.includes(item.nameAr) || m.toLowerCase().includes(item.nameEn.toLowerCase()));
+  }
+
+  /* أكشن سريع حسب السياق */
+  getQuickActions() {
+    const p = this.prefs;
+    const base = [];
+    if (!p.protein) base.push('بيف', 'تشيكن');
+    if (!p.truffle) base.push('أبي ترافل');
+    if (!p.budget) base.push('معي 25 ريال');
+    base.push('أبي الأكثر مبيعاً', 'أبي شيء مشبع');
+    return base.slice(0, 6);
+  }
+
+  /* ماذا يحصل بعد إضافة منتج */
+  onProductAdded(productId) {
+    const product = MENU.find(i => i.id === productId);
+    if (!product) return null;
+
+    const remaining = this.prefs.budget ? this.prefs.budget - product.price : null;
+
+    if (remaining && remaining >= 7) {
+      const fries = MENU.find(i => i.id === 'french-fries');
+      this.awaitingAddResponse = {
+        onYes: { text: `تمام، أضفنا الفرنش فرايز. طلبك الآن ${product.price + fries.price} ريال 👍`, quickActions: ['أتمم الطلب', 'أبي شيء ثاني'] },
+        onNo: { text: 'تمام، طلبك جاهز 👍', quickActions: ['أتمم الطلب', 'أبي شيء ثاني'] },
+      };
+      return { text: `حلو، أضفناه لك.\nباقي لك ${remaining} ريال من ميزانيتك. لو تبغى تكملها، الفرنش فرايز بـ${fries.price} ريال.`, quickActions: ['أيوا أضفها', 'لا خلاص'] };
+    }
+
+    if (this.lastRecommendation && this.lastRecommendation.length > 1) {
+      return { text: 'حلو، أضفناه 👍 تبغى تضيف شيء ثاني؟', quickActions: ['أتمم الطلب', 'أشوف خيارات ثانية'] };
+    }
+
+    return { text: 'تمام، أضفناه 👍', quickActions: ['أتمم الطلب', 'أبي شيء ثاني'] };
+  }
+}
+
+const ai = new HatabaAI();
+
+/* ============================================================
+   واجهة المستخدم
+   ============================================================ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  currentScreen = id;
+}
+
+function goHome() {
+  showScreen('landing');
+  closeCartPanel();
+}
+
+function openChat() {
+  showScreen('chat');
+  const msgs = document.getElementById('chatMessages');
+  if (msgs.children.length === 0) {
+    setTimeout(() => {
+      addAIMessage('هلا 👋 خلني أختار لك شيء يضبط مزاجك اليوم.');
+      renderQuickActions(['اختار لي 🍔', 'معي 25 ريال', 'أبي شيء حار', 'أبي ترافل', 'الأكثر مبيعاً', 'أبي شيء مشبع']);
+    }, 600);
+  }
+}
+
+function openMenu() {
+  showScreen('menu');
+  renderMenu();
+}
+
+/* --- رسائل الشات --- */
+function addAIMessage(text, products = []) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg msg-ai';
+  let html = `<div class="msg-bubble">${escapeHtml(text)}</div>`;
+  if (products.length) {
+    html += products.map(p => renderProductCard(p)).join('');
+  }
+  div.innerHTML = html;
+  container.appendChild(div);
+  scrollToBottom();
+}
+
+function addUserMessage(text) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg msg-user';
+  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div>`;
+  container.appendChild(div);
+  scrollToBottom();
+}
+
+function showTyping() {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'typing-indicator';
+  div.id = 'typingIndicator';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  container.appendChild(div);
+  scrollToBottom();
+}
+
+function hideTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+function renderProductCard(product) {
+  let badges = '';
+  if (product.isNew) badges += '<span class="pc-badge new">جديد</span>';
+  if (product.bestSeller) badges += '<span class="pc-badge bestseller">الأكثر مبيعاً</span>';
+
+  const imgHtml = product.image
+    ? `<img class="pc-img" src="${product.image}" alt="${product.nameAr}" onerror="this.outerHTML='<div class=\\'pc-img\\' style=\\'display:flex;align-items:center;justify-content:center;background:#111;color:#333;font-size:1.5rem\\'><i class=\\'fas fa-burger\\'></i></div>'">`
+    : `<div class="pc-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#111,#1A1A1A);color:#333;font-size:1.5rem"><i class="fas fa-burger"></i></div>`;
+
+  return `<div class="product-card">
+    ${imgHtml}
+    <div class="pc-body">
+      ${badges}
+      <div class="pc-name-ar">${product.nameAr}</div>
+      <div class="pc-name-en">${product.nameEn}</div>
+      <div class="pc-ingredients">${product.ingredients.join(' • ')}</div>
+      <div class="pc-footer">
+        <div class="pc-price">${product.price} <span>ر.س</span></div>
+        <div class="pc-actions">
+          <button class="pc-btn pc-btn-add" onclick="addFromChat('${product.id}')">أضف للطلب</button>
+          <button class="pc-btn pc-btn-alt" onclick="sendQuickAction('أشوف خيارات ثانية')">ثانية</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderQuickActions(actions) {
+  const container = document.getElementById('quickActions');
+  container.innerHTML = actions.map(a => `<button class="qa-chip" onclick="sendQuickAction('${a.replace(/'/g, "\\'")}')">${a}</button>`).join('');
+}
+
+function scrollToBottom() {
+  const c = document.getElementById('chatMessages');
+  setTimeout(() => c.scrollTop = c.scrollHeight, 50);
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* --- إرسال الرسائل --- */
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  processUserMessage(text);
+}
+
+function sendQuickAction(text) {
+  processUserMessage(text);
+}
+
+function processUserMessage(text) {
+  addUserMessage(text);
+  renderQuickActions([]);
+  showTyping();
+
+  const delay = 600 + Math.random() * 600;
+  setTimeout(() => {
+    hideTyping();
+    const response = ai.process(text);
+    if (!response) return;
+    addAIMessage(response.text, response.products || []);
+    renderQuickActions(response.quickActions || []);
+  }, delay);
+}
+
+function addFromChat(productId) {
+  addToCart(productId);
+  const response = ai.onProductAdded(productId);
+  if (response) {
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      addAIMessage(response.text, response.products || []);
+      renderQuickActions(response.quickActions || []);
+    }, 500);
+  }
+}
+
+// إرسال بالإنتر
+document.getElementById('chatInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+/* ============================================================
+   المنيو
+   ============================================================ */
+function renderMenu() {
+  const catsContainer = document.getElementById('menuCats');
+  catsContainer.innerHTML = CATEGORIES.map(c =>
+    `<button class="cat-tab ${c.id === activeCategory ? 'active' : ''}" onclick="switchCategory('${c.id}')">${c.nameAr}</button>`
+  ).join('');
+
+  renderMenuItems();
+}
+
+function switchCategory(catId) {
+  activeCategory = catId;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.textContent === CATEGORIES.find(c => c.id === catId).nameAr));
+  renderMenuItems();
+}
+
+function renderMenuItems() {
+  const grid = document.getElementById('menuGrid');
+  const items = MENU.filter(i => i.category === activeCategory);
+  grid.innerHTML = items.map((item, idx) => {
+    let badges = '';
+    if (item.isNew) badges += '<span class="pc-badge new">جديد</span>';
+    if (item.bestSeller) badges += '<span class="pc-badge bestseller">الأكثر مبيعاً</span>';
+
+    const imgHtml = item.image
+      ? `<img class="mi-img" src="${item.image}" alt="${item.nameAr}" onerror="this.outerHTML='<div class=\\'mi-no-img\\'><i class=\\'fas fa-burger\\'></i></div>'">`
+      : `<div class="mi-no-img"><i class="fas fa-${getItemIcon(item.category)}"></i></div>`;
+
+    return `<div class="menu-item" style="animation-delay:${idx * .07}s">
+      ${imgHtml}
+      <div class="mi-body">
+        <div class="mi-badges">${badges}</div>
+        <div class="mi-top">
+          <div class="mi-name">${item.nameAr}</div>
+          <div class="mi-price">${item.price} ر.س</div>
+        </div>
+        <div class="mi-ingredients">${item.nameEn}${item.ingredients.length ? ' • ' + item.ingredients.join(', ') : ''}</div>
+        <button class="mi-add" onclick="addToCart('${item.id}')"><i class="fas fa-plus" style="margin-left:.3rem"></i> أضف للسلة</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getItemIcon(category) {
+  const icons = { new:'star', beef:'fire', chicken:'drumstick-bite', fries:'bowl-food', appetizers:'utensils', sauces:'droplet', additions:'circle-plus', drinks:'glass-water' };
+  return icons[category] || 'circle';
+}
+
+/* ============================================================
+   السلة
+   ============================================================ */
+function addToCart(productId) {
+  const product = MENU.find(i => i.id === productId);
+  if (!product) return;
+  const existing = cart.find(i => i.id === productId);
+  if (existing) existing.qty++;
+  else cart.push({ ...product, qty: 1 });
+  updateCartUI();
+  showToast(`تمت إضافة ${product.nameAr}`);
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter(i => i.id !== productId);
+  updateCartUI();
+  renderCartItems();
+}
+
+function changeQty(productId, delta) {
+  const item = cart.find(i => i.id === productId);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) { removeFromCart(productId); return; }
+  updateCartUI();
+  renderCartItems();
+}
+
+function getCartTotal() {
+  return cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+}
+
+function getCartCount() {
+  return cart.reduce((sum, i) => sum + i.qty, 0);
+}
+
+function updateCartUI() {
+  const count = getCartCount();
+  const total = getCartTotal();
+
+  ['chat-badge', 'menu-badge'].forEach(id => {
+    const badge = document.getElementById(id);
+    if (count > 0) { badge.style.display = 'flex'; badge.textContent = count; badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop'); }
+    else badge.style.display = 'none';
+  });
+
+  document.getElementById('cartTotal').textContent = total + ' ر.س';
+  document.getElementById('cartCheckoutBtn').disabled = count === 0;
+  renderCartItems();
+}
+
+function renderCartItems() {
+  const container = document.getElementById('cartItems');
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="cart-empty"><i class="fas fa-bag-shopping" style="font-size:2rem;display:block;margin-bottom:.75rem"></i>السلة فاضية</div>';
+    return;
+  }
+  container.innerHTML = cart.map(item => {
+    const imgHtml = item.image
+      ? `<img class="ci-img" src="${item.image}" alt="" onerror="this.outerHTML='<div class=\\'ci-no-img\\'><i class=\\'fas fa-burger\\'></i></div>'">`
+      : `<div class="ci-no-img"><i class="fas fa-${getItemIcon(item.category)}"></i></div>`;
+    return `<div class="ci-item">
+      ${imgHtml}
+      <div class="ci-info">
+        <div class="ci-name">${item.nameAr}</div>
+        <div class="ci-price">${item.price * item.qty} ر.س</div>
+      </div>
+      <div class="ci-qty">
+        <button onclick="changeQty('${item.id}',-1)"><i class="fas fa-minus" style="font-size:.6rem"></i></button>
+        <span>${item.qty}</span>
+        <button onclick="changeQty('${item.id}',1)"><i class="fas fa-plus" style="font-size:.6rem"></i></button>
+      </div>
+      <button class="ci-remove" onclick="removeFromCart('${item.id}')"><i class="fas fa-trash-can"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function toggleCart() {
+  const overlay = document.getElementById('cartOverlay');
+  const panel = document.getElementById('cartPanel');
+  const isOpen = panel.classList.contains('open');
+  if (isOpen) { overlay.classList.remove('open'); panel.classList.remove('open'); }
+  else { renderCartItems(); overlay.classList.add('open'); panel.classList.add('open'); }
+}
+
+function closeCartPanel() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.remove('open');
+}
+
+/* ============================================================
+   تسجيل الطلب
+   ============================================================ */
+function goToCheckout() {
+  if (cart.length === 0) return;
+  closeCartPanel();
+  showScreen('checkout');
+  renderCheckout();
+}
+
+function renderCheckout() {
+  const body = document.getElementById('checkoutBody');
+  const total = getCartTotal();
+
+  body.innerHTML = `
+    <h2>بيانات التوصيل</h2>
+    <div class="delivery-toggle">
+      <button class="dt-btn ${deliveryType==='delivery'?'active':''}" onclick="setDeliveryType('delivery')"><i class="fas fa-motorcycle" style="margin-left:.3rem"></i>توصيل</button>
+      <button class="dt-btn ${deliveryType==='pickup'?'active':''}" onclick="setDeliveryType('pickup')"><i class="fas fa-store" style="margin-left:.3rem"></i>استلام</button>
+    </div>
+    <div id="deliveryFields">
+      <div class="form-group"><label>الاسم</label><input type="text" id="cName" placeholder="اسمك الكامل"></div>
+      <div class="form-group"><label>رقم الجوال</label><input type="tel" id="cPhone" placeholder="05XXXXXXXX" dir="ltr" style="text-align:right"></div>
+      ${deliveryType === 'delivery' ? '<div class="form-group"><label>عنوان التوصيل</label><textarea id="cAddress" placeholder="الحي، الشارع، رقم المبنى"></textarea>' : ''}
+      <div class="form-group"><label>ملاحظات (اختياري)</label><textarea id="cNotes" placeholder="أي طلبات خاصة"></textarea></div>
+    </div>
+    <div class="order-summary-box">
+      <div class="osb-title">ملخص الطلب</div>
+      ${cart.map(i => `<div class="osb-item"><span>${i.nameAr} × ${i.qty}</span><span>${i.price * i.qty} ر.س</span></div>`).join('')}
+      <div class="osb-total"><span>المجموع</span><span>${total} ر.س</span></div>
+    </div>
+    <button class="checkout-btn" onclick="submitOrder()" style="margin-top:1rem">تأكيد الطلب — ${total} ر.س</button>
+  `;
+}
+
+function setDeliveryType(type) {
+  deliveryType = type;
+  renderCheckout();
+}
+
+function submitOrder() {
+  const name = document.getElementById('cName')?.value.trim();
+  const phone = document.getElementById('cPhone')?.value.trim();
+  if (!name) { showToast('أدخل اسمك', 'err'); return; }
+  if (!phone || phone.length < 10) { showToast('أدخل رقم جوال صحيح', 'err'); return; }
+  if (deliveryType === 'delivery') {
+    const addr = document.getElementById('cAddress')?.value.trim();
+    if (!addr) { showToast('أدخل عنوان التوصيل', 'err'); return; }
+  }
+
+  // نجاح
+  cart = [];
+  updateCartUI();
+  showScreen('success');
+}
+
+/* ============================================================
+   توست
+   ============================================================ */
+function showToast(msg, type = 'ok') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.textContent = msg;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 2200);
+}
+
+/* ============================================================
+   تهيئة
+   ============================================================ */
+updateCartUI();
+</script>
+</body>
+</html>
