@@ -8,255 +8,316 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 <script>
-tailwind.config={theme:{extend:{fontFamily:{taj:['Tajawal','sans-serif']},colors:{b:{bg:'#0A0A0A',bg2:'#111111',card:'#161616',card2:'#1C1C1C',border:'#262626',border2:'#333',gold:'#D4A853',goldH:'#E0B865',goldDim:'rgba(212,168,83,0.12)',txt:'#F0EBE0',txt2:'#A39E93',muted:'#6B665C',ok:'#5CB870',err:'#D95550'}}}}}
+tailwind.config={theme:{extend:{fontFamily:{taj:['Tajawal','sans-serif']}}}}
 </script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--safe-b:env(safe-area-inset-bottom,0px)}
-html,body{height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;background:#0A0A0A;color:#F0EBE0}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
-.screen{position:fixed;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;transform:translateY(12px);display:flex;flex-direction:column}
-.screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
-#landing{background:#0A0A0A;justify-content:center;align-items:center;overflow:hidden}
-.landing-bg{position:absolute;inset:0;z-index:0}
-.landing-bg img{width:100%;height:100%;object-fit:cover;opacity:.25;filter:saturate(.7)}
-.landing-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.3) 0%,rgba(10,10,10,.7) 50%,#0A0A0A 100%)}
-.landing-content{position:relative;z-index:1;text-align:center;padding:2rem 1.5rem}
-.landing-logo{font-size:clamp(3.5rem,12vw,7rem);font-weight:900;letter-spacing:.08em;line-height:1;background:linear-gradient(135deg,#F0EBE0 30%,#D4A853 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn 1s ease-out both}
-.landing-tag{font-size:clamp(1rem,3vw,1.35rem);color:#A39E93;font-weight:300;margin-top:.5rem;animation:fadeUp 1s .3s ease-out both}
-.landing-ctas{margin-top:2.5rem;display:flex;flex-direction:column;gap:.75rem;align-items:center;animation:fadeUp 1s .6s ease-out both}
-.btn-primary{background:#D4A853;color:#0A0A0A;font-weight:700;font-size:1.1rem;padding:.9rem 2.5rem;border:none;border-radius:60px;cursor:pointer;transition:all .25s;width:100%;max-width:300px;font-family:inherit}
-.btn-primary:hover{background:#E0B865;transform:scale(1.03)}
-.btn-primary:active{transform:scale(.97)}
-.btn-secondary{background:transparent;color:#A39E93;font-weight:500;font-size:.95rem;padding:.75rem 2rem;border:1px solid #333;border-radius:60px;cursor:pointer;transition:all .25s;width:100%;max-width:300px;font-family:inherit}
-.btn-secondary:hover{border-color:#D4A853;color:#D4A853}
-.landing-deco{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:1;color:#333;animation:bounce 2s infinite}
-@keyframes logoIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
-.chat-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid #1C1C1C;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);flex-shrink:0;z-index:5}
-.chat-header .back-btn{background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem;transition:color .2s}
-.chat-header .back-btn:hover{color:#F0EBE0}
-.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#D4A853,#B8903A);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#0A0A0A;flex-shrink:0}
-.ai-name{font-weight:700;font-size:.95rem;display:block;line-height:1.3}
-.ai-status{font-size:.7rem;color:#5CB870;display:flex;align-items:center;gap:4px}
-.ai-status::before{content:'';width:6px;height:6px;border-radius:50%;background:#5CB870;display:inline-block}
-.chat-header .cart-btn{margin-right:auto;background:none;border:none;color:#A39E93;font-size:1.15rem;cursor:pointer;position:relative;padding:.4rem;transition:color .2s}
-.chat-header .cart-btn:hover{color:#D4A853}
-.cart-badge{position:absolute;top:-2px;right:-6px;background:#D4A853;color:#0A0A0A;font-size:.6rem;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s}
-.cart-badge.pop{animation:popBadge .4s ease}
-@keyframes popBadge{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
-.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.5rem;scroll-behavior:smooth}
-.msg{max-width:85%;animation:msgIn .35s ease-out both}
-.msg-ai{align-self:flex-start}
-.msg-user{align-self:flex-end}
-.msg-bubble{padding:.7rem 1rem;border-radius:18px;font-size:.92rem;line-height:1.65;white-space:pre-wrap}
-.msg-ai .msg-bubble{background:#161616;border:1px solid #222;border-bottom-right-radius:4px;color:#F0EBE0}
-.msg-user .msg-bubble{background:#D4A853;color:#0A0A0A;border-bottom-left-radius:4px;font-weight:500}
-@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.typing-indicator{display:flex;gap:4px;padding:.7rem 1rem;align-self:flex-start}
-.typing-indicator span{width:7px;height:7px;background:#444;border-radius:50%;animation:typeDot 1.2s infinite}
-.typing-indicator span:nth-child(2){animation-delay:.2s}
-.typing-indicator span:nth-child(3){animation-delay:.4s}
-@keyframes typeDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
-.product-card{background:#161616;border:1px solid #262626;border-radius:16px;overflow:hidden;margin-top:.5rem;max-width:320px;width:100%;cursor:default;transition:border-color .2s}
-.product-card:hover{border-color:#333}
-.pc-img{width:100%;height:160px;object-fit:cover;background:#111}
-.pc-body{padding:.85rem 1rem}
-.pc-name-ar{font-weight:800;font-size:1.05rem;margin-bottom:.15rem}
-.pc-name-en{font-size:.72rem;color:#6B665C;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
-.pc-ingredients{font-size:.78rem;color:#A39E93;line-height:1.5;margin-bottom:.6rem}
-.pc-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.pc-price{font-weight:800;font-size:1.15rem;color:#D4A853}
-.pc-price span{font-size:.75rem;font-weight:400;color:#6B665C}
-.pc-actions{display:flex;gap:.4rem}
-.pc-btn{padding:.45rem .85rem;border-radius:20px;font-size:.78rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
-.pc-btn-add{background:#D4A853;color:#0A0A0A}
-.pc-btn-add:hover{background:#E0B865}
-.pc-btn-alt{background:transparent;color:#A39E93;border:1px solid #333}
-.pc-btn-alt:hover{border-color:#D4A853;color:#D4A853}
-.pc-badge{display:inline-block;padding:.15rem .5rem;border-radius:8px;font-size:.65rem;font-weight:700;margin-bottom:.4rem}
-.pc-badge.new{background:rgba(212,168,83,.15);color:#D4A853}
-.pc-badge.bestseller{background:rgba(92,184,112,.15);color:#5CB870}
-.quick-actions{flex-shrink:0;padding:.5rem 1rem .25rem;display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
-.quick-actions::-webkit-scrollbar{display:none}
-.qa-chip{flex-shrink:0;padding:.5rem 1rem;border-radius:20px;font-size:.8rem;font-weight:500;border:1px solid #262626;background:#111;color:#A39E93;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
-.qa-chip:hover{border-color:#D4A853;color:#D4A853;background:rgba(212,168,83,.06)}
-.qa-chip:active{transform:scale(.95)}
-.chat-input-area{flex-shrink:0;display:flex;gap:.5rem;padding:.6rem 1rem calc(.6rem + var(--safe-b));border-top:1px solid #1C1C1C;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.chat-input-area input{flex:1;background:#161616;border:1px solid #262626;border-radius:24px;padding:.65rem 1.1rem;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
-.chat-input-area input::placeholder{color:#444}
-.chat-input-area input:focus{border-color:#D4A853}
-.send-btn{width:42px;height:42px;border-radius:50%;background:#D4A853;border:none;color:#0A0A0A;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
-.send-btn:hover{background:#E0B865;transform:scale(1.05)}
-.send-btn:active{transform:scale(.93)}
-.menu-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid #1C1C1C;background:rgba(10,10,10,.95);flex-shrink:0}
-.menu-header h2{font-weight:800;font-size:1.1rem;flex:1}
-.menu-cats{display:flex;gap:.5rem;padding:.75rem 1rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0;background:#0D0D0D}
-.menu-cats::-webkit-scrollbar{display:none}
-.cat-tab{flex-shrink:0;padding:.5rem 1.1rem;border-radius:20px;font-size:.8rem;font-weight:600;border:1px solid #262626;background:transparent;color:#6B665C;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
-.cat-tab.active{background:#D4A853;color:#0A0A0A;border-color:#D4A853}
-.cat-tab:not(.active):hover{border-color:#444;color:#A39E93}
-.menu-grid{flex:1;overflow-y:auto;padding:.5rem 1rem 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;align-content:start}
-.menu-item{background:#161616;border:1px solid #1E1E1E;border-radius:14px;overflow:hidden;transition:all .25s;animation:menuItemIn .4s ease-out both}
-.menu-item:hover{border-color:#333;transform:translateY(-2px)}
-@keyframes menuItemIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.mi-img{width:100%;height:140px;object-fit:cover;background:#111}
-.mi-no-img{width:100%;height:100px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#111,#1A1A1A);color:#333;font-size:2rem}
-.mi-body{padding:.75rem}
-.mi-top{display:flex;justify-content:space-between;align-items:start;gap:.5rem;margin-bottom:.25rem}
-.mi-name{font-weight:700;font-size:.95rem;line-height:1.3}
-.mi-price{font-weight:800;color:#D4A853;font-size:.95rem;white-space:nowrap}
-.mi-ingredients{font-size:.75rem;color:#6B665C;line-height:1.5;margin-bottom:.5rem}
-.mi-add{width:100%;padding:.5rem;border-radius:10px;background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.2);color:#D4A853;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
-.mi-add:hover{background:rgba(212,168,83,.2)}
-.mi-add:active{transform:scale(.97)}
-.mi-badges{display:flex;gap:.3rem;margin-bottom:.3rem}
-.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;opacity:0;pointer-events:none;transition:opacity .3s}
-.cart-overlay.open{opacity:1;pointer-events:all}
-.cart-panel{position:fixed;top:0;left:0;bottom:0;width:min(400px,90vw);background:#111;z-index:51;transform:translateX(-100%);transition:transform .35s ease;display:flex;flex-direction:column;border-right:1px solid #1C1C1C}
-.cart-panel.open{transform:translateX(0)}
-.cart-panel-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #1C1C1C;flex-shrink:0}
-.cart-panel-header h2{font-weight:800;font-size:1.05rem}
-.cart-close{background:none;border:none;color:#6B665C;font-size:1.3rem;cursor:pointer;transition:color .2s}
-.cart-close:hover{color:#F0EBE0}
-.cart-items{flex:1;overflow-y:auto;padding:.75rem}
-.cart-empty{text-align:center;color:#444;padding:3rem 1rem;font-size:.9rem}
-.ci-item{display:flex;gap:.75rem;padding:.65rem 0;border-bottom:1px solid #1A1A1A;align-items:center}
-.ci-img{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#1A1A1A;flex-shrink:0}
-.ci-no-img{width:52px;height:52px;border-radius:10px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;color:#333;font-size:1.1rem;flex-shrink:0}
+:root{--safe-b:env(safe-area-inset-bottom,0px);--bg:#080808;--bg2:#0F0F0F;--bg3:#161616;--bg4:#1C1C1C;--bg5:#242424;--border:#1E1E1E;--border2:#2A2A2A;--gold:#D4A853;--gold2:#E0B865;--gold3:#C49A42;--gold-bg:rgba(212,168,83,.08);--gold-bg2:rgba(212,168,83,.15);--txt:#F2EDE4;--txt2:#B0A99C;--txt3:#6E675C;--green:#5CB870;--red:#D95550}
+html,body{height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt)}
+
+/* ═══ الشاشات ═══ */
+.screen{position:fixed;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity .45s cubic-bezier(.4,0,.2,1),transform .45s cubic-bezier(.4,0,.2,1);transform:translateY(16px) scale(.99);display:flex;flex-direction:column}
+.screen.active{opacity:1;pointer-events:all;transform:translateY(0) scale(1)}
+
+/* ═══ لاندينغ ═══ */
+#landing{background:var(--bg);justify-content:center;align-items:center;overflow:hidden}
+.l-bg{position:absolute;inset:0;z-index:0}
+.l-bg img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(.6) contrast(1.1)}
+.l-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.2) 0%,rgba(8,8,8,.6) 40%,rgba(8,8,8,.95) 80%,var(--bg) 100%)}
+.l-content{position:relative;z-index:1;text-align:center;padding:2rem 1.5rem}
+.l-logo{font-size:clamp(4rem,14vw,8rem);font-weight:900;letter-spacing:.1em;line-height:.9;background:linear-gradient(160deg,#F2EDE4 20%,#D4A853 60%,#C49A42 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:lLogo 1.2s cubic-bezier(.4,0,.2,1) both;filter:drop-shadow(0 0 60px rgba(212,168,83,.15))}
+.l-sub{font-size:clamp(.95rem,3vw,1.3rem);color:var(--txt2);font-weight:300;margin-top:.6rem;letter-spacing:.04em;animation:lUp 1s .35s cubic-bezier(.4,0,.2,1) both}
+.l-line{width:40px;height:2px;background:var(--gold);margin:1.5rem auto 0;border-radius:2px;animation:lUp 1s .5s cubic-bezier(.4,0,.2,1) both}
+.l-ctas{margin-top:2.5rem;display:flex;flex-direction:column;gap:.7rem;align-items:center;animation:lUp 1s .65s cubic-bezier(.4,0,.2,1) both}
+.l-btn1{background:var(--gold);color:var(--bg);font-weight:700;font-size:1.05rem;padding:.85rem 2.8rem;border:none;border-radius:50px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);width:100%;max-width:300px;font-family:inherit;box-shadow:0 4px 24px rgba(212,168,83,.25)}
+.l-btn1:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(212,168,83,.35)}
+.l-btn1:active{transform:translateY(0) scale(.97)}
+.l-btn2{background:transparent;color:var(--txt3);font-weight:500;font-size:.9rem;padding:.7rem 2rem;border:1px solid var(--border2);border-radius:50px;cursor:pointer;transition:all .3s;width:100%;max-width:300px;font-family:inherit}
+.l-btn2:hover{border-color:var(--gold3);color:var(--gold)}
+.l-scroll{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:1;color:var(--txt3);font-size:.75rem;animation:lBounce 2.5s infinite ease-in-out}
+@keyframes lLogo{from{opacity:0;transform:scale(.85) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes lUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes lBounce{0%,100%{transform:translateX(-50%) translateY(0);opacity:.5}50%{transform:translateX(-50%) translateY(-8px);opacity:1}}
+
+/* ═══ هيدر الشات ═══ */
+.ch-header{display:flex;align-items:center;gap:.7rem;padding:.6rem .85rem;background:rgba(8,8,8,.85);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid var(--border);flex-shrink:0;z-index:5;position:relative}
+.ch-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,83,.15),transparent)}
+.ch-back{background:none;border:none;color:var(--txt3);font-size:1.1rem;cursor:pointer;padding:.35rem .15rem;transition:color .2s;border-radius:8px}
+.ch-back:hover{color:var(--txt)}
+.ch-ai{display:flex;align-items:center;gap:.6rem;flex:1}
+.ch-avatar{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold3));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem;color:var(--bg);flex-shrink:0;box-shadow:0 2px 12px rgba(212,168,83,.2)}
+.ch-info{line-height:1.25}
+.ch-name{font-weight:700;font-size:.88rem;display:block}
+.ch-status{font-size:.65rem;color:var(--green);display:flex;align-items:center;gap:4px}
+.ch-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;box-shadow:0 0 6px rgba(92,184,112,.5)}
+.ch-cart{background:none;border:none;color:var(--txt3);font-size:1.05rem;cursor:pointer;position:relative;padding:.4rem;border-radius:10px;transition:all .2s}
+.ch-cart:hover{color:var(--gold);background:var(--gold-bg)}
+.ch-badge{position:absolute;top:0;right:0;background:var(--gold);color:var(--bg);font-size:.55rem;font-weight:800;min-width:15px;height:15px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:transform .35s cubic-bezier(.4,0,.2,1);padding:0 3px}
+.ch-badge.pop{animation:bPop .45s cubic-bezier(.4,0,.2,1)}
+@keyframes bPop{0%{transform:scale(1)}40%{transform:scale(1.6)}100%{transform:scale(1)}}
+
+/* ═══ منطقة الرسائل ═══ */
+.ch-messages{flex:1;overflow-y:auto;padding:.85rem .85rem .5rem;display:flex;flex-direction:column;gap:.15rem;scroll-behavior:smooth;position:relative;background:var(--bg)}
+.ch-messages::before{content:'';position:fixed;top:50%;left:50%;width:300px;height:300px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(212,168,83,.02) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* ═══ فقاعة الرسالة ═══ */
+.msg-wrap{display:flex;gap:.4rem;max-width:88%;animation:msgSlide .4s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.msg-wrap.ai{align-self:flex-start}
+.msg-wrap.user{align-self:flex-end;flex-direction:row-reverse}
+
+.msg-av{width:28px;height:28px;border-radius:9px;flex-shrink:0;margin-top:auto;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800}
+.msg-wrap.ai .msg-av{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg)}
+.msg-wrap.user .msg-av{background:var(--bg4);color:var(--txt3)}
+
+.msg-bubble{padding:.65rem .9rem;border-radius:16px;font-size:.88rem;line-height:1.7;white-space:pre-wrap;position:relative}
+.msg-wrap.ai .msg-bubble{background:var(--bg3);border:1px solid var(--border);border-top-right-radius:4px;color:var(--txt)}
+.msg-wrap.user .msg-bubble{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);border-top-left-radius:4px;font-weight:500}
+
+.msg-time{font-size:.58rem;color:var(--txt3);margin-top:.2rem;padding:0 .2rem;opacity:.6}
+.msg-wrap.user .msg-time{text-align:left}
+
+@keyframes msgSlide{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* ═══ مؤشر الكتابة ═══ */
+.typing{display:flex;gap:.4rem;align-self:flex-start;animation:msgSlide .3s ease both;position:relative;z-index:1}
+.typing .msg-av{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0}
+.typing-dots{background:var(--bg3);border:1px solid var(--border);border-radius:16px;border-top-right-radius:4px;padding:.7rem 1rem;display:flex;gap:5px;align-items:center}
+.typing-dots span{width:6px;height:6px;background:var(--txt3);border-radius:50%;animation:tDot 1.4s infinite ease-in-out}
+.typing-dots span:nth-child(2){animation-delay:.15s}
+.typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes tDot{0%,60%,100%{opacity:.25;transform:scale(.8)}30%{opacity:1;transform:scale(1.1)}}
+
+/* ═══ بطاقة منتج ═══ */
+.p-card{background:var(--bg3);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-top:.45rem;max-width:300px;width:100%;transition:all .3s cubic-bezier(.4,0,.2,1);position:relative}
+.p-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.p-card-img{width:100%;height:150px;object-fit:cover;background:var(--bg2);position:relative}
+.p-card-img-fallback{width:100%;height:150px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg4));color:var(--border2);font-size:2.5rem}
+.p-card-badges{position:absolute;top:.6rem;right:.6rem;display:flex;gap:.3rem}
+.p-badge{padding:.2rem .55rem;border-radius:8px;font-size:.6rem;font-weight:700;backdrop-filter:blur(8px)}
+.p-badge.new{background:rgba(212,168,83,.2);color:var(--gold);border:1px solid rgba(212,168,83,.25)}
+.p-badge.best{background:rgba(92,184,112,.15);color:var(--green);border:1px solid rgba(92,184,112,.2)}
+.p-card-body{padding:.8rem .9rem .9rem}
+.p-card-name{font-weight:800;font-size:1rem;margin-bottom:.1rem}
+.p-card-en{font-size:.65rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.p-card-ing{font-size:.75rem;color:var(--txt2);line-height:1.55;margin-bottom:.65rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.p-card-foot{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.p-card-price{font-weight:900;font-size:1.2rem;color:var(--gold);letter-spacing:-.02em}
+.p-card-price small{font-size:.7rem;font-weight:400;color:var(--txt3);margin-right:2px}
+.p-card-btns{display:flex;gap:.35rem}
+.p-btn{padding:.45rem .8rem;border-radius:12px;font-size:.75rem;font-weight:700;border:none;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);font-family:inherit}
+.p-btn-add{background:var(--gold);color:var(--bg)}
+.p-btn-add:hover{background:var(--gold2);transform:scale(1.04)}
+.p-btn-add:active{transform:scale(.96)}
+.p-btn-alt{background:var(--gold-bg);color:var(--gold);border:1px solid rgba(212,168,83,.15)}
+.p-btn-alt:hover{background:var(--gold-bg2)}
+
+/* ═══ الأزرار السريعة ═══ */
+.qa-bar{flex-shrink:0;padding:.4rem .85rem .2rem;display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;position:relative}
+.qa-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.qa-bar::-webkit-scrollbar{display:none}
+.qa-btn{flex-shrink:0;padding:.5rem .9rem;border-radius:22px;font-size:.78rem;font-weight:600;border:1px solid var(--border2);background:var(--bg2);color:var(--txt2);cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);font-family:inherit;white-space:nowrap;position:relative;overflow:hidden}
+.qa-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,168,83,.08),transparent);opacity:0;transition:opacity .25s}
+.qa-btn:hover{border-color:var(--gold3);color:var(--gold);transform:translateY(-1px);box-shadow:0 2px 12px rgba(212,168,83,.1)}
+.qa-btn:hover::before{opacity:1}
+.qa-btn:active{transform:translateY(0) scale(.96)}
+.qa-btn.qa-gold{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);border-color:transparent;font-weight:700}
+.qa-btn.qa-gold:hover{box-shadow:0 4px 20px rgba(212,168,83,.3);transform:translateY(-2px)}
+
+/* ═══ حقل الإدخال ═══ */
+.ch-input{flex-shrink:0;display:flex;gap:.45rem;padding:.5rem .85rem calc(.5rem + var(--safe-b));background:rgba(8,8,8,.9);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);border-top:1px solid var(--border);position:relative}
+.ch-input::before{content:'';position:absolute;top:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,83,.1),transparent)}
+.ch-input input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:.65rem 1rem;color:var(--txt);font-size:.88rem;font-family:inherit;outline:none;transition:all .25s}
+.ch-input input::placeholder{color:var(--txt3);font-size:.82rem}
+.ch-input input:focus{border-color:rgba(212,168,83,.4);box-shadow:0 0 0 3px rgba(212,168,83,.08)}
+.ch-send{width:40px;height:40px;border-radius:14px;background:var(--gold);border:none;color:var(--bg);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s cubic-bezier(.4,0,.2,1);flex-shrink:0}
+.ch-send:hover{background:var(--gold2);transform:scale(1.06);box-shadow:0 4px 16px rgba(212,168,83,.3)}
+.ch-send:active{transform:scale(.94)}
+
+/* ═══ فاصل التاريخ ═══ */
+.msg-date{align-self:center;font-size:.65rem;color:var(--txt3);background:var(--bg3);padding:.25rem .8rem;border-radius:10px;border:1px solid var(--border);margin:.4rem 0;animation:msgSlide .4s ease both}
+
+/* ═══ منيو ═══ */
+.mn-header{display:flex;align-items:center;gap:.75rem;padding:.7rem .85rem;background:rgba(8,8,8,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0}
+.mn-header h2{font-weight:800;font-size:1.05rem;flex:1}
+.mn-back{background:none;border:none;color:var(--txt3);font-size:1.1rem;cursor:pointer;padding:.3rem}
+.mn-cats{display:flex;gap:.4rem;padding:.65rem .85rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0;background:var(--bg);border-bottom:1px solid var(--border)}
+.mn-cats::-webkit-scrollbar{display:none}
+.mn-tab{flex-shrink:0;padding:.45rem 1rem;border-radius:18px;font-size:.78rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--txt3);cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
+.mn-tab.on{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:700;box-shadow:0 2px 12px rgba(212,168,83,.2)}
+.mn-tab:not(.on):hover{border-color:var(--border2);color:var(--txt2)}
+.mn-grid{flex:1;overflow-y:auto;padding:.65rem .85rem 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.65rem;align-content:start}
+.mn-item{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);animation:mnIn .45s ease-out both}
+.mn-item:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+@keyframes mnIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.mn-img{width:100%;height:130px;object-fit:cover;background:var(--bg2)}
+.mn-noimg{width:100%;height:90px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg4));color:var(--border2);font-size:1.8rem}
+.mn-body{padding:.7rem .8rem .8rem}
+.mn-badges{display:flex;gap:.25rem;margin-bottom:.25rem}
+.mn-top{display:flex;justify-content:space-between;align-items:start;gap:.4rem;margin-bottom:.2rem}
+.mn-name{font-weight:700;font-size:.9rem;line-height:1.3}
+.mn-price{font-weight:800;color:var(--gold);font-size:.9rem;white-space:nowrap}
+.mn-ing{font-size:.72rem;color:var(--txt3);line-height:1.5;margin-bottom:.5rem}
+.mn-add{width:100%;padding:.5rem;border-radius:12px;background:var(--gold-bg);border:1px solid rgba(212,168,83,.12);color:var(--gold);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .25s;font-family:inherit}
+.mn-add:hover{background:var(--gold-bg2);border-color:rgba(212,168,83,.25)}
+.mn-add:active{transform:scale(.97)}
+
+/* ═══ سلة ═══ */
+.cart-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+.cart-ov.open{opacity:1;pointer-events:all}
+.cart-pn{position:fixed;top:0;left:0;bottom:0;width:min(380px,92vw);background:var(--bg2);z-index:51;transform:translateX(-100%);transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-right:1px solid var(--border)}
+.cart-pn.open{transform:translateX(0)}
+.cart-hd{display:flex;align-items:center;justify-content:space-between;padding:.9rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.cart-hd h2{font-weight:800;font-size:1rem}
+.cart-x{background:none;border:none;color:var(--txt3);font-size:1.2rem;cursor:pointer;padding:.3rem;border-radius:8px;transition:all .2s}
+.cart-x:hover{color:var(--txt);background:var(--bg4)}
+.cart-list{flex:1;overflow-y:auto;padding:.7rem}
+.cart-empty{text-align:center;color:var(--txt3);padding:3rem 1rem;font-size:.85rem}
+.cart-empty i{font-size:2rem;display:block;margin-bottom:.6rem;color:var(--border2)}
+.ci{display:flex;gap:.6rem;padding:.6rem 0;border-bottom:1px solid var(--border);align-items:center}
+.ci-img{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.ci-noimg{width:48px;height:48px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--border2);font-size:1rem;flex-shrink:0}
 .ci-info{flex:1;min-width:0}
-.ci-name{font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ci-price{font-size:.8rem;color:#D4A853;font-weight:600}
-.ci-qty{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
-.ci-qty button{width:26px;height:26px;border-radius:50%;border:1px solid #333;background:transparent;color:#A39E93;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.ci-qty button:hover{border-color:#D4A853;color:#D4A853}
-.ci-qty span{font-weight:600;font-size:.85rem;min-width:18px;text-align:center}
-.ci-remove{background:none;border:none;color:#444;font-size:.8rem;cursor:pointer;padding:.3rem;transition:color .2s}
-.ci-remove:hover{color:#D95550}
-.cart-footer{padding:1rem;border-top:1px solid #1C1C1C;flex-shrink:0;padding-bottom:calc(1rem + var(--safe-b))}
-.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
-.cart-total-label{color:#A39E93;font-size:.9rem}
-.cart-total-val{font-weight:800;font-size:1.2rem;color:#D4A853}
-.checkout-btn{width:100%;padding:.8rem;border-radius:14px;background:#D4A853;color:#0A0A0A;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
-.checkout-btn:hover{background:#E0B865}
-.checkout-btn:disabled{opacity:.4;cursor:not-allowed}
-.checkout-screen{background:#0A0A0A}
-.checkout-body{flex:1;overflow-y:auto;padding:1rem}
-.checkout-body h2{font-weight:800;font-size:1.15rem;margin-bottom:1rem}
-.form-group{margin-bottom:1rem}
-.form-group label{display:block;font-size:.82rem;color:#A39E93;margin-bottom:.35rem;font-weight:500}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:.7rem 1rem;background:#161616;border:1px solid #262626;border-radius:12px;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
-.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#D4A853}
-.form-group textarea{resize:none;height:70px}
-.form-group select option{background:#161616}
-.delivery-toggle{display:flex;gap:.5rem;margin-bottom:1rem}
-.dt-btn{flex:1;padding:.65rem;border-radius:12px;border:1px solid #262626;background:transparent;color:#A39E93;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:inherit}
-.dt-btn.active{background:#D4A853;color:#0A0A0A;border-color:#D4A853}
-.order-summary-box{background:#161616;border:1px solid #222;border-radius:14px;padding:1rem;margin-top:1rem;margin-bottom:1rem}
-.osb-title{font-weight:700;font-size:.85rem;margin-bottom:.5rem;color:#A39E93}
-.osb-item{display:flex;justify-content:space-between;font-size:.85rem;padding:.3rem 0;color:#F0EBE0}
-.osb-item span:last-child{color:#A39E93}
-.osb-total{display:flex;justify-content:space-between;font-size:.95rem;padding:.5rem 0 0;border-top:1px solid #262626;margin-top:.4rem;font-weight:800}
-.osb-total span:last-child{color:#D4A853}
-.success-screen{background:#0A0A0A;justify-content:center;align-items:center;text-align:center;padding:2rem}
-.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(92,184,112,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#5CB870;animation:successPop .6s ease-out both}
-@keyframes successPop{from{transform:scale(0);opacity:0}60%{transform:scale(1.15)}to{transform:scale(1);opacity:1}}
-.success-screen h2{font-weight:800;font-size:1.4rem;margin-bottom:.5rem}
-.success-screen p{color:#A39E93;font-size:.95rem;margin-bottom:2rem;max-width:300px}
-.toast-container{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
-.toast{padding:.6rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:600;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1;transform:translateY(0)}
-.toast-ok{background:#1a2e1f;color:#5CB870;border:1px solid #2a4a32}
-.toast-err{background:#2e1a1a;color:#D95550;border:1px solid #4a2a2a}
-.mode-tag{font-size:.6rem;padding:.1rem .4rem;border-radius:6px;background:rgba(212,168,83,.1);color:#D4A853;margin-right:.3rem;vertical-align:middle}
-@media(min-width:640px){.menu-grid{grid-template-columns:repeat(2,1fr);padding:1rem 1.5rem 2rem}.msg{max-width:65%}.product-card{max-width:360px}}
+.ci-name{font-weight:600;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{font-size:.78rem;color:var(--gold);font-weight:600}
+.ci-qty{display:flex;align-items:center;gap:.3rem;flex-shrink:0}
+.ci-qty button{width:24px;height:24px;border-radius:7px;border:1px solid var(--border2);background:transparent;color:var(--txt2);font-size:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ci-qty button:hover{border-color:var(--gold);color:var(--gold)}
+.ci-qty span{font-weight:700;font-size:.82rem;min-width:16px;text-align:center}
+.ci-del{background:none;border:none;color:var(--txt3);font-size:.75rem;cursor:pointer;padding:.25rem;border-radius:6px;transition:all .2s}
+.ci-del:hover{color:var(--red);background:rgba(217,85,80,.1)}
+.cart-ft{padding:.9rem;border-top:1px solid var(--border);flex-shrink:0;padding-bottom:calc(.9rem + var(--safe-b));background:var(--bg2)}
+.cart-tot{display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem}
+.cart-tot-l{color:var(--txt2);font-size:.85rem}
+.cart-tot-v{font-weight:900;font-size:1.15rem;color:var(--gold)}
+.cart-go{width:100%;padding:.75rem;border-radius:14px;background:var(--gold);color:var(--bg);font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:all .25s;font-family:inherit}
+.cart-go:hover{background:var(--gold2);box-shadow:0 4px 20px rgba(212,168,83,.25)}
+.cart-go:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+
+/* ═══ تسجيل الطلب ═══ */
+.ck-body{flex:1;overflow-y:auto;padding:1rem .85rem}
+.ck-body h2{font-weight:800;font-size:1.1rem;margin-bottom:1rem}
+.fg{margin-bottom:.85rem}
+.fg label{display:block;font-size:.78rem;color:var(--txt2);margin-bottom:.3rem;font-weight:500}
+.fg input,.fg textarea,.fg select{width:100%;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:.88rem;font-family:inherit;outline:none;transition:border-color .25s}
+.fg input:focus,.fg textarea:focus{border-color:rgba(212,168,83,.4);box-shadow:0 0 0 3px rgba(212,168,83,.06)}
+.fg textarea{resize:none;height:65px}
+.dtog{display:flex;gap:.4rem;margin-bottom:1rem}
+.dtog button{flex:1;padding:.6rem;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt3);font-weight:600;font-size:.82rem;cursor:pointer;transition:all .25s;font-family:inherit}
+.dtog button.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.osb{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:.9rem;margin:1rem 0}
+.osb-t{font-weight:700;font-size:.8rem;color:var(--txt3);margin-bottom:.4rem}
+.osb-i{display:flex;justify-content:space-between;font-size:.82rem;padding:.25rem 0}
+.osb-i span:last-child{color:var(--txt2)}
+.osb-total{display:flex;justify-content:space-between;font-size:.92rem;padding:.45rem 0 0;border-top:1px solid var(--border);margin-top:.35rem;font-weight:800}
+.osb-total span:last-child{color:var(--gold)}
+.ck-go{width:100%;padding:.75rem;border-radius:14px;background:var(--gold);color:var(--bg);font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:all .25s;font-family:inherit;margin-top:.5rem}
+.ck-go:hover{background:var(--gold2)}
+
+/* ═══ نجاح ═══ */
+.ok-screen{background:var(--bg);justify-content:center;align-items:center;text-align:center;padding:2rem}
+.ok-icon{width:76px;height:76px;border-radius:50%;background:rgba(92,184,112,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;font-size:1.8rem;color:var(--green);animation:okPop .6s cubic-bezier(.4,0,.2,1) both;box-shadow:0 0 40px rgba(92,184,112,.1)}
+@keyframes okPop{from{transform:scale(0);opacity:0}60%{transform:scale(1.15)}to{transform:scale(1);opacity:1}}
+.ok-screen h2{font-weight:800;font-size:1.3rem;margin-bottom:.4rem}
+.ok-screen p{color:var(--txt2);font-size:.9rem;margin-bottom:2rem;max-width:280px;line-height:1.6}
+
+/* ═══ توست ═══ */
+.toast-c{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:.4rem;align-items:center;pointer-events:none}
+.toast{padding:.55rem 1.1rem;border-radius:12px;font-size:.8rem;font-weight:600;opacity:0;transform:translateY(10px) scale(.95);transition:all .35s cubic-bezier(.4,0,.2,1);pointer-events:none;white-space:nowrap;backdrop-filter:blur(12px)}
+.toast.show{opacity:1;transform:translateY(0) scale(1)}
+.toast-ok{background:rgba(92,184,112,.15);color:var(--green);border:1px solid rgba(92,184,112,.2)}
+.toast-err{background:rgba(217,85,80,.15);color:var(--red);border:1px solid rgba(217,85,80,.2)}
+
+@media(min-width:640px){
+  .mn-grid{grid-template-columns:repeat(2,1fr);padding:.85rem 1.2rem 2rem}
+  .msg-wrap{max-width:68%}
+  .p-card{max-width:340px}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
+<!-- ═══ لاندينغ ═══ -->
 <div id="landing" class="screen active">
-  <div class="landing-bg">
-    <img src="https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png" alt="" onerror="this.style.display='none'">
-    <div></div>
-  </div>
-  <div class="landing-content">
-    <div class="landing-logo">HATABA</div>
-    <p class="landing-tag">نعرف البرقر.. ونعرفك</p>
-    <div class="landing-ctas">
-      <button class="btn-primary" onclick="openChat()">خلنا نختار لك</button>
-      <button class="btn-secondary" onclick="openMenu()">أبي أشوف المنيو</button>
+  <div class="l-bg"><img src="https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png" alt="" onerror="this.style.display='none'"><div></div></div>
+  <div class="l-content">
+    <div class="l-logo">HATABA</div>
+    <p class="l-sub">نعرف البرقر.. ونعرفك</p>
+    <div class="l-line"></div>
+    <div class="l-ctas">
+      <button class="l-btn1" onclick="openChat()">خلنا نختار لك</button>
+      <button class="l-btn2" onclick="openMenu()">أبي أشوف المنيو</button>
     </div>
   </div>
-  <div class="landing-deco"><i class="fas fa-chevron-down"></i></div>
+  <div class="l-scroll"><i class="fas fa-chevron-down"></i></div>
 </div>
 
+<!-- ═══ شات ═══ -->
 <div id="chat" class="screen">
-  <div class="chat-header">
-    <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-right"></i></button>
-    <div class="ai-avatar">ح</div>
-    <div><span class="ai-name">حطبة</span><span class="ai-status" id="aiStatusText">متصل</span></div>
-    <button class="cart-btn" onclick="toggleCart()"><i class="fas fa-bag-shopping"></i><span class="cart-badge" id="chat-badge" style="display:none">0</span></button>
+  <div class="ch-header">
+    <button class="ch-back" onclick="goHome()"><i class="fas fa-arrow-right"></i></button>
+    <div class="ch-ai">
+      <div class="ch-avatar">ح</div>
+      <div class="ch-info"><span class="ch-name">حطبة</span><span class="ch-status" id="aiSt">متصل</span></div>
+    </div>
+    <button class="ch-cart" onclick="toggleCart()"><i class="fas fa-bag-shopping"></i><span class="ch-badge" id="cBadge1" style="display:none">0</span></button>
   </div>
-  <div class="chat-messages" id="chatMessages"></div>
-  <div class="quick-actions" id="quickActions"></div>
-  <div class="chat-input-area">
-    <input type="text" id="chatInput" placeholder="اكتب رسالتك..." autocomplete="off">
-    <button class="send-btn" onclick="sendMessage()"><i class="fas fa-arrow-left"></i></button>
+  <div class="ch-messages" id="msgs"></div>
+  <div class="qa-bar" id="qaBar"></div>
+  <div class="ch-input">
+    <input type="text" id="chatIn" placeholder="اكتب رسالتك..." autocomplete="off">
+    <button class="ch-send" onclick="sendMsg()"><i class="fas fa-arrow-left"></i></button>
   </div>
 </div>
 
+<!-- ═══ منيو ═══ -->
 <div id="menu" class="screen">
-  <div class="menu-header">
-    <button class="back-btn" onclick="goHome()" style="background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem"><i class="fas fa-arrow-right"></i></button>
+  <div class="mn-header">
+    <button class="mn-back" onclick="goHome()"><i class="fas fa-arrow-right"></i></button>
     <h2>المنيو</h2>
-    <button onclick="toggleCart()" style="margin-right:auto;background:none;border:none;color:#A39E93;font-size:1.15rem;cursor:pointer;position:relative;padding:.4rem"><i class="fas fa-bag-shopping"></i><span class="cart-badge" id="menu-badge" style="display:none">0</span></button>
+    <button onclick="toggleCart()" style="margin-right:auto;background:none;border:none;color:var(--txt3);font-size:1.05rem;cursor:pointer;position:relative;padding:.4rem;border-radius:10px"><i class="fas fa-bag-shopping"></i><span class="ch-badge" id="cBadge2" style="display:none">0</span></button>
   </div>
-  <div class="menu-cats" id="menuCats"></div>
-  <div class="menu-grid" id="menuGrid"></div>
+  <div class="mn-cats" id="mnCats"></div>
+  <div class="mn-grid" id="mnGrid"></div>
 </div>
 
-<div id="checkout" class="screen checkout-screen">
-  <div class="menu-header">
-    <button class="back-btn" onclick="closeCartPanel()" style="background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem"><i class="fas fa-arrow-right"></i></button>
-    <h2>إتمام الطلب</h2>
-    <div style="width:32px"></div>
-  </div>
-  <div class="checkout-body" id="checkoutBody"></div>
+<!-- ═══ تسجيل الطلب ═══ -->
+<div id="checkout" class="screen" style="background:var(--bg)">
+  <div class="mn-header"><button class="mn-back" onclick="closeCart()"><i class="fas fa-arrow-right"></i></button><h2>إتمام الطلب</h2><div style="width:32px"></div></div>
+  <div class="ck-body" id="ckBody"></div>
 </div>
 
-<div id="success" class="screen success-screen">
-  <div class="success-icon"><i class="fas fa-check"></i></div>
+<!-- ═══ نجاح ═══ -->
+<div id="success" class="screen ok-screen">
+  <div class="ok-icon"><i class="fas fa-check"></i></div>
   <h2>تم تسجيل طلبك</h2>
   <p>رح نوصل لك الطلب في أقرب وقت. شكراً لثقتك بحطبة.</p>
-  <button class="btn-primary" onclick="goHome()" style="max-width:240px">الرئيسية</button>
+  <button class="l-btn1" onclick="goHome()" style="max-width:220px">الرئيسية</button>
 </div>
 
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-<div class="cart-panel" id="cartPanel">
-  <div class="cart-panel-header"><h2>سلة الطلبات</h2><button class="cart-close" onclick="toggleCart()"><i class="fas fa-xmark"></i></button></div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer">
-    <div class="cart-total-row"><span class="cart-total-label">المجموع</span><span class="cart-total-val" id="cartTotal">0 ر.س</span></div>
-    <button class="checkout-btn" id="cartCheckoutBtn" onclick="goToCheckout()" disabled>إتمام الطلب</button>
+<!-- ═══ سلة ═══ -->
+<div class="cart-ov" id="cartOv" onclick="toggleCart()"></div>
+<div class="cart-pn" id="cartPn">
+  <div class="cart-hd"><h2>سلة الطلبات</h2><button class="cart-x" onclick="toggleCart()"><i class="fas fa-xmark"></i></button></div>
+  <div class="cart-list" id="cartList"></div>
+  <div class="cart-ft">
+    <div class="cart-tot"><span class="cart-tot-l">المجموع</span><span class="cart-tot-v" id="cartTot">0 ر.س</span></div>
+    <button class="cart-go" id="cartGo" onclick="goCheckout()" disabled>إتمام الطلب</button>
   </div>
 </div>
 
-<div class="toast-container" id="toastContainer"></div>
+<div class="toast-c" id="toastC"></div>
 
 <script>
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════════
    بيانات المنيو
-   ══════════════════════════════════════════ */
+   ═══════════════════════════════════════ */
 const MENU=[
 {id:'hataba-truffle',nameAr:'حطبه ترافل',nameEn:'HATABA TRUFFLE',price:25,category:'new',type:'burger',protein:'beef',tags:['truffle','rich'],ingredients:['90g Angus Beef','Cheddar','Caramelized Onions','Truffle Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787277211160.png',isNew:true,bestSeller:false},
 {id:'creamy-truffle-fries',nameAr:'كريمي ترافل فرايز',nameEn:'CREAMY TRUFFLE FRIES',price:19,category:'new',type:'side',protein:null,tags:['truffle','rich'],ingredients:['French Fries','Creamy Truffle Sauce','Caramelized Onions','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369018540.png',isNew:true,bestSeller:false},
 {id:'truffle-fries',nameAr:'ترافل فرايز',nameEn:'TRUFFLE FRIES',price:21,category:'new',type:'side',protein:null,tags:['truffle','rich'],ingredients:['Thin-Cut Fries','Truffle Oil','Signature Seasoning','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369540136.png',isNew:true,bestSeller:false},
 {id:'hataba-beef',nameAr:'حطبه بيف',nameEn:'HATABA BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','bestseller'],ingredients:['90g Angus Beef','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267562725.png',isNew:false,bestSeller:true},
-{id:'smash-beef',nameAr:'سماش بيف',nameEn:'SMASH BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','smash'],ingredients:['90g Angus Beef','Smashed on the griddle','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png',isNew:false,bestSeller:false},
+{id:'smash-beef',nameAr:'سماش بيف',nameEn:'SMASH BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','smash'],ingredients:['90g Angus Beef Smashed','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png',isNew:false,bestSeller:false},
 {id:'hataba-chicken',nameAr:'حطبه تشيكن',nameEn:'HATABA CHICKEN',price:23,category:'chicken',type:'burger',protein:'chicken',tags:['classic','bestseller'],ingredients:['80g Ground Chicken','Cheddar','Lettuce','Classic Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267610360.png',isNew:false,bestSeller:true},
 {id:'crispy-chicken',nameAr:'كرسبي تشيكن',nameEn:'CRISPY CHICKEN',price:23,category:'chicken',type:'burger',protein:'chicken',tags:['crispy','creamy'],ingredients:['Crispy Chicken','Coleslaw','Creamy Cheese Sauce','Classic Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267642771.png',isNew:false,bestSeller:false},
 {id:'french-fries',nameAr:'فرنش فرايز',nameEn:'FRENCH FRIES',price:7,category:'fries',type:'side',protein:null,tags:['classic'],ingredients:['French Fries'],image:null,isNew:false,bestSeller:false},
@@ -289,670 +350,258 @@ const MENU=[
 {id:'d-rabie',nameAr:'عصير ربيع',nameEn:'RABIE JUICE',price:3,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Rabie Juice'],image:null,isNew:false,bestSeller:false},
 {id:'d-water',nameAr:'ماء',nameEn:'WATER',price:1,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Water'],image:null,isNew:false,bestSeller:false},
 ];
+const CATS=[{id:'new',n:'المنتجات الجديدة'},{id:'beef',n:'بيف برقر'},{id:'chicken',n:'تشيكن برقر'},{id:'fries',n:'الفرايز'},{id:'appetizers',n:'الأطباق الجانبية'},{id:'sauces',n:'الصوصات'},{id:'additions',n:'الإضافات'},{id:'drinks',n:'المشروبات'}];
 
-const CATEGORIES=[
-{id:'new',nameAr:'المنتجات الجديدة',icon:'fa-star'},
-{id:'beef',nameAr:'بيف برقر',icon:'fa-fire'},
-{id:'chicken',nameAr:'تشيكن برقر',icon:'fa-drumstick-bite'},
-{id:'fries',nameAr:'الفرايز',icon:'fa-bowl-food'},
-{id:'appetizers',nameAr:'الأطباق الجانبية',icon:'fa-utensils'},
-{id:'sauces',nameAr:'الصوصات',icon:'fa-droplet'},
-{id:'additions',nameAr:'الإضافات',icon:'fa-circle-plus'},
-{id:'drinks',nameAr:'المشروبات',icon:'fa-glass-water'},
-];
-
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════════
    حالة التطبيق
-   ══════════════════════════════════════════ */
-let cart=[];
-let currentScreen='landing';
-let activeCategory='new';
-let deliveryType='delivery';
-let conversationHistory=[];
-let apiAvailable=true; // يتحول false لو API تعطل
+   ═══════════════════════════════════════ */
+let cart=[],curScreen='landing',activeCat='new',delType='delivery',convHist=[],apiOK=true;
 
-/* ══════════════════════════════════════════
-   محرك الذكاء الاصطناعي المحلي (Fallback)
-   ══════════════════════════════════════════ */
-class HatabaAI{
-  constructor(){this.reset()}
-  reset(){
-    this.prefs={budget:null,protein:null,flavor:null,truffle:false,spicy:false,hunger:null,people:1,goal:null,mealType:null,calorieConscious:false};
-    this.asked=new Set();
-    this.lastRecommendation=null;
-    this.messageCount=0;
-    this.awaitingAddResponse=null;
-    this.detectedGender=null; // 'male' | 'female' | null
-    this.detectedName=null;
-    this.mood=null; // 'playful' | 'sad' | 'angry' | 'hurried' | 'chatty' | null
-  }
-
-  /* ═══════ المعالجة الرئيسية ═══════ */
-  process(msg){
-    this.messageCount++;
-    const m=msg.trim();
-    if(!m)return null;
-
-    // لو ينتظر رد على إضافة
-    if(this.awaitingAddResponse){
-      const r=this.awaitingAddResponse;
-      this.awaitingAddResponse=null;
-      if(this.isYes(m))return r.onYes;
-      if(this.isNo(m))return r.onNo;
-    }
-
-    // 1) كشف الجنس والاسم (قبل أي شيء)
-    this.detectGenderName(m);
-
-    // 2) تحليل المزاج
-    this.detectMood(m);
-
-    // 3) تحيات وأحوال — نرد طبيعي ثم نرجع للأكل
-    const greeting=this.handleGreeting(m);
-    if(greeting)return greeting;
-
-    // 4) مزح — نرد بالمزح ثم نرجع
-    const joke=this.handleJoke(m);
-    if(joke)return joke;
-
-    // 5) مشاعر سلبية
-    const sad=this.handleEmotion(m);
-    if(sad)return sad;
-
-    // 6) مواضيع خارجية بذكاء
-    if(this.isOffTopic(m))return this.respOffTopic();
-
-    // 7) شكوى سعر
-    if(this.isPriceComplaint(m))return this.respPriceComplaint();
-
-    // 8) استخراج الكيانات
-    this.extractEntities(m);
-
-    // 9) طلب منتج بالاسم
-    const named=this.findProduct(m);
-    if(named&&this.messageCount<=3){
-      const g=this.detectedGender==='female'?'اختيار حلو':'اختيار ممتاز';
-      return{text:`${g}، ${named.nameAr} سعرها ${named.price} ريال.\nتبغى تضيفها للطلب؟`,products:[named],quickActions:['أضف للطلب','أبي أشوف خيارات ثانية']};
-    }
-
-    // 10) طلبات نوعية
-    if(this.hasAny(m,['ترافل','truffle'])){this.prefs.truffle=true;return this.respTruffle()}
-    if(this.hasAny(m,['أكثر مبيع','أعلى مبيع','الأكثر مبيعا','best seller','الأفضل','شعبي']))return this.respBestSeller();
-    if(this.hasAny(m,['جديد','جديدين','مستجد','حديث']))return this.respNew();
-    if(this.hasAny(m,['حار','حاره','حري','سبايسي','حريق','نار'])){this.prefs.spicy=true;return this.respSpicy()}
-    if(this.hasAny(m,['فرايز','بطاطس']))return this.respFries();
-    if(this.hasAny(m,['منيو','المنيو']))return{text:'تمام، تقدر تشوف المنيو من فوق. أو قولي وش تبغى وأنا ألخص لك.',quickActions:this.getQA()};
-    if(this.hasAny(m,['سلة','السلة','طلباتي']))return{text:'تقدر تفتح السلة من أيقونة الشنطة فوق.',quickActions:this.getQA()};
-    if(this.hasAny(m,['سعرات','كالوري','دايت','حمية','صحي','أخف','خفيف من المكونات'])){this.prefs.calorieConscious=true;return{text:'ما عندي معلومات السعرات الحرارية حالياً، لكن أقدر أساعدك تختار شيء أخف من ناحية المكونات.\nمثلاً حطبه تشيكن أخف من حطبه بيف.',quickActions:['أبي حطبه تشيكن','عادي ما يهم']};}
-    if(this.hasAny(m,['شكرا','شكراً','مشكور','يعطيك العافية','الله يجزاك','ممتاز','حلوة']))return{text:this.detectedGender==='female'?'العفو حبيبتي 😊 تبغى شيء ثاني؟':this.detectedGender==='male'?'العفو يا صاحبي 👍 تبغى شيء ثاني؟':'العفو 👍 تبغى شيء ثاني؟',quickActions:['أبي شيء ثاني','لا خلاص']};
-
-    // 11) عدد أشخاص
-    const ppl=m.match(/نحن\s*(\d+)|(\d+)\s*(أشخاص|اشخاص|شخص|نفر)/);
-    if(ppl){this.prefs.people=parseInt(ppl[1]||ppl[2]);return{text:`تمام، ${this.prefs.people} أشخاص.\nتحبون كل واحد يختار برقره ولا تبغون تشكيلة نتشاركها؟`,quickActions:['كل واحد يختار','تشكيلة نتشاركها']}}
-
-    // 12) توصية أم سؤال
-    if(this.shouldRecommend())return this.recommend();
-    return this.askNext();
-  }
-
-  /* ═══════ كشف الجنس والاسم ═══════ */
-  detectGenderName(m){
-    if(this.detectedGender)return;
-    const femaleNames=['فاطمة','سارة','نورة','هند','مريم','ليلى','ريم','لينا','دانة','غادة','عائشة','خلود','منال','رغد','جوهرة','لمياء','شيخة','مها','أمل','هيفاء','لمياء','عبير','نجلاء','هيا','جدان','رنا','حنين','أسماء','ملاك','جنات','فريدة','وعد','لوجين','تعويض','عنود','شهد','روز','لميس','بسمة','غدير','نوف','مليكة','صفية','شيماء','إيمان','نوف','آية','مريم','آمال','ثريا','هبه','يسرى','ميس','رزان','تالا','جوري'];
-    const maleNames=['محمد','عبدالله','فهد','سعود','خالد','ناصر','بندر','تركي','ماضي','فيصل','عبدالرحمن','سلطان','أحمد','عمر','يوسف','إبراهيم','علي','حسن','سامي','ماجد','وليد','زياد','طلال','مشعل','حمد','منصور','راشد','حمزة','يزيد','عبدالعزيز','سلمى','بدر','عتيب','حبيب','أنس','آدم','ياسر','نواف','عبدالملك','زياد','صقر','مبارك','جاسر','هاني','وليد','سلطان','رائد','عمار','أسامة','سيف','عبدالإله'];
-
-    for(const n of femaleNames){if(m.includes(n)){this.detectedGender='female';this.detectedName=n;return}}
-    for(const n of maleNames){if(m.includes(n)){this.detectedGender='male';this.detectedName=n;return}}
-
-    // كلمات تدل على أنثى
-    if(this.hasAny(m,['أنا بنت','أنا وحدة','أبغى شي حلو','يما','ياما','حبيبتي']))this.detectedGender='female';
-    // كلمات تدل على ذكر
-    if(this.hasAny(m,['أنا ولد','أنا شاب','يا صاحبي','يا عم','يا غالي']))this.detectedGender='male';
-  }
-
-  /* ═══════ كشف المزاج ═══════ */
-  detectMood(m){
-    if(this.hasAny(m,['ههه','هههه','لول','😂','🤣','💀','امزح','امزح معك','مزحة']))this.mood='playful';
-    else if(this.hasAny(m,['زعلان','زعلانة','حزين','متضايق','مقهور','كسلان','تعبان']))this.mood='sad';
-    else if(this.hasAny(m,['غاضب','يقهر','سخف','غبي','فاشل']))this.mood='angry';
-    else if(this.hasAny(m,['مستعجل','سريع','بسرعة','ضغط وقت','ما عندي وقت']))this.mood='hurried';
-  }
-
-  /* ═══════ التحيات ═══════ */
-  handleGreeting(m){
-    const greetings=['كيف حالك','كيفك','كيفحالك','شخبارك','شلونك','شخبار','وش أخبارك','اهلا','أهلا','هلا','السلام عليكم','مساء الخير','صباح الخير','هلا والله','هلا والله','حياك','حيالله','ايش اخبارك','عساك بخير','وش مسوي'];
-    const isGreeting=greetings.some(g=>m.includes(g))||(m.length<=5&&!this.hasAny(m,['بيف','تشيكن','برقر','فرايز','ترافل','ريال','ميزانية']));
-
-    if(!isGreeting)return null;
-
-    const g=this.detectedGender;
-    let response='';
-
-    if(g==='female'){
-      const opts=[
-        'الحمد لله بخير، والأهم كيفك؟ 😊\nوش تبغى تأكل اليوم نشدحلك شي يسرّك',
-        'أهلاً فيكِ، بخير الحمد لله. كيف حالك؟\nخلني أختار لك وجبة حلوة',
-        'هلا حبيبتي، الحمد لله بخير. وش تبغين اليوم؟',
-      ];
-      response=opts[Math.floor(Math.random()*opts.length)];
-    }else if(g==='male'){
-      const opts=[
-        'الحمد لله بخير، والأهم كيف أنت يا '+this.detectedName+'؟\nوش تبغى تأكل اليوم',
-        'هلا والله، بخير الحمد لله. كيف حالك يا صاحبي؟\nخلني أضبط لك طلبك',
-        'حياك الله، الحمد لله تمام. وش مسوي تبغى تأكل؟',
-      ];
-      response=opts[Math.floor(Math.random()*opts.length)];
-    }else{
-      const opts=[
-        'الحمد لله بخير، والأهم كيف أنت؟\nوش تبغى تأكل اليوم نشدحلك',
-        'هلا، بخير الحمد لله. كيف حالك؟\nخلني أختار لك وجبة تريحك',
-        'أهلاً وسهلاً، الحمد لله بخير. وش تبغى اليوم؟',
-      ];
-      response=opts[Math.floor(Math.random()*opts.length)];
-    }
-
-    return{text:response,quickActions:['اختار لي 🍔','معي 25 ريال','أبي الأكثر مبيعاً','أبي ترافل']};
-  }
-
-  /* ═══════ المزح ═══════ */
-  handleJoke(m){
-    if(this.mood!=='playful')return null;
-
-    // إذا هو اللي بدأ يمزح
-    const jokeStarters=['امزح معك','محتكر نكتة','عندك نكتة','اكتبلي نكتة','ضحكني','شيء مضحك'];
-    if(jokeStarters.some(j=>m.includes(j))){
-      const jokes=[
-        'هههه أنا اختصاصي البرقر مو النكت 😄\nلكن أقدر أضحكك بوجبة حطبه بيف، جربها وتشوف',
-        'النكتة الوحيدة اللي أعرفها إن بعض الناس يطلب برقر بدون صوص حطبه 😂\nهذا غريب صح؟',
-        'طيب عندك نكتة: وين يروح البرقر لما يتعب؟ → يحط نفسه في ساندويش 😄\nالمزح مزح، وش تبغى تأكل؟',
-      ];
-      return{text:jokes[Math.floor(Math.random()*jokes.length)],quickActions:['هههه حلوة','أبي بيف','أبي ترافل']};
-    }
-
-    // إذا هو رد بمزح على شيء قلته
-    if(this.messageCount>1){
-      const playfulReplies=[
-        'ههههه 😄 حلوة، بس أنا مجنون البرقر أكثر.\nخلني أرجع لك لميداني: وش تبغى تأكل؟',
-        'أحسن من المزحة طلب حطبه ترافل 😏 جربها وتشوف وش أقصد',
-        'هههه 👍 حلوة حلوة. طيب خلنا نحول المزح لوجبة حلوة، وش تبغى؟',
-      ];
-      return{text:playfulReplies[Math.floor(Math.random()*playfulReplies.length)],quickActions:['أبي برقر','أبي الأكثر مبيعاً','معي 30 ريال']};
-    }
-
-    return null;
-  }
-
-  /* ═══════ مشاعر ═══════ */
-  handleEmotion(m){
-    if(this.mood==='sad'){
-      const g=this.detectedGender;
-      if(g==='female')return{text:'زعلك في مكانه، لكن وجبة حطبة تاخذ نصف الزعل 😊\nوش تبغين؟ خلني أختار لك شي يرضيك',quickActions:['أبي شيء حلو','أبي ترافل','أبي الأكثر مبيعاً']};
-      if(g==='male')return{text:'يا صاحبي زعلك في مكانه، لكن البرقر يحل نصف المشاكل 👍\nوش تبغى؟ أختار لك شيء يرضيك',quickActions:['أبي بيف','أبي شيء مشبع','معي 30 ريال']};
-      return{text:'زعلك في مكانه، لكن وجبة حطبة تخفف كثير.\nوش تبغى؟ خلني أختار لك شي يريحك',quickActions:['أبي شيء حلو','أبي الأكثر مبيعاً']};
-    }
-    if(this.mood==='angry'){
-      return{text:'فهمتك، وآسف إذا في شيء ضايقك. خلني أركز في شيء إيجابي: وش تبغى تأكل وأنا أضبطه لك؟',quickActions:['أبي بيف','أبي شيء مشبع','معي 25 ريال']};
-    }
-    return null;
-  }
-
-  /* ═══════ كشف خارج النطاق ═══════ */
-  isOffTopic(m){
-    if(m.length>50)return false;
-    const o=['سيارة','سيارات','مباراة','كرة','فريق','انتخابات','سياسة','برمجة','كود','مدرسة','جامعة','طب','دكتور','علاج','دواء','طقس','سهم','أسهم','تداول','بنك','قرض','وظيفة','سفر','طيران','فندق','زواج','دين','فتوى','قرآن','صلاة','مسجد','ويكند','مول','سينما','فيلم','مسلسل','أنمي','لعبة','بلايستيشن','اكس بوكس'];
-    return o.some(k=>m.includes(k));
-  }
-
-  respOffTopic(){
-    const g=this.detectedGender;
-    if(g==='female'){
-      const opts=[
-        'هههه هذا مو مجالي 😄 أنا اختصاصي البرقر. خلني أختار لك شي يلذذك',
-        'يا حبيبتي هذا سؤال يحتاج خبير ثاني 😊 أنا هوني في البرقر. وش تبغين تاكلين؟',
-      ];
-      return{text:opts[Math.floor(Math.random()*opts.length)],quickActions:this.getQA()};
-    }
-    if(g==='male'){
-      const opts=[
-        'هههه يا '+this.detectedName+' هذا مو تخصصي 😄 أنا خبيري في البرقر. خلني أضبط طلبك',
-        'يا صاحبي السؤال بعيد 😄 أنا هنا عشان أخلصك من الجوع. وش تبغى تأكل؟',
-      ];
-      return{text:opts[Math.floor(Math.random()*opts.length)],quickActions:this.getQA()};
-    }
-    const opts=[
-      'هههه سؤال بعيد عن البرقر 😄 أنا شغلي أخليك تطلع من حطبة مبسوط. خلنا نضبط طلبك.',
-      'خلنا نخلي المواضيع الثانية على جنب 😄 أنا هنا عشان أساعدك تختار طلبك.',
-    ];
-    return{text:opts[Math.floor(Math.random()*opts.length)],quickActions:this.getQA()};
-  }
-
-  /* ═══════ استخراج الكيانات ═══════ */
-  extractEntities(m){
-    const bp=[/معي\s*(؟)?\s*(\d+)/,/ميزانيتي?\s*(؟)?\s*(\d+)/,/بـ?\s*(\d+)\s*ريال/,/(\d+)\s*ريال/,/حد\s*(؟)?\s*(\d+)/,/أقصى\s*(؟)?\s*(\d+)/,/ما\s*[أا]بغى\s*[أا]خرج\s*عن\s*(\d+)/,/ما\s*[أا]بي\s*[أا]طلع\s*عن\s*(\d+)/,/مابي\s*اخرج\s*عن\s*(\d+)/];
-    for(const p of bp){const x=m.match(p);if(x){this.prefs.budget=parseInt(x[x.length-1]);break}}
-    if(/^\d+$/.test(m.trim())&&!this.prefs.budget)this.prefs.budget=parseInt(m.trim());
-    if(this.hasAny(m,['بيف','لحم','beef']))this.prefs.protein='beef';
-    if(this.hasAny(m,['تشيكن','دجاج','chicken']))this.prefs.protein='chicken';
-    if(this.hasAny(m,['مشبع','شبعان','جوعان','ويان','أبي أكل كثير','جوع']))this.prefs.hunger='high';
-    if(this.hasAny(m,['خفيف','قليل','سناك','وجبة خفيفة','ما أبي كثير','شيء بسيط']))this.prefs.hunger='low';
-    if(this.hasAny(m,['يستاهل','قيمة','أفضل قيمة','وفر','مقابل سعر']))this.prefs.goal='best_value';
-    if(this.hasAny(m,['مهما كان السعر','الممتاز','الفخم','الاحترافي','الأفضل بلا حدود']))this.prefs.goal='best_experience';
-    if(this.hasAny(m,['أجرب','شيء جديد','تجربة جديدة','ما جربت','أبي أجرب']))this.prefs.goal='try_new';
-    if(this.hasAny(m,['كلاسيك','عادي','بسيط','معتاد','العادة','مألوف']))this.prefs.flavor='classic';
-    if(this.hasAny(m,['مختلف','تجربة','مميز','خاص','يجنن','قوي النكهة','نكهة قوية']))this.prefs.flavor='adventurous';
-    if(this.hasAny(m,['ترافل','truffle']))this.prefs.truffle=true;
-    if(this.hasAny(m,['برقر','برجر','ساندويش','ساندوتش']))this.prefs.mealType='burger';
-    if(this.hasAny(m,['وجبة','كمبو','سيت','meal','كامل']))this.prefs.mealType='full_meal';
-  }
-
-  /* ═══════ هل نوصّي؟ ═══════ */
-  shouldRecommend(){
-    const p=this.prefs;
-    if(p.budget&&p.protein)return true;
-    if(p.budget&&p.goal)return true;
-    if(p.protein&&p.flavor)return true;
-    if(p.protein&&p.truffle)return true;
-    if(p.budget&&this.messageCount>=3)return true;
-    if(p.protein&&p.hunger==='high')return true;
-    return false;
-  }
-
-  /* ═══════ السؤال التالي ═══════ */
-  askNext(){
-    const p=this.prefs;const g=this.detectedGender;
-    if(!p.protein&&!p.truffle&&!p.spicy&&!p.goal){
-      if(g==='female')return{text:'خلني أفهم ذوقك شوي.\nأنتي اليوم ناوية على برقر ولا شيء خفيف؟',quickActions:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
-      if(g==='male')return{text:'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟',quickActions:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
-      return{text:'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟',quickActions:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
-    }
-    if(!p.protein&&!p.truffle){
-      return{text:'بيف ولا تشيكن؟',quickActions:['بيف','تشيكن','لا يهم']};
-    }
-    if(!p.flavor&&!p.truffle&&!p.goal){
-      return{text:'تحب النكهة الكلاسيكية ولا ودك نجرب شيء مختلف؟',quickActions:['كلاسيكية','شيء مختلف','أبي ترافل']};
-    }
-    if(!p.budget){
-      if(g==='female')return{text:'ميزانيتك تقريباً كم؟ عشان أختار لك الأحسن.',quickActions:['معي 20 ريال','معي 25 ريال','معي 30 ريال','أبي أفضل شيء']};
-      return{text:'ميزانيتك تقريباً كم؟ عشان أضبط لك الخيارات.',quickActions:['معي 20 ريال','معي 25 ريال','معي 30 ريال','أبي أفضل شيء مهما كان السعر']};
-    }
-    return this.recommend();
-  }
-
-  /* ═══════ التوصية ═══════ */
-  recommend(){
-    const p=this.prefs;let candidates=[];
-    if(p.budget)candidates=this.buildCombos(p.budget);
-    else candidates=this.filterScore(MENU.filter(i=>i.type==='burger'),p);
-    if(!candidates.length)return{text:'ما لقيت شيء يناسب اللي تبغاه بهالميزانية. تبغى تزيد الميزانية شوي؟',quickActions:['زود 5 ريال','أبي أشوف المنيو']};
-    const top=candidates.slice(0,2);
-    const mains=[...new Map(top.map(c=>[c.items[0].id,c.items[0]])).values()];
-    let reason=this.buildReason(top[0],p);
-    let text='';
-    const g=this.detectedGender;
-    if(mains.length===1&&top[0].items.length===1){
-      text=g==='female'?`أعتقد هذي أقرب شيء لذوقك 👇\n${reason}`:`أعتقد هذا أقرب شيء لذوقك 👇\n${reason}`;
-    }else if(top[0].items.length>1){
-      text=`عندك وجبة كاملة ضمن ميزانيتك 👇\n${reason}`;
-    }else{
-      text=`عندك خيارين حلوين:\n${reason}`;
-    }
-    this.lastRecommendation=top;
-    const qa=['أشوف خيارات ثانية'];
-    if(top[0].items.length===1&&p.budget&&top[0].total<p.budget){
-      const rem=p.budget-top[0].total;
-      if(rem>=7)qa.unshift('أضيف له فرايز');
-      else if(rem>=3)qa.unshift('أضيف له صوص');
-    }
-    return{text,products:mains,quickActions:qa};
-  }
-
-  /* ═══════ بناء كمبات ═══════ */
-  buildCombos(budget){
-    const p=this.prefs;
-    const burgers=MENU.filter(i=>i.type==='burger');
-    const sides=MENU.filter(i=>i.type==='side'&&i.category!=='sauces');
-    const drinks=MENU.filter(i=>i.type==='drink');
-    const combos=[];
-    for(const b of burgers){
-      if(b.price>budget)continue;
-      combos.push({items:[b],total:b.price,score:this.scoreItem(b,p)});
-      const rem=budget-b.price;
-      for(const s of sides){
-        if(s.price<=rem){
-          combos.push({items:[b,s],total:b.price+s.price,score:this.scoreItem(b,p)+this.scoreItem(s,p)*.5+10});
-          const r2=rem-s.price;
-          for(const d of drinks){if(d.price<=r2)combos.push({items:[b,s,d],total:b.price+s.price+d.price,score:this.scoreItem(b,p)+this.scoreItem(s,p)*.5+this.scoreItem(d,p)*.2+20})}
-        }
-      }
-      for(const d of drinks){if(d.price<=rem)combos.push({items:[b,d],total:b.price+d.price,score:this.scoreItem(b,p)+this.scoreItem(d,p)*.2+5})}
-    }
-    combos.sort((a,b)=>{
-      const au=a.total/budget,bu=b.total/budget;
-      const ab=au>=.8&&au<=1?15:au>=.6?5:-10;
-      const bb=bu>=.8&&bu<=1?15:bu>=.6?5:-10;
-      return(b.score+bb)-(a.score+ab);
-    });
-    const seen=new Set();
-    return combos.filter(c=>{const k=c.items.map(i=>i.id).sort().join(',');if(seen.has(k))return false;seen.add(k);return true}).slice(0,4);
-  }
-
-  scoreItem(item,p){
-    let s=0;
-    if(p.protein&&item.protein===p.protein)s+=15;
-    if(p.protein&&item.protein&&item.protein!==p.protein)s-=20;
-    if(p.truffle&&item.tags.includes('truffle'))s+=15;
-    if(p.spicy&&item.tags.includes('spicy'))s+=12;
-    if(p.flavor==='classic'&&item.tags.includes('classic'))s+=10;
-    if(p.flavor==='adventurous'&&(item.tags.includes('truffle')||item.tags.includes('loaded')))s+=12;
-    if(p.goal==='best_value'&&item.bestSeller)s+=8;
-    if(p.goal==='best_experience'&&item.tags.includes('truffle'))s+=10;
-    if(p.goal==='try_new'&&item.isNew)s+=12;
-    if(item.bestSeller)s+=4;
-    if(item.isNew)s+=2;
-    return s;
-  }
-
-  filterScore(items,p){return items.map(i=>({items:[i],total:i.price,score:this.scoreItem(i,p)})).filter(c=>c.score>0).sort((a,b)=>b.score-a.score)}
-
-  buildReason(combo,p){
-    const m=combo.items[0];const r=[];
-    if(p.truffle&&m.tags.includes('truffle'))r.push('لأنك تحب الترافل');
-    if(p.protein==='beef'&&m.protein==='beef')r.push('بيف كما تبغى');
-    if(p.protein==='chicken'&&m.protein==='chicken')r.push('تشيكن كما تبغى');
-    if(p.flavor==='classic')r.push('نكهة كلاسيكية');
-    if(p.flavor==='adventurous')r.push('نكهة مميزة ومختلفة');
-    if(p.goal==='best_value')r.push('أفضل قيمة مقابل السعر');
-    if(p.goal==='best_experience')r.push('أفضل تجربة');
-    if(p.goal==='try_new')r.push('من المنتجات الجديدة');
-    if(m.bestSeller&&!r.length)r.push('الأكثر مبيعاً عندنا');
-    if(combo.items.length>1)r.push(`وجبة كاملة بـ${combo.total} ريال`);
-    else r.push(`سعرها ${m.price} ريال`);
-    return r.join('، ');
-  }
-
-  /* ═══════ ردود نوعية ═══════ */
-  respTruffle(){
-    const t=MENU.filter(i=>i.tags.includes('truffle'));
-    const g=this.detectedGender;
-    if(this.prefs.budget){
-      const w=t.filter(i=>i.price<=this.prefs.budget);
-      if(w.length){
-        const intro=g==='female'?'ذوقك حلو 👏 هذي خيارات الترافل 👇':g==='male'?'ذوقك ممتاز 👏 هذي خيارات الترافل 👇':'ذوقك ممتاز 👏 هذي خيارات الترافل 👇';
-        return{text:intro,products:w,quickActions:['أشوف خيارات ثانية']};
-      }
-    }
-    const intro=g==='female'?'ذوقك حلو 👏 عندنا خيارات ترافل. ميزانيتك تقريباً كم؟':g==='male'?'ذوقك ممتاز 👏 عندنا خيارات ترافل. ميزانيتك تقريباً كم؟':'ذوقك ممتاز 👏 عندنا خيارات ترافل. ميزانيتك تقريباً كم؟';
-    return{text:intro,products:t,quickActions:['معي 25 ريال','معي 30 ريال','أبي أفضل شيء']};
-  }
-
-  respBestSeller(){
-    const b=MENU.filter(i=>i.bestSeller&&i.type==='burger');
-    this.prefs.goal='best_value';
-    return{text:'هذي الأكثر مبيعاً عندنا 👇',products:b,quickActions:['أبي شيء مختلف','أبي فرايز معه']};
-  }
-
-  respNew(){
-    const n=MENU.filter(i=>i.isNew);this.prefs.goal='try_new';
-    return{text:'هذي آخر شيء أضفناه 👇',products:n,quickActions:['أبي الأكثر مبيعاً']};
-  }
-
-  respSpicy(){
-    return{text:'عندنا صوص سبايسي ممتاز، تقدر تضيفه لأي برقر ويصير شي ثاني.\nتبغى تختار برقر أولاً؟',quickActions:['بيف','تشيكن','أبي الأكثر مبيعاً']};
-  }
-
-  respFries(){
-    const f=MENU.filter(i=>i.category==='fries');
-    return{text:'هذي خيارات الفرايز 👇',products:f,quickActions:['أبي برقر مع فرايز','رجع للبرقرات']};
-  }
-
-  respPriceComplaint(){
-    this.prefs.budget=null;
-    const g=this.detectedGender;
-    if(g==='female')return{text:'معك حق حبيبتي، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟',quickActions:['15 ريال','20 ريال','25 ريال']};
-    return{text:'معك حق، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟',quickActions:['15 ريال','20 ريال','25 ريال']};
-  }
-
-  /* ═══════ إضافة منتج ═══════ */
-  onProductAdded(pid){
-    const p=MENU.find(i=>i.id===pid);if(!p)return null;
-    const rem=this.prefs.budget?this.prefs.budget-p.price:null;
-    if(rem&&rem>=7){
-      const f=MENU.find(i=>i.id==='french-fries');
-      this.awaitingAddResponse={
-        onYes:{text:`تمام، أضفنا الفرنش فرايز. طلبك الآن ${p.price+f.price} ريال 👍`,quickActions:['أتمم الطلب','أبي شيء ثاني']},
-        onNo:{text:'تمام، طلبك جاهز 👍',quickActions:['أتمم الطلب','أبي شيء ثاني']}
-      };
-      return{text:`حلو، أضفناه لك.\nباقي لك ${rem} ريال من ميزانيتك. لو تبغى تكملها، الفرنش فرايز بـ${f.price} ريال وتكون وجبتك كاملة.`,quickActions:['أيوا أضفها','لا خلاص']};
-    }
-    if(rem&&rem>=3){
-      const s=MENU.find(i=>i.id==='s-hataba');
-      this.awaitingAddResponse={
-        onYes:{text:`تمام، أضفنا صوص حطبه 👍`,quickActions:['أتمم الطلب','أبي شيء ثاني']},
-        onNo:{text:'تمام 👍',quickActions:['أتمم الطلب','أبي شيء ثاني']}
-      };
-      return{text:`حلو، أضفناه 👍\nباقي لك ${rem} ريال. تقدر تضيف صوص حطبه بـ${s.price} ريال يرفع النكهة.`,quickActions:['أيوا أضفه','لا خلاص']};
-    }
-    return{text:'تمام، أضفناه 👍',quickActions:['أتمم الطلب','أبي شيء ثاني']};
-  }
-
-  /* ═══════ أدوات ═══════ */
-  hasAny(m,kw){return kw.some(k=>m.includes(k))}
-  isPriceComplaint(m){return this.hasAny(m,['غالي','سعره عالي','مكلف','أغلى','ما يستاهل','مبالغ فيه'])}
-  isYes(m){return this.hasAny(m,['ايوا','نعم','أيوا','تمام','حلو','زين','ok','أكيد','طبعا','هلا','نعم','هيه','ايوه'])}
-  isNo(m){return this.hasAny(m,['لا','لاا','أبدا','ما أبي','ما أبغى','خلاص','لا يهم','لا لا'])}
-  findProduct(m){return MENU.find(i=>m.includes(i.nameAr)||m.toLowerCase().includes(i.nameEn.toLowerCase()))}
-  getQA(){
-    const p=this.prefs,b=[];
-    if(!p.protein)b.push('بيف','تشيكن');
-    if(!p.truffle)b.push('أبي ترافل');
-    if(!p.budget)b.push('معي 25 ريال');
-    b.push('أبي الأكثر مبيعاً','أبي شيء مشبع');
-    return b.slice(0,6);
-  }
+/* ═══════════════════════════════════════
+   المحرك المحلي (Fallback)
+   ═══════════════════════════════════════ */
+class AI{
+constructor(){this.r()}
+r(){this.p={budget:null,protein:null,flavor:null,truffle:false,spicy:false,hunger:null,people:1,goal:null,mealType:null,cal:false};this.asked=new Set();this.lastR=null;this.mc=0;this.waitR=null;this.gender=null;this.name=null;this.mood=null}
+process(msg){
+this.mc++;const m=msg.trim();if(!m)return null;
+if(this.waitR){const r=this.waitR;this.waitR=null;if(this.yes(m))return r.y;if(this.no(m))return r.n}
+this.detGN(m);this.detMood(m);
+const g=this.hGreet(m);if(g)return g;
+const j=this.hJoke(m);if(j)return j;
+const e=this.hEmo(m);if(e)return e;
+if(this.offTopic(m))return this.rOff();
+if(this.priceComp(m))return this.rPrice();
+this.extract(m);
+const np=this.findP(m);
+if(np&&this.mc<=3){const t=this.gender==='f'?'اختيار حلو':'اختيار ممتاز';return{text:`${t}، ${np.nameAr} سعرها ${np.price} ريال.\nتبغى تضيفها للطلب؟`,products:[np],qa:['أضف للطلب','أبي أشوف خيارات ثانية']}}
+if(this.any(m,['ترافل','truffle'])){this.p.truffle=true;return this.rTruffle()}
+if(this.any(m,['أكثر مبيع','أعلى مبيع','الأكثر مبيعا','best seller','الأفضل','شعبي']))return this.rBest();
+if(this.any(m,['جديد','جديدين']))return this.rNew();
+if(this.any(m,['حار','حاره','حري','سبايسي','حريق','نار'])){this.p.spicy=true;return this.rSpicy()}
+if(this.any(m,['فرايز','بطاطس']))return this.rFries();
+if(this.any(m,['منيو','المنيو']))return{text:'تمام، تقدر تشوف المنيو من فوق. أو قولي وش تبغى وأنا ألخص لك.',qa:this.qa()};
+if(this.any(m,['سلة','السلة','طلباتي']))return{text:'تقدر تفتح السلة من أيقونة الشنطة فوق.',qa:this.qa()};
+if(this.any(m,['سعرات','كالوري','دايت','حمية','صحي','أخف']))return{text:'ما عندي معلومات السعرات الحرارية حالياً، لكن أقدر أساعدك تختار شيء أخف من ناحية المكونات.\nمثلاً حطبه تشيكن أخف من حطبه بيف.',qa:['أبي حطبه تشيكن','عادي ما يهم']};
+if(this.any(m,['شكرا','شكراً','مشكور','يعطيك العافية','الله يجزاك','ممتاز','حلوة']))return{text:this.gender==='f'?'العفو حبيبتي 😊 تبغى شيء ثاني؟':this.gender==='m'?'العفو يا صاحبي 👍 تبغى شيء ثاني؟':'العفو 👍 تبغى شيء ثاني؟',qa:['أبي شيء ثاني','لا خلاص']};
+const ppl=m.match(/نحن\s*(\d+)|(\d+)\s*(أشخاص|اشخاص|شخص|نفر)/);
+if(ppl){this.p.people=parseInt(ppl[1]||ppl[2]);return{text:`تمام، ${this.p.people} أشخاص.\nتحبون كل واحد يختار برقره ولا تبغون تشكيلة نتشاركها؟`,qa:['كل واحد يختار','تشكيلة نتشاركها']}}
+if(this.canRec())return this.recommend();
+return this.askNext();
 }
-const ai=new HatabaAI();
+detGN(m){if(this.gender)return;const fn=['فاطمة','سارة','نورة','هند','مريم','ليلى','ريم','لينا','دانة','غادة','عائشة','خلود','منال','رغد','جوهرة','شيخة','مها','أمل','هيفاء','عبير','نجلاء','هيا','رنا','حنين','أسماء','ملاك','جنات','فريدة','وعد','لوجين','عنود','شهد','روز','لميس','بسمة','غدير','نوف','مليكة','صفية','شيماء','إيمان','آية','ثريا','هبه','يسرى','ميس','رزان','تالا','جوري'];const mn=['محمد','عبدالله','فهد','سعود','خالد','ناصر','بندر','تركي','ماضي','فيصل','عبدالرحمن','سلطان','أحمد','عمر','يوسف','إبراهيم','علي','حسن','سامي','ماجد','وليد','زياد','طلال','مشعل','حمد','منصور','راشد','حمزة','يزيد','عبدالعزيز','بدر','عتيب','حبيب','أنس','آدم','ياسر','نواف','عبدالملك','صقر','مبارك','جاسر','هاني','رائد','عمار','أسامة','سيف','عبدالإله'];
+for(const n of fn)if(m.includes(n)){this.gender='f';this.name=n;return}
+for(const n of mn)if(m.includes(n)){this.gender='m';this.name=n;return}
+if(this.any(m,['أنا بنت','أنا وحدة','أبغى شي حلو','يما']))this.gender='f';
+if(this.any(m,['أنا ولد','أنا شاب','يا صاحبي','يا عم','يا غالي']))this.gender='m';
+}
+detMood(m){if(this.any(m,['ههه','هههه','لول','😂','🤣','💀','امزح','مزحة']))this.mood='play';else if(this.any(m,['زعلان','زعلانة','حزين','متضايق','مقهور','كسلان','تعبان']))this.mood='sad';else if(this.any(m,['غاضب','يقهر','سخف','غبي','فاشل']))this.mood='angry';else if(this.any(m,['مستعجل','سريع','بسرعة','ما عندي وقت']))this.mood='fast'}
+hGreet(m){const gs=['كيف حالك','كيفك','كيفحالك','شخبارك','شلونك','شخبار','وش أخبارك','اهلا','أهلا','هلا','السلام عليكم','مساء الخير','صباح الخير','هلا والله','حياك','حيالله','ايش اخبارك','عساك بخير','وش مسوي','اهلين'];if(!gs.some(g=>m.includes(g))&&!(m.length<=8&&!this.any(m,['بيف','تشيكن','برقر','فرايز','ترافل','ريال','ميزانية'])))return null;
+const g=this.gender;let r='';
+if(g==='f')r=['الحمد لله بخير، والأهم كيفك؟ 😊\nوش تبغى تأكل اليوم نشدحلك شي يسرّك','أهلاً فيكِ، بخير الحمد لله. كيف حالك؟\nخلني أختار لك وجبة حلوة','هلا حبيبتي، الحمد لله بخير. وش تبغين اليوم؟'][Math.floor(Math.random()*3)];
+else if(g==='m')r=['الحمد لله بخير، والأهم كيف أنت'+(this.name?' يا '+this.name:'')+'؟\nوش تبغى تأكل اليوم','هلا والله، بخير الحمد لله. كيف حالك يا صاحبي؟\nخلني أضبط لك طلبك','حياك الله، الحمد لله تمام. وش مسوي تبغى تأكل؟'][Math.floor(Math.random()*3)];
+else r=['الحمد لله بخير، والأهم كيف أنت؟\nوش تبغى تأكل اليوم نشدحلك','هلا، بخير الحمد لله. كيف حالك؟\nخلني أختار لك وجبة تريحك','أهلاً وسهلاً، الحمد لله بخير. وش تبغى اليوم؟'][Math.floor(Math.random()*3)];
+return{text:r,qa:['اختار لي 🍔','معي 25 ريال','أبي الأكثر مبيعاً','أبي ترافل']}}
+hJoke(m){if(this.mood!=='play')return null;if(this.any(m,['امزح معك','نكتة','اكتبلي نكتة','ضحكني','شيء مضحك'])){const j=['هههه أنا اختصاصي البرقر مو النكت 😄\nلكن أقدر أضحكك بوجبة حطبه بيف، جربها وتشوف','النكتة الوحيدة اللي أعرفها إن بعض الناس يطلب برقر بدون صوص حطبه 😂\nهذا غريب صح؟','طيب عندك نكتة: وين يروح البرقر لما يتعب؟ → يحط نفسه في ساندويش 😄\nالمزح مزح، وش تبغى تأكل؟'];return{text:j[Math.floor(Math.random()*j.length)],qa:['هههه حلوة','أبي بيف','أبي ترافل']}}
+if(this.mc>1){const p=['ههههه 😄 حلوة، بس أنا مجنون البرقر أكثر.\nخلني أرجع لك لميداني: وش تبغى تأكل؟','أحسن من المزحة طلب حطبه ترافل 😏 جربها وتشوف','هههه 👍 حلوة حلوة. طيب خلنا نحول المزح لوجبة حلوة، وش تبغى؟'];return{text:p[Math.floor(Math.random()*p.length)],qa:['أبي برقر','أبي الأكثر مبيعاً','معي 30 ريال']}}return null}
+hEmo(m){if(this.mood==='sad'){const t=this.gender==='f'?'زعلك في مكانه، لكن وجبة حطبة تاخذ نصف الزعل 😊\nوش تبغين؟ خلني أختار لك شي يرضيك':this.gender==='m'?'يا صاحبي زعلك في مكانه، لكن البرقر يحل نصف المشاكل 👍\nوش تبغى؟ أختار لك شيء يرضيك':'زعلك في مكانه، لكن وجبة حطبة تخفف كثير.\nوش تبغى؟ خلني أختار لك شي يريحك';return{text:t,qa:['أبي شيء حلو','أبي ترافل','أبي الأكثر مبيعاً']}}
+if(this.mood==='angry')return{text:'فهمتك، وآسف إذا في شيء ضايقك. خلني أركز في شيء إيجابي: وش تبغى تأكل وأنا أضبطه لك؟',qa:['أبي بيف','أبي شيء مشبع','معي 25 ريال']}return null}
+offTopic(m){if(m.length>50)return false;return['سيارة','سيارات','مباراة','كرة','فريق','انتخابات','سياسة','برمجة','كود','مدرسة','جامعة','طب','دكتور','علاج','دواء','طقس','سهم','أسهم','تداول','بنك','قرض','وظيفة','سفر','طيران','فندق','زواج','دين','فتوى','قرآن','صلاة','ويكند','مول','سينما','فيلم','مسلسل','أنمي','لعبة','بلايستيشن'].some(k=>m.includes(k))}
+rOff(){const t=this.gender==='f'?['هههه هذا مو مجالي 😄 أنا اختصاصي البرقر. خلني أختار لك شي يلذذك','يا حبيبتي هذا سؤال يحتاج خبير ثاني 😊 أنا هوني في البرقر. وش تبغين تاكلين؟']:this.gender==='m'?['هههه يا '+(this.name||'صاحبي')+' هذا مو تخصصي 😄 أنا خبيري في البرقر. خلني أضبط طلبك','يا صاحبي السؤال بعيد 😄 أنا هنا عشان أخلصك من الجوع. وش تبغى تأكل؟']:['هههه سؤال بعيد عن البرقر 😄 أنا شغلي أخليك تطلع من حطبة مبسوط.','خلنا نخلي المواضيع الثانية على جنب 😄 أنا هنا عشان أساعدك تختار طلبك.'];return{text:t[Math.floor(Math.random()*t.length)],qa:this.qa()}}
+priceComp(m){if(!this.any(m,['غالي','سعره عالي','مكلف','أغلى','ما يستاهل','مبالغ فيه']))return false;this.p.budget=null;return{text:this.gender==='f'?'معك حق حبيبتي، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟':'معك حق، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟',qa:['15 ريال','20 ريال','25 ريال']}}
+extract(m){const bp=[/معي\s*(؟)?\s*(\d+)/,/ميزانيتي?\s*(؟)?\s*(\d+)/,/بـ?\s*(\d+)\s*ريال/,/(\d+)\s*ريال/,/حد\s*(؟)?\s*(\d+)/,/أقصى\s*(؟)?\s*(\d+)/,/ما\s*[أا]بغى\s*[أا]خرج\s*عن\s*(\d+)/];for(const p of bp){const x=m.match(p);if(x){this.p.budget=parseInt(x[x.length-1]);break}}if(/^\d+$/.test(m.trim())&&!this.p.budget)this.p.budget=parseInt(m.trim());if(this.any(m,['بيف','لحم','beef']))this.p.protein='beef';if(this.any(m,['تشيكن','دجاج','chicken']))this.p.protein='chicken';if(this.any(m,['مشبع','شبعان','جوعان','ويان','جوع']))this.p.hunger='high';if(this.any(m,['خفيف','قليل','سناك','وجبة خفيفة']))this.p.hunger='low';if(this.any(m,['يستاهل','قيمة','أفضل قيمة','وفر']))this.p.goal='best_value';if(this.any(m,['مهما كان السعر','الممتاز','الفخم','الاحترافي']))this.p.goal='best_experience';if(this.any(m,['أجرب','شيء جديد','تجربة جديدة','ما جربت']))this.p.goal='try_new';if(this.any(m,['كلاسيك','عادي','بسيط','معتاد']))this.p.flavor='classic';if(this.any(m,['مختلف','تجربة','مميز','خاص','يجنن','قوي النكهة']))this.p.flavor='adventurous';if(this.any(m,['ترافل','truffle']))this.p.truffle=true;if(this.any(m,['برقر','برجر','ساندويش']))this.p.mealType='burger'}
+canRec(){const p=this.p;if(p.budget&&p.protein)return true;if(p.budget&&p.goal)return true;if(p.protein&&p.flavor)return true;if(p.protein&&p.truffle)return true;if(p.budget&&this.mc>=3)return true;if(p.protein&&p.hunger==='high')return true;return false}
+askNext(){const p=this.p;if(!p.protein&&!p.truffle&&!p.spicy&&!p.goal)return{text:this.gender==='f'?'خلني أفهم ذوقك شوي.\nأنتي اليوم ناوية على برقر ولا شيء خفيف؟':'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟',qa:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};if(!p.protein&&!p.truffle)return{text:'بيف ولا تشيكن؟',qa:['بيف','تشيكن','لا يهم']};if(!p.flavor&&!p.truffle&&!p.goal)return{text:'تحب النكهة الكلاسيكية ولا ودك نجرب شيء مختلف؟',qa:['كلاسيكية','شيء مختلف','أبي ترافل']};if(!p.budget)return{text:this.gender==='f'?'ميزانيتك تقريباً كم؟ عشان أختار لك الأحسن.':'ميزانيتك تقريباً كم؟ عشان أضبط لك الخيارات.',qa:['معي 20 ريال','معي 25 ريال','معي 30 ريال','أبي أفضل شيء مهما كان السعر']};return this.recommend()}
+recommend(){const p=this.p;let c;if(p.budget)c=this.buildCombo(p.budget);else c=this.fltScr(MENU.filter(i=>i.type==='burger'),p);if(!c.length)return{text:'ما لقيت شيء يناسب اللي تبغاه بهالميزانية. تبغى تزيد الميزانية شوي؟',qa:['زود 5 ريال','أبي أشوف المنيو']};const top=c.slice(0,2);const mains=[...new Map(top.map(x=>[x.items[0].id,x.items[0]])).values()];let reason=this.bldReason(top[0],p);let text='';if(mains.length===1&&top[0].items.length===1)text=`أعتقد هذا أقرب شيء لذوقك 👇\n${reason}`;else if(top[0].items.length>1)text=`عندك وجبة كاملة ضمن ميزانيتك 👇\n${reason}`;else text=`عندك خيارين حلوين:\n${reason}`;this.lastR=top;const qa=['أشوف خيارات ثانية'];if(top[0].items.length===1&&p.budget&&top[0].total<p.budget){const rem=p.budget-top[0].total;if(rem>=7)qa.unshift('أضيف له فرايز');else if(rem>=3)qa.unshift('أضيف له صوص')}return{text,products:mains,qa}}
+buildCombo(bud){const p=this.p;const bg=MENU.filter(i=>i.type==='burger'),sd=MENU.filter(i=>i.type==='side'&&i.category!=='sauces'),dr=MENU.filter(i=>i.type==='drink'),cb=[];for(const b of bg){if(b.price>bud)continue;cb.push({items:[b],total:b.price,sc:this.scI(b,p)});const rm=bud-b.price;for(const s of sd){if(s.price<=rm){cb.push({items:[b,s],total:b.price+s.price,sc:this.scI(b,p)+this.scI(s,p)*.5+10});const r2=rm-s.price;for(const d of dr){if(d.price<=r2)cb.push({items:[b,s,d],total:b.price+s.price+d.price,sc:this.scI(b,p)+this.scI(s,p)*.5+this.scI(d,p)*.2+20})}}}for(const d of dr){if(d.price<=rm)cb.push({items:[b,d],total:b.price+d.price,sc:this.scI(b,p)+this.scI(d,p)*.2+5})}}cb.sort((a,b)=>{const au=a.total/bud,bu=b.total/bud;return(b.sc+(bu>=.8&&bu<=1?15:bu>=.6?5:-10))-(a.sc+(au>=.8&&au<=1?15:au>=.6?5:-10))});const s=new Set;return cb.filter(c=>{const k=c.items.map(i=>i.id).sort().join(',');if(s.has(k))return false;s.add(k);return true}).slice(0,4)}
+scI(i,p){let s=0;if(p.protein&&i.protein===p.protein)s+=15;if(p.protein&&i.protein&&i.protein!==p.protein)s-=20;if(p.truffle&&i.tags.includes('truffle'))s+=15;if(p.spicy&&i.tags.includes('spicy'))s+=12;if(p.flavor==='classic'&&i.tags.includes('classic'))s+=10;if(p.flavor==='adventurous'&&(i.tags.includes('truffle')||i.tags.includes('loaded')))s+=12;if(p.goal==='best_value'&&i.bestSeller)s+=8;if(p.goal==='best_experience'&&i.tags.includes('truffle'))s+=10;if(p.goal==='try_new'&&i.isNew)s+=12;if(i.bestSeller)s+=4;if(i.isNew)s+=2;return s}
+fltScr(items,p){return items.map(i=>({items:[i],total:i.price,sc:this.scI(i,p)})).filter(c=>c.sc>0).sort((a,b)=>b.sc-a.sc)}
+bldReason(c,p){const m=c.items[0],r=[];if(p.truffle&&m.tags.includes('truffle'))r.push('لأنك تحب الترافل');if(p.protein==='beef'&&m.protein==='beef')r.push('بيف كما تبغى');if(p.protein==='chicken'&&m.protein==='chicken')r.push('تشيكن كما تبغى');if(p.flavor==='classic')r.push('نكهة كلاسيكية');if(p.flavor==='adventurous')r.push('نكهة مميزة ومختلفة');if(p.goal==='best_value')r.push('أفضل قيمة مقابل السعر');if(p.goal==='best_experience')r.push('أفضل تجربة');if(p.goal==='try_new')r.push('من المنتجات الجديدة');if(m.bestSeller&&!r.length)r.push('الأكثر مبيعاً عندنا');if(c.items.length>1)r.push(`وجبة كاملة بـ${c.total} ريال`);else r.push(`سعرها ${m.price} ريال`);return r.join('، ')}
+rTruffle(){const t=MENU.filter(i=>i.tags.includes('truffle'));if(this.p.budget){const w=t.filter(i=>i.price<=this.p.budget);if(w.length)return{text:'ذوقك ممتاز 👏 هذي خيارات الترافل 👇',products:w,qa:['أشوف خيارات ثانية']}}return{text:'ذوقك ممتاز 👏 عندنا خيارات ترافل حلوة. ميزانيتك تقريباً كم؟',products:t,qa:['معي 25 ريال','معي 30 ريال','أبي أفضل شيء']}}
+rBest(){const b=MENU.filter(i=>i.bestSeller&&i.type==='burger');this.p.goal='best_value';return{text:'هذي الأكثر مبيعاً عندنا 👇',products:b,qa:['أبي شيء مختلف','أبي فرايز معه']}}
+rNew(){const n=MENU.filter(i=>i.isNew);this.p.goal='try_new';return{text:'هذي آخر شيء أضفناه 👇',products:n,qa:['أبي الأكثر مبيعاً']}}
+rSpicy(){return{text:'عندنا صوص سبايسي ممتاز، تقدر تضيفه لأي برقر ويصير شي ثاني.\nتبغى تختار برقر أولاً؟',qa:['بيف','تشيكن','أبي الأكثر مبيعاً']}}
+rFries(){const f=MENU.filter(i=>i.category==='fries');return{text:'هذي خيارات الفرايز 👇',products:f,qa:['أبي برقر مع فرايز','رجع للبرقرات']}}
+onAdd(pid){const p=MENU.find(i=>i.id===pid);if(!p)return null;const rem=this.p.budget?this.p.budget-p.price:null;if(rem&&rem>=7){const f=MENU.find(i=>i.id==='french-fries');this.waitR={y:{text:`تمام، أضفنا الفرنش فرايز. طلبك الآن ${p.price+f.price} ريال 👍`,qa:['أتمم الطلب','أبي شيء ثاني']},n:{text:'تمام، طلبك جاهز 👍',qa:['أتمم الطلب','أبي شيء ثاني']}};return{text:`حلو، أضفناه لك.\nباقي لك ${rem} ريال من ميزانيتك. لو تبغى تكملها، الفرنش فرايز بـ${f.price} ريال وتكون وجبتك كاملة.`,qa:['أيوا أضفها','لا خلاص']}}if(rem&&rem>=3){const s=MENU.find(i=>i.id==='s-hataba');this.waitR={y:{text:`تمام، أضفنا صوص حطبه 👍`,qa:['أتمم الطلب','أبي شيء ثاني']},n:{text:'تمام 👍',qa:['أتمم الطلب','أبي شيء ثاني']}};return{text:`حلو، أضفناه 👍\nباقي لك ${rem} ريال. تقدر تضيف صوص حطبه بـ${s.price} ريال يرفع النكهة.`,qa:['أيوا أضفه','لا خلاص']}}return{text:'تمام، أضفناه 👍',qa:['أتمم الطلب','أبي شيء ثاني']}}
+any(m,kw){return kw.some(k=>m.includes(k))}
+yes(m){return this.any(m,['ايوا','نعم','أيوا','تمام','حلو','زين','ok','أكيد','طبعا','هلا','هيه','ايوه'])}
+no(m){return this.any(m,['لا','لاا','أبدا','ما أبي','ما أبغى','خلاص','لا يهم'])}
+findP(m){return MENU.find(i=>m.includes(i.nameAr)||m.toLowerCase().includes(i.nameEn.toLowerCase()))}
+qa(){const p=this.p,b=[];if(!p.protein)b.push('بيف','تشيكن');if(!p.truffle)b.push('أبي ترافل');if(!p.budget)b.push('معي 25 ريال');b.push('أبي الأكثر مبيعاً','أبي شيء مشبع');return b.slice(0,6)}
+}
+const ai=new AI();
 
-/* ══════════════════════════════════════════
-   واجهة المستخدم
-   ══════════════════════════════════════════ */
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');currentScreen=id}
-function goHome(){showScreen('landing');closeCartPanel()}
+/* ═══════════════════════════════════════
+   التنقل
+   ═══════════════════════════════════════ */
+function showScr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');curScreen=id}
+function goHome(){showScr('landing');closeCart()}
+
+/* ═══════════════════════════════════════
+   الشات
+   ═══════════════════════════════════════ */
 function openChat(){
-  showScreen('chat');
-  const msgs=document.getElementById('chatMessages');
-  if(msgs.children.length===0){
-    setTimeout(()=>{addAIMessage('هلا 👋 خلني أختار لك شيء يضبط مزاجك اليوم.');renderQuickActions(['اختار لي 🍔','معي 25 ريال','أبي شيء حار','أبي ترافل','الأكثر مبيعاً','أبي شيء مشبع'])},600);
+  showScr('chat');
+  const c=document.getElementById('msgs');
+  if(!c.children.length){
+    // فاصل تاريخ
+    addDate('اليوم');
+    setTimeout(()=>{
+      addAI('هلا 👋 خلني أختار لك شيء يضبط مزاجك اليوم.');
+      renderQA(['اختار لي 🍔','معي 25 ريال','أبي شيء حار','أبي ترافل','الأكثر مبيعاً','أبي شيء مشبع']);
+    },500);
   }
 }
-function openMenu(){showScreen('menu');renderMenu()}
-
-function addAIMessage(text,products=[]){
-  const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='msg msg-ai';
-  let h=`<div class="msg-bubble">${esc(text)}</div>`;
+function addDate(t){const c=document.getElementById('msgs');const d=document.createElement('div');d.className='msg-date';d.textContent=t;c.appendChild(d);scrollBot()}
+function addAI(text,products=[]){
+  const c=document.getElementById('msgs');
+  const w=document.createElement('div');w.className='msg-wrap ai';
+  let h=`<div class="msg-av">ح</div><div><div class="msg-bubble">${esc(text)}</div>`;
   if(products.length)h+=products.map(p=>renderPC(p)).join('');
-  d.innerHTML=h;c.appendChild(d);scrollBottom();
+  h+=`<div class="msg-time">${getTime()}</div></div>`;
+  w.innerHTML=h;c.appendChild(w);scrollBot();
 }
-function addUserMessage(text){
-  const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='msg msg-user';
-  d.innerHTML=`<div class="msg-bubble">${esc(text)}</div>`;c.appendChild(d);scrollBottom();
+function addUser(text){
+  const c=document.getElementById('msgs');
+  const w=document.createElement('div');w.className='msg-wrap user';
+  w.innerHTML=`<div class="msg-av"><i class="fas fa-user" style="font-size:.6rem"></i></div><div><div class="msg-bubble">${esc(text)}</div><div class="msg-time">${getTime()}</div></div>`;
+  c.appendChild(w);scrollBot();
 }
-function showTyping(){
-  const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='typing-indicator';d.id='typingInd';
-  d.innerHTML='<span></span><span></span><span></span>';c.appendChild(d);scrollBottom();
+function showTyp(){
+  const c=document.getElementById('msgs');const d=document.createElement('div');d.className='typing';d.id='typInd';
+  d.innerHTML='<div class="msg-av">ح</div><div class="typing-dots"><span></span><span></span><span></span></div>';
+  c.appendChild(d);scrollBot();
 }
-function hideTyping(){const e=document.getElementById('typingInd');if(e)e.remove()}
-
-function renderPC(p){
-  let badges='';if(p.isNew)badges+='<span class="pc-badge new">جديد</span>';if(p.bestSeller)badges+='<span class="pc-badge bestseller">الأكثر مبيعاً</span>';
-  const img=p.image?`<img class="pc-img" src="${p.image}" alt="${p.nameAr}" onerror="this.outerHTML='<div class=\\'pc-img\\' style=\\'display:flex;align-items:center;justify-content:center;background:#111;color:#333;font-size:1.5rem\\'><i class=\\'fas fa-burger\\'></i></div>'">`:`<div class="pc-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#111,#1A1A1A);color:#333;font-size:1.5rem"><i class="fas fa-burger"></i></div>`;
-  return`<div class="product-card">${img}<div class="pc-body">${badges}<div class="pc-name-ar">${p.nameAr}</div><div class="pc-name-en">${p.nameEn}</div><div class="pc-ingredients">${p.ingredients.join(' • ')}</div><div class="pc-footer"><div class="pc-price">${p.price} <span>ر.س</span></div><div class="pc-actions"><button class="pc-btn pc-btn-add" onclick="addFromChat('${p.id}')">أضف للطلب</button><button class="pc-btn pc-btn-alt" onclick="sendQuickAction('أشوف خيارات ثانية')">ثانية</button></div></div></div></div>`;
-}
-
-function renderQuickActions(actions){
-  const c=document.getElementById('quickActions');
-  c.innerHTML=actions.map(a=>`<button class="qa-chip" onclick="sendQuickAction('${a.replace(/'/g,"\\'")}')">${a}</button>`).join('');
-}
-function scrollBottom(){const c=document.getElementById('chatMessages');setTimeout(()=>c.scrollTop=c.scrollHeight,50)}
+function hideTyp(){const e=document.getElementById('typInd');if(e)e.remove()}
+function getTime(){const n=new Date();return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0')}
+function scrollBot(){const c=document.getElementById('msgs');setTimeout(()=>c.scrollTop=c.scrollHeight,60)}
 function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-/* ══════════════════════════════════════════
-   إرسال الرسائل — API أولاً ثم Fallback
-   ══════════════════════════════════════════ */
-function sendMessage(){const i=document.getElementById('chatInput');const t=i.value.trim();if(!t)return;i.value='';processUserMsg(t)}
-function sendQuickAction(t){processUserMsg(t)}
-
-async function processUserMsg(text){
-  addUserMessage(text);
-  conversationHistory.push({role:'user',text});
-  renderQuickActions([]);
-  showTyping();
-
-  // نحاول Gemini أولاً
-  if(apiAvailable){
-    try{
-      const res=await callGeminiAPI(text);
-      hideTyping();
-      const products=(res.showProducts||[]).map(id=>MENU.find(i=>i.id===id)).filter(Boolean);
-      addAIMessage(res.text,products);
-      renderQuickActions(res.quickActions||[]);
-      conversationHistory.push({role:'model',text:res.text});
-      // نحدث التفضيلات المحلية بناءً على الاستجابة (للفولباك)
-      updateLocalPrefs(text);
-      return;
-    }catch(e){
-      console.log('API فشل، ننتقل للمحرك المحلي:',e.message);
-      apiAvailable=false;
-      document.getElementById('aiStatusText').textContent='محلي';
-    }
-  }
-
-  // Fallback: المحرك المحلي
-  const delay=600+Math.random()*600;
-  setTimeout(()=>{
-    hideTyping();
-    const resp=ai.process(text);
-    if(!resp)return;
-    addAIMessage(resp.text,resp.products||[]);
-    renderQuickActions(resp.quickActions||[]);
-    conversationHistory.push({role:'model',text:resp.text});
-  },delay);
+function renderPC(p){
+  let badges='';if(p.isNew)badges+='<span class="p-badge new">جديد</span>';if(p.bestSeller)badges+='<span class="p-badge best">الأكثر مبيعاً</span>';
+  const img=p.image?`<img class="p-card-img" src="${p.image}" alt="${p.nameAr}" onerror="this.outerHTML='<div class=\\'p-card-img-fallback\\'><i class=\\'fas fa-burger\\'></i></div>'">`:`<div class="p-card-img-fallback"><i class="fas fa-burger"></i></div>`;
+  return`<div class="p-card">${img}<div class="p-card-badges">${badges}</div><div class="p-card-body"><div class="p-card-name">${p.nameAr}</div><div class="p-card-en">${p.nameEn}</div><div class="p-card-ing">${p.ingredients.join(' • ')}</div><div class="p-card-foot"><div class="p-card-price">${p.price} <small>ر.س</small></div><div class="p-card-btns"><button class="p-btn p-btn-add" onclick="addFromChat('${p.id}')">أضف للطلب</button><button class="p-btn p-btn-alt" onclick="sendQA('أشوف خيارات ثانية')">ثانية</button></div></div></div></div>`;
 }
 
-function updateLocalPrefs(text){ai.extractEntities(text)}
+function renderQA(actions){
+  const c=document.getElementById('qaBar');
+  c.innerHTML=actions.map((a,i)=>{
+    const isGold=i===0&&actions.length>2;
+    return`<button class="qa-btn${isGold?' qa-gold':''}" onclick="sendQA('${a.replace(/'/g,"\\'")}')">${a}</button>`;
+  }).join('');
+}
 
-async function callGeminiAPI(message){
-  const res=await fetch('/api/chat',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      message,
-      history:conversationHistory.slice(-14),
-      preferences:ai.prefs
-    })
-  });
-  if(!res.ok)throw new Error(`HTTP ${res.status}`);
-  const data=await res.json();
-  if(data.error)throw new Error(data.error);
-  return data;
+/* ═══════════════════════════════════════
+   إرسال الرسائل
+   ═══════════════════════════════════════ */
+function sendMsg(){const i=document.getElementById('chatIn');const t=i.value.trim();if(!t)return;i.value='';processMsg(t)}
+function sendQA(t){processMsg(t)}
+
+async function processMsg(text){
+  addUser(text);
+  convHist.push({role:'user',text});
+  renderQA([]);
+  showTyp();
+  if(apiOK){
+    try{
+      const res=await callAPI(text);
+      hideTyp();
+      const products=(res.showProducts||[]).map(id=>MENU.find(i=>i.id===id)).filter(Boolean);
+      addAI(res.text,products);
+      renderQA(res.quickActions||[]);
+      convHist.push({role:'model',text:res.text});
+      ai.extract(text);return;
+    }catch(e){console.log('API فشل:',e.message);apiOK=false;document.getElementById('aiSt').textContent='محلي'}
+  }
+  const delay=500+Math.random()*500;
+  setTimeout(()=>{hideTyp();const r=ai.process(text);if(!r)return;addAI(r.text,r.products||[]);renderQA(r.qa||[]);convHist.push({role:'model',text:r.text})},delay);
+}
+
+async function callAPI(msg){
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,history:convHist.slice(-14),preferences:ai.p})});
+  if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(d.error)throw new Error(d.error);return d;
 }
 
 function addFromChat(pid){
   addToCart(pid);
-  // نرسل للـ API لو متاح
-  if(apiAvailable){
-    const product=MENU.find(i=>i.id===pid);
-    const addMsg=`أضفت ${product.nameAr} للسلة`;
-    addUserMessage(addMsg);
-    conversationHistory.push({role:'user',text:addMsg});
-    showTyping();
-    callGeminiAPI(addMsg).then(res=>{
-      hideTyping();
-      const products=(res.showProducts||[]).map(id=>MENU.find(i=>i.id===id)).filter(Boolean);
-      addAIMessage(res.text,products);
-      renderQuickActions(res.quickActions||[]);
-      conversationHistory.push({role:'model',text:res.text});
-    }).catch(()=>{
-      hideTyping();
-      const resp=ai.onProductAdded(pid);
-      if(resp){addAIMessage(resp.text,resp.products||[]);renderQuickActions(resp.quickActions||[]);conversationHistory.push({role:'model',text:resp.text})}
-    });
-  }else{
-    const resp=ai.onProductAdded(pid);
-    if(resp){showTyping();setTimeout(()=>{hideTyping();addAIMessage(resp.text,resp.products||[]);renderQuickActions(resp.quickActions||[]);conversationHistory.push({role:'model',text:resp.text})},500)}
-  }
+  if(apiOK){
+    const p=MENU.find(i=>i.id===pid);const m=`أضفت ${p.nameAr} للسلة`;
+    addUser(m);convHist.push({role:'user',text:m});showTyp();
+    callAPI(m).then(r=>{hideTyp();const products=(r.showProducts||[]).map(id=>MENU.find(i=>i.id===id)).filter(Boolean);addAI(r.text,products);renderQA(r.quickActions||[]);convHist.push({role:'model',text:r.text})}).catch(()=>{hideTyp();const r=ai.onAdd(pid);if(r){addAI(r.text,r.products||[]);renderQA(r.qa||[]);convHist.push({role:'model',text:r.text})}});
+  }else{const r=ai.onAdd(pid);if(r){showTyp();setTimeout(()=>{hideTyp();addAI(r.text,r.products||[]);renderQA(r.qa||[]);convHist.push({role:'model',text:r.text})},400)}}
 }
 
-document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage()});
+document.getElementById('chatIn').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg()});
 
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════════
    المنيو
-   ══════════════════════════════════════════ */
+   ═══════════════════════════════════════ */
+function openMenu(){showScr('menu');renderMenu()}
 function renderMenu(){
-  document.getElementById('menuCats').innerHTML=CATEGORIES.map(c=>`<button class="cat-tab ${c.id===activeCategory?'active':''}" onclick="switchCat('${c.id}')">${c.nameAr}</button>`).join('');
-  renderMenuItems();
+  document.getElementById('mnCats').innerHTML=CATS.map(c=>`<button class="mn-tab${c.id===activeCat?' on':''}" onclick="swCat('${c.id}')">${c.n}</button>`).join('');
+  renderMItems();
 }
-function switchCat(id){activeCategory=id;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.toggle('active',t.textContent===CATEGORIES.find(c=>c.id===id).nameAr));renderMenuItems()}
-function renderMenuItems(){
-  const g=document.getElementById('menuGrid');const items=MENU.filter(i=>i.category===activeCategory);
+function swCat(id){activeCat=id;document.querySelectorAll('.mn-tab').forEach(t=>t.classList.toggle('on',t.textContent===CATS.find(c=>c.id===id).n));renderMItems()}
+function renderMItems(){
+  const g=document.getElementById('mnGrid');const items=MENU.filter(i=>i.category===activeCat);
   g.innerHTML=items.map((item,idx)=>{
-    let badges='';if(item.isNew)badges+='<span class="pc-badge new">جديد</span>';if(item.bestSeller)badges+='<span class="pc-badge bestseller">الأكثر مبيعاً</span>';
-    const img=item.image?`<img class="mi-img" src="${item.image}" alt="${item.nameAr}" onerror="this.outerHTML='<div class=\\'mi-no-img\\'><i class=\\'fas fa-burger\\'></i></div>'">`:`<div class="mi-no-img"><i class="fas fa-${getIcon(item.category)}"></i></div>`;
-    return`<div class="menu-item" style="animation-delay:${idx*.07}s">${img}<div class="mi-body"><div class="mi-badges">${badges}</div><div class="mi-top"><div class="mi-name">${item.nameAr}</div><div class="mi-price">${item.price} ر.س</div></div><div class="mi-ingredients">${item.nameEn}${item.ingredients.length?' • '+item.ingredients.join(', '):''}</div><button class="mi-add" onclick="addToCart('${item.id}')"><i class="fas fa-plus" style="margin-left:.3rem"></i> أضف للسلة</button></div></div>`;
+    let badges='';if(item.isNew)badges+='<span class="p-badge new">جديد</span>';if(item.bestSeller)badges+='<span class="p-badge best">الأكثر مبيعاً</span>';
+    const img=item.image?`<img class="mn-img" src="${item.image}" alt="${item.nameAr}" onerror="this.outerHTML='<div class=\\'mn-noimg\\'><i class=\\'fas fa-burger\\'></i></div>'">`:`<div class="mn-noimg"><i class="fas fa-${{new:'star',beef:'fire',chicken:'drumstick-bite',fries:'bowl-food',appetizers:'utensils',sauces:'droplet',additions:'circle-plus',drinks:'glass-water'}[item.category]||'circle'}"></i></div>`;
+    return`<div class="mn-item" style="animation-delay:${idx*.06}s">${img}<div class="mn-body"><div class="mn-badges">${badges}</div><div class="mn-top"><div class="mn-name">${item.nameAr}</div><div class="mn-price">${item.price} ر.س</div></div><div class="mn-ing">${item.nameEn}${item.ingredients.length?' • '+item.ingredients.join(', '):''}</div><button class="mn-add" onclick="addToCart('${item.id}')"><i class="fas fa-plus" style="margin-left:.25rem"></i>أضف للسلة</button></div></div>`;
   }).join('');
 }
-function getIcon(c){return{new:'star',beef:'fire',chicken:'drumstick-bite',fries:'bowl-food',appetizers:'utensils',sauces:'droplet',additions:'circle-plus',drinks:'glass-water'}[c]||'circle'}
 
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════════
    السلة
-   ══════════════════════════════════════════ */
-function addToCart(pid){const p=MENU.find(i=>i.id===pid);if(!p)return;const e=cart.find(i=>i.id===pid);if(e)e.qty++;else cart.push({...p,qty:1});updateCartUI();showToast(`تمت إضافة ${p.nameAr}`)}
-function removeFromCart(pid){cart=cart.filter(i=>i.id!==pid);updateCartUI();renderCartItems()}
-function changeQty(pid,d){const i=cart.find(x=>x.id===pid);if(!i)return;i.qty+=d;if(i.qty<=0){removeFromCart(pid);return}updateCartUI();renderCartItems()}
-function getCartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
-function getCartCount(){return cart.reduce((s,i)=>s+i.qty,0)}
-function updateCartUI(){
-  const count=getCartCount();const total=getCartTotal();
-  ['chat-badge','menu-badge'].forEach(id=>{const b=document.getElementById(id);if(count>0){b.style.display='flex';b.textContent=count;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}else b.style.display='none'});
-  document.getElementById('cartTotal').textContent=total+' ر.س';
-  document.getElementById('cartCheckoutBtn').disabled=count===0;
-  renderCartItems();
+   ═══════════════════════════════════════ */
+function addToCart(pid){const p=MENU.find(i=>i.id===pid);if(!p)return;const e=cart.find(i=>i.id===pid);if(e)e.qty++;else cart.push({...p,qty:1});updateCart();toast(`تمت إضافة ${p.nameAr}`)}
+function remCart(pid){cart=cart.filter(i=>i.id!==pid);updateCart();renderCartList()}
+function chgQty(pid,d){const i=cart.find(x=>x.id===pid);if(!i)return;i.qty+=d;if(i.qty<=0){remCart(pid);return}updateCart();renderCartList()}
+function cartTot(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
+function cartCnt(){return cart.reduce((s,i)=>s+i.qty,0)}
+function updateCart(){
+  const cnt=cartCnt(),tot=cartTot();
+  ['cBadge1','cBadge2'].forEach(id=>{const b=document.getElementById(id);if(cnt>0){b.style.display='flex';b.textContent=cnt;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}else b.style.display='none'});
+  document.getElementById('cartTot').textContent=tot+' ر.س';
+  document.getElementById('cartGo').disabled=cnt===0;
+  renderCartList();
 }
-function renderCartItems(){
-  const c=document.getElementById('cartItems');
-  if(!cart.length){c.innerHTML='<div class="cart-empty"><i class="fas fa-bag-shopping" style="font-size:2rem;display:block;margin-bottom:.75rem"></i>السلة فاضية</div>';return}
+function renderCartList(){
+  const c=document.getElementById('cartList');
+  if(!cart.length){c.innerHTML='<div class="cart-empty"><i class="fas fa-bag-shopping"></i>السلة فاضية</div>';return}
   c.innerHTML=cart.map(i=>{
-    const img=i.image?`<img class="ci-img" src="${i.image}" alt="" onerror="this.outerHTML='<div class=\\'ci-no-img\\'><i class=\\'fas fa-burger\\'></i></div>'">`:`<div class="ci-no-img"><i class="fas fa-${getIcon(i.category)}"></i></div>`;
-    return`<div class="ci-item">${img}<div class="ci-info"><div class="ci-name">${i.nameAr}</div><div class="ci-price">${i.price*i.qty} ر.س</div></div><div class="ci-qty"><button onclick="changeQty('${i.id}',-1)"><i class="fas fa-minus" style="font-size:.6rem"></i></button><span>${i.qty}</span><button onclick="changeQty('${i.id}',1)"><i class="fas fa-plus" style="font-size:.6rem"></i></button></div><button class="ci-remove" onclick="removeFromCart('${i.id}')"><i class="fas fa-trash-can"></i></button></div>`;
+    const img=i.image?`<img class="ci-img" src="${i.image}" alt="" onerror="this.outerHTML='<div class=\\'ci-noimg\\'><i class=\\'fas fa-burger\\'></i></div>'">`:`<div class="ci-noimg"><i class="fas fa-${{new:'star',beef:'fire',chicken:'drumstick-bite',fries:'bowl-food',appetizers:'utensils',sauces:'droplet',additions:'circle-plus',drinks:'glass-water'}[i.category]||'circle'}"></i></div>`;
+    return`<div class="ci">${img}<div class="ci-info"><div class="ci-name">${i.nameAr}</div><div class="ci-price">${i.price*i.qty} ر.س</div></div><div class="ci-qty"><button onclick="chgQty('${i.id}',-1)"><i class="fas fa-minus" style="font-size:.55rem"></i></button><span>${i.qty}</span><button onclick="chgQty('${i.id}',1)"><i class="fas fa-plus" style="font-size:.55rem"></i></button></div><button class="ci-del" onclick="remCart('${i.id}')"><i class="fas fa-trash-can"></i></button></div>`;
   }).join('');
 }
-function toggleCart(){const o=document.getElementById('cartOverlay'),p=document.getElementById('cartPanel');if(p.classList.contains('open')){o.classList.remove('open');p.classList.remove('open')}else{renderCartItems();o.classList.add('open');p.classList.add('open')}}
-function closeCartPanel(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartPanel').classList.remove('open')}
+function toggleCart(){const o=document.getElementById('cartOv'),p=document.getElementById('cartPn');if(p.classList.contains('open')){o.classList.remove('open');p.classList.remove('open')}else{renderCartList();o.classList.add('open');p.classList.add('open')}}
+function closeCart(){document.getElementById('cartOv').classList.remove('open');document.getElementById('cartPn').classList.remove('open')}
 
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════════
    تسجيل الطلب
-   ══════════════════════════════════════════ */
-function goToCheckout(){if(!cart.length)return;closeCartPanel();showScreen('checkout');renderCheckout()}
-function renderCheckout(){
-  const b=document.getElementById('checkoutBody');const t=getCartTotal();
-  b.innerHTML=`<h2>بيانات التوصيل</h2><div class="delivery-toggle"><button class="dt-btn ${deliveryType==='delivery'?'active':''}" onclick="setDT('delivery')"><i class="fas fa-motorcycle" style="margin-left:.3rem"></i>توصيل</button><button class="dt-btn ${deliveryType==='pickup'?'active':''}" onclick="setDT('pickup')"><i class="fas fa-store" style="margin-left:.3rem"></i>استلام</button></div><div id="deliveryFields"><div class="form-group"><label>الاسم</label><input type="text" id="cName" placeholder="اسمك الكامل"></div><div class="form-group"><label>رقم الجوال</label><input type="tel" id="cPhone" placeholder="05XXXXXXXX" dir="ltr" style="text-align:right"></div>${deliveryType==='delivery'?'<div class="form-group"><label>عنوان التوصيل</label><textarea id="cAddress" placeholder="الحي، الشارع، رقم المبنى"></textarea>':''}<div class="form-group"><label>ملاحظات (اختياري)</label><textarea id="cNotes" placeholder="أي طلبات خاصة"></textarea></div></div><div class="order-summary-box"><div class="osb-title">ملخص الطلب</div>${cart.map(i=>`<div class="osb-item"><span>${i.nameAr} × ${i.qty}</span><span>${i.price*i.qty} ر.س</span></div>`).join('')}<div class="osb-total"><span>المجموع</span><span>${t} ر.س</span></div></div><button class="checkout-btn" onclick="submitOrder()" style="margin-top:1rem">تأكيد الطلب — ${t} ر.س</button>`;
+   ═══════════════════════════════════════ */
+function goCheckout(){if(!cart.length)return;closeCart();showScr('checkout');renderCK()}
+function renderCK(){
+  const b=document.getElementById('ckBody');const t=cartTot();
+  b.innerHTML=`<h2>بيانات التوصيل</h2><div class="dtog"><button class="${delType==='delivery'?'on':''}" onclick="setDT('delivery')"><i class="fas fa-motorcycle" style="margin-left:.25rem"></i>توصيل</button><button class="${delType==='pickup'?'on':''}" onclick="setDT('pickup')"><i class="fas fa-store" style="margin-left:.25rem"></i>استلام</button></div><div class="fg"><label>الاسم</label><input type="text" id="cN" placeholder="اسمك الكامل"></div><div class="fg"><label>رقم الجوال</label><input type="tel" id="cP" placeholder="05XXXXXXXX" dir="ltr" style="text-align:right"></div>${delType==='delivery'?'<div class="fg"><label>عنوان التوصيل</label><textarea id="cA" placeholder="الحي، الشارع، رقم المبنى"></textarea>':''}<div class="fg"><label>ملاحظات (اختياري)</label><textarea id="cNo" placeholder="أي طلبات خاصة"></textarea></div><div class="osb"><div class="osb-t">ملخص الطلب</div>${cart.map(i=>`<div class="osb-i"><span>${i.nameAr} × ${i.qty}</span><span>${i.price*i.qty} ر.س</span></div>`).join('')}<div class="osb-total"><span>المجموع</span><span>${t} ر.س</span></div></div><button class="ck-go" onclick="submitOrder()">تأكيد الطلب — ${t} ر.س</button>`;
 }
-function setDT(t){deliveryType=t;renderCheckout()}
+function setDT(t){delType=t;renderCK()}
 function submitOrder(){
-  const name=document.getElementById('cName')?.value.trim();const phone=document.getElementById('cPhone')?.value.trim();
-  if(!name){showToast('أدخل اسمك','err');return}if(!phone||phone.length<10){showToast('أدخل رقم جوال صحيح','err');return}
-  if(deliveryType==='delivery'){const a=document.getElementById('cAddress')?.value.trim();if(!a){showToast('أدخل عنوان التوصيل','err');return}}
-  cart=[];updateCartUI();showScreen('success');
+  const n=document.getElementById('cN')?.value.trim();const p=document.getElementById('cP')?.value.trim();
+  if(!n){toast('أدخل اسمك','err');return}if(!p||p.length<10){toast('أدخل رقم جوال صحيح','err');return}
+  if(delType==='delivery'){const a=document.getElementById('cA')?.value.trim();if(!a){toast('أدخل عنوان التوصيل','err');return}}
+  cart=[];updateCart();showScr('success');
 }
 
-/* ══════════════════════════════════════════
+/* ═══════════════════════════════════════
    توست
-   ══════════════════════════════════════════ */
-function showToast(msg,type='ok'){
-  const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className=`toast toast-${type}`;t.textContent=msg;c.appendChild(t);
-  requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},2200);
+   ═══════════════════════════════════════ */
+function toast(msg,type='ok'){
+  const c=document.getElementById('toastC');const t=document.createElement('div');t.className=`toast toast-${type}`;t.textContent=msg;c.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),350)},2200);
 }
 
-updateCartUI();
+updateCart();
 </script>
 </body>
 </html>
