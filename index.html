@@ -5,583 +5,1091 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>حطبة — HATABA</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{taj:['Tajawal','sans-serif'],disp:['Cormorant Garamond','serif']},colors:{b:{bg:'#0A0A0A',bg2:'#111111',card:'#161616',card2:'#1C1C1C',border:'#262626',border2:'#333',gold:'#D4A853',goldH:'#E0B865',goldDim:'rgba(212,168,83,0.12)',txt:'#F0EBE0',txt2:'#A39E93',muted:'#6B665C',ok:'#5CB870',err:'#D95550'}}}}}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--safe-b:env(safe-area-inset-bottom,0px);--bg:#080808;--bg2:#0F0F0F;--bg3:#161616;--bg4:#1E1E1E;--bdr:#1C1C1C;--bdr2:#2A2A2A;--gold:#D4A853;--gold2:#E0B865;--gold3:#C49A42;--gBg:rgba(212,168,83,.08);--gBg2:rgba(212,168,83,.15);--txt:#F2EDE4;--txt2:#B0A99C;--txt3:#6E675C;--grn:#5CB870;--red:#D95550}
-html,body{height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--txt)}
-.screen{position:fixed;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;transform:translateY(12px);display:flex;flex-direction:column}
-.screen.on{opacity:1;pointer-events:all;transform:translateY(0)}
-#landing{background:var(--bg);justify-content:center;align-items:center;overflow:hidden}
-.lBg{position:absolute;inset:0;z-index:0}
-.lBg img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(.6)}
-.lBg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,8,.2) 0%,rgba(8,8,8,.6) 40%,rgba(8,8,8,.95) 80%,var(--bg) 100%)}
-.lC{position:relative;z-index:1;text-align:center;padding:2rem 1.5rem}
-.lLogo{font-size:clamp(4rem,14vw,8rem);font-weight:900;letter-spacing:.1em;line-height:.9;background:linear-gradient(160deg,#F2EDE4 20%,#D4A853 60%,#C49A42 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:lA 1.2s ease both;filter:drop-shadow(0 0 60px rgba(212,168,83,.15))}
-.lSub{font-size:clamp(.95rem,3vw,1.3rem);color:var(--txt2);font-weight:300;margin-top:.6rem;animation:lA 1s .3s ease both}
-.lLine{width:40px;height:2px;background:var(--gold);margin:1.5rem auto 0;border-radius:2px;animation:lA 1s .5s ease both}
-.lCtas{margin-top:2.5rem;display:flex;flex-direction:column;gap:.7rem;align-items:center;animation:lA 1s .65s ease both}
-.lBtn1{background:var(--gold);color:var(--bg);font-weight:700;font-size:1.05rem;padding:.85rem 2.8rem;border:none;border-radius:50px;cursor:pointer;transition:all .3s;width:100%;max-width:300px;font-family:inherit;box-shadow:0 4px 24px rgba(212,168,83,.25)}
-.lBtn1:hover{background:var(--gold2);transform:translateY(-2px)}
-.lBtn1:active{transform:scale(.97)}
-.lBtn2{background:transparent;color:var(--txt3);font-weight:500;font-size:.9rem;padding:.7rem 2rem;border:1px solid var(--bdr2);border-radius:50px;cursor:pointer;transition:all .3s;width:100%;max-width:300px;font-family:inherit}
-.lBtn2:hover{border-color:var(--gold3);color:var(--gold)}
-@keyframes lA{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.chHd{display:flex;align-items:center;gap:.65rem;padding:.55rem .8rem;background:rgba(8,8,8,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);flex-shrink:0;z-index:5;position:relative}
-.chHd::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,83,.15),transparent)}
-.chBack{background:none;border:none;color:var(--txt3);font-size:1.1rem;cursor:pointer;padding:.3rem}
-.chAv{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--gold),var(--gold3));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.8rem;color:var(--bg);flex-shrink:0}
-.chInf{line-height:1.2}.chNm{font-weight:700;font-size:.85rem;display:block}
-.chSt{font-size:.62rem;color:var(--grn);display:flex;align-items:center;gap:3px}
-.chSt::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--grn);box-shadow:0 0 6px rgba(92,184,112,.5)}
-.chCart{margin-right:auto;background:none;border:none;color:var(--txt3);font-size:1rem;cursor:pointer;position:relative;padding:.35rem;border-radius:10px;transition:all .2s}
-.chCart:hover{color:var(--gold);background:var(--gBg)}
-.cBadge{position:absolute;top:-1px;right:-4px;background:var(--gold);color:var(--bg);font-size:.55rem;font-weight:800;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 3px}
-.cBadge.pop{animation:bP .4s ease}
-@keyframes bP{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
-.chMsgs{flex:1;overflow-y:auto;padding:.8rem;display:flex;flex-direction:column;gap:.2rem;scroll-behavior:smooth}
-.mW{display:flex;gap:.35rem;max-width:88%;animation:mS .35s ease both}
-.mW.ai{align-self:flex-start}.mW.usr{align-self:flex-end;flex-direction:row-reverse}
-.mAv{width:26px;height:26px;border-radius:8px;flex-shrink:0;margin-top:auto;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800}
-.mW.ai .mAv{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg)}
-.mW.usr .mAv{background:var(--bg4);color:var(--txt3)}
-.mBb{padding:.6rem .85rem;border-radius:14px;font-size:.86rem;line-height:1.7;white-space:pre-wrap}
-.mW.ai .mBb{background:var(--bg3);border:1px solid var(--bdr);border-top-right-radius:4px}
-.mW.usr .mBb{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);border-top-left-radius:4px;font-weight:500}
-.mTm{font-size:.55rem;color:var(--txt3);margin-top:.15rem;padding:0 .15rem;opacity:.5}
-.mW.usr .mTm{text-align:left}
-@keyframes mS{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.typW{display:flex;gap:.35rem;align-self:flex-start;animation:mS .25s ease both}
-.typW .mAv{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;flex-shrink:0}
-.typD{background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;border-top-right-radius:4px;padding:.6rem .9rem;display:flex;gap:4px;align-items:center}
-.typD span{width:6px;height:6px;background:var(--txt3);border-radius:50%;animation:tD 1.4s infinite ease-in-out}
-.typD span:nth-child(2){animation-delay:.15s}.typD span:nth-child(3){animation-delay:.3s}
-@keyframes tD{0%,60%,100%{opacity:.2;transform:scale(.8)}30%{opacity:1;transform:scale(1.1)}}
-.mDate{align-self:center;font-size:.62rem;color:var(--txt3);background:var(--bg3);padding:.2rem .7rem;border-radius:8px;border:1px solid var(--bdr);margin:.3rem 0;animation:mS .35s ease both}
-.pCrd{background:var(--bg3);border:1px solid var(--bdr);border-radius:16px;overflow:hidden;margin-top:.4rem;max-width:290px;width:100%;transition:all .3s;position:relative}
-.pCrd:hover{border-color:var(--bdr2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,.3)}
-.pCImg{width:100%;height:140px;object-fit:cover;background:var(--bg2)}
-.pCImgFb{width:100%;height:140px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg4));color:var(--bdr2);font-size:2.2rem}
-.pCBdg{position:absolute;top:.5rem;right:.5rem;display:flex;gap:.25rem}
-.pBdg{padding:.15rem .5rem;border-radius:7px;font-size:.58rem;font-weight:700;backdrop-filter:blur(8px)}
-.pBdg.nw{background:rgba(212,168,83,.2);color:var(--gold);border:1px solid rgba(212,168,83,.25)}
-.pBdg.bs{background:rgba(92,184,112,.15);color:var(--grn);border:1px solid rgba(92,184,112,.2)}
-.pCBd{padding:.7rem .8rem .8rem}
-.pCNm{font-weight:800;font-size:.95rem;margin-bottom:.1rem}
-.pCEn{font-size:.62rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem}
-.pCIn{font-size:.72rem;color:var(--txt2);line-height:1.5;margin-bottom:.55rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.pCFt{display:flex;align-items:center;justify-content:space-between;gap:.35rem}
-.pCPr{font-weight:900;font-size:1.1rem;color:var(--gold)}
-.pCPr small{font-size:.68rem;font-weight:400;color:var(--txt3);margin-right:2px}
-.pCBts{display:flex;gap:.3rem}
-.pBt{padding:.4rem .7rem;border-radius:10px;font-size:.72rem;font-weight:700;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
-.pBtAdd{background:var(--gold);color:var(--bg)}.pBtAdd:hover{background:var(--gold2)}
-.pBtAlt{background:var(--gBg);color:var(--gold);border:1px solid rgba(212,168,83,.12)}.pBtAlt:hover{background:var(--gBg2)}
-.qaBar{flex-shrink:0;padding:.35rem .8rem .15rem;display:flex;gap:.35rem;overflow-x:auto;scrollbar-width:none;position:relative}
-.qaBar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent)}
-.qaBar::-webkit-scrollbar{display:none}
-.qaB{flex-shrink:0;padding:.45rem .85rem;border-radius:20px;font-size:.76rem;font-weight:600;border:1px solid var(--bdr2);background:var(--bg2);color:var(--txt2);cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
-.qaB:hover{border-color:var(--gold3);color:var(--gold);transform:translateY(-1px);box-shadow:0 2px 10px rgba(212,168,83,.1)}
-.qaB:active{transform:scale(.96)}
-.qaB.gld{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);border-color:transparent;font-weight:700}
-.qaB.gld:hover{box-shadow:0 4px 18px rgba(212,168,83,.3);transform:translateY(-2px)}
-.chIn{flex-shrink:0;display:flex;gap:.4rem;padding:.45rem .8rem calc(.45rem + var(--safe-b));background:rgba(8,8,8,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--bdr);position:relative}
-.chIn::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,83,.1),transparent)}
-.chIn input{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;padding:.6rem .9rem;color:var(--txt);font-size:.86rem;font-family:inherit;outline:none;transition:all .25s}
-.chIn input::placeholder{color:var(--txt3);font-size:.8rem}
-.chIn input:focus{border-color:rgba(212,168,83,.4);box-shadow:0 0 0 3px rgba(212,168,83,.06)}
-.chSnd{width:38px;height:38px;border-radius:12px;background:var(--gold);border:none;color:var(--bg);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
-.chSnd:hover{background:var(--gold2);transform:scale(1.05)}.chSnd:active{transform:scale(.94)}
-.mnHd{display:flex;align-items:center;gap:.65rem;padding:.65rem .8rem;background:rgba(8,8,8,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);flex-shrink:0}
-.mnHd h2{font-weight:800;font-size:1rem;flex:1}
-.mnCats{display:flex;gap:.35rem;padding:.6rem .8rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0;border-bottom:1px solid var(--bdr)}
-.mnCats::-webkit-scrollbar{display:none}
-.mnTab{flex-shrink:0;padding:.4rem .9rem;border-radius:16px;font-size:.76rem;font-weight:600;border:1px solid var(--bdr);background:transparent;color:var(--txt3);cursor:pointer;transition:all .25s;font-family:inherit;white-space:nowrap}
-.mnTab.on{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:700;box-shadow:0 2px 10px rgba(212,168,83,.2)}
-.mnGrid{flex:1;overflow-y:auto;padding:.6rem .8rem 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;align-content:start}
-.mnIt{background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;transition:all .3s;animation:mnI .4s ease both}
-.mnIt:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.25)}
-@keyframes mnI{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.mnImg{width:100%;height:120px;object-fit:cover;background:var(--bg2)}
-.mnNi{width:100%;height:85px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg4));color:var(--bdr2);font-size:1.6rem}
-.mnBd{padding:.65rem .75rem .75rem}
-.mnTop{display:flex;justify-content:space-between;align-items:start;gap:.35rem;margin-bottom:.15rem}
-.mnNm{font-weight:700;font-size:.88rem;line-height:1.3}
-.mnPr{font-weight:800;color:var(--gold);font-size:.88rem;white-space:nowrap}
-.mnIn{font-size:.7rem;color:var(--txt3);line-height:1.5;margin-bottom:.45rem}
-.mnAdd{width:100%;padding:.45rem;border-radius:10px;background:var(--gBg);border:1px solid rgba(212,168,83,.1);color:var(--gold);font-size:.76rem;font-weight:700;cursor:pointer;transition:all .25s;font-family:inherit}
-.mnAdd:hover{background:var(--gBg2)}.mnAdd:active{transform:scale(.97)}
-.cartOv{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(3px)}
-.cartOv.on{opacity:1;pointer-events:all}
-.cartPn{position:fixed;top:0;left:0;bottom:0;width:min(370px,92vw);background:var(--bg2);z-index:51;transform:translateX(-100%);transition:transform .35s ease;display:flex;flex-direction:column;border-right:1px solid var(--bdr)}
-.cartPn.on{transform:translateX(0)}
-.cartHd{display:flex;align-items:center;justify-content:space-between;padding:.85rem;border-bottom:1px solid var(--bdr);flex-shrink:0}
-.cartHd h2{font-weight:800;font-size:.95rem}
-.cartX{background:none;border:none;color:var(--txt3);font-size:1.15rem;cursor:pointer;padding:.25rem;border-radius:8px;transition:all .2s}.cartX:hover{color:var(--txt);background:var(--bg4)}
-.cartLs{flex:1;overflow-y:auto;padding:.65rem}
-.cartEmp{text-align:center;color:var(--txt3);padding:3rem 1rem;font-size:.82rem}
-.cartEmp i{font-size:1.8rem;display:block;margin-bottom:.5rem;color:var(--bdr2)}
-.ci{display:flex;gap:.55rem;padding:.55rem 0;border-bottom:1px solid var(--bdr);align-items:center}
-.ciImg{width:44px;height:44px;border-radius:9px;object-fit:cover;background:var(--bg3);flex-shrink:0}
-.ciNi{width:44px;height:44px;border-radius:9px;background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--bdr2);font-size:.9rem;flex-shrink:0}
-.ciInf{flex:1;min-width:0}
-.ciNm{font-weight:600;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ciPr{font-size:.75rem;color:var(--gold);font-weight:600}
-.ciQt{display:flex;align-items:center;gap:.25rem;flex-shrink:0}
-.ciQt button{width:22px;height:22px;border-radius:6px;border:1px solid var(--bdr2);background:transparent;color:var(--txt2);font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.ciQt button:hover{border-color:var(--gold);color:var(--gold)}
-.ciQt span{font-weight:700;font-size:.8rem;min-width:15px;text-align:center}
-.ciDl{background:none;border:none;color:var(--txt3);font-size:.7rem;cursor:pointer;padding:.2rem;border-radius:5px;transition:all .2s}.ciDl:hover{color:var(--red);background:rgba(217,85,80,.08)}
-.cartFt{padding:.85rem;border-top:1px solid var(--bdr);flex-shrink:0;padding-bottom:calc(.85rem + var(--safe-b));background:var(--bg2)}
-.cartTr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem}
-.cartTrL{color:var(--txt2);font-size:.82rem}
-.cartTrV{font-weight:900;font-size:1.1rem;color:var(--gold)}
-.cartGo{width:100%;padding:.7rem;border-radius:12px;background:var(--gold);color:var(--bg);font-weight:700;font-size:.92rem;border:none;cursor:pointer;transition:all .25s;font-family:inherit}
-.cartGo:hover{background:var(--gold2);box-shadow:0 4px 18px rgba(212,168,83,.25)}
-.cartGo:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
-.ckBd{flex:1;overflow-y:auto;padding:1rem .8rem}
-.ckBd h2{font-weight:800;font-size:1.05rem;margin-bottom:.9rem}
-.fg{margin-bottom:.8rem}
-.fg label{display:block;font-size:.76rem;color:var(--txt2);margin-bottom:.25rem;font-weight:500}
-.fg input,.fg textarea{width:100%;padding:.6rem .85rem;background:var(--bg3);border:1px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:.86rem;font-family:inherit;outline:none;transition:border-color .25s}
-.fg input:focus,.fg textarea:focus{border-color:rgba(212,168,83,.4);box-shadow:0 0 0 3px rgba(212,168,83,.06)}
-.fg textarea{resize:none;height:60px}
-.dTog{display:flex;gap:.35rem;margin-bottom:.9rem}
-.dTog button{flex:1;padding:.55rem;border-radius:11px;border:1px solid var(--bdr);background:transparent;color:var(--txt3);font-weight:600;font-size:.8rem;cursor:pointer;transition:all .25s;font-family:inherit}
-.dTog button.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
-.osb{background:var(--bg3);border:1px solid var(--bdr);border-radius:13px;padding:.8rem;margin:.9rem 0}
-.osbT{font-weight:700;font-size:.78rem;color:var(--txt3);margin-bottom:.35rem}
-.osbI{display:flex;justify-content:space-between;font-size:.8rem;padding:.2rem 0}
-.osbI span:last-child{color:var(--txt2)}
-.osbTot{display:flex;justify-content:space-between;font-size:.9rem;padding:.4rem 0 0;border-top:1px solid var(--bdr);margin-top:.3rem;font-weight:800}
-.osbTot span:last-child{color:var(--gold)}
-.ckGo{width:100%;padding:.7rem;border-radius:12px;background:var(--gold);color:var(--bg);font-weight:700;font-size:.92rem;border:none;cursor:pointer;transition:all .25s;font-family:inherit;margin-top:.4rem}
-.okScr{background:var(--bg);justify-content:center;align-items:center;text-align:center;padding:2rem}
-.okIc{width:72px;height:72px;border-radius:50%;background:rgba(92,184,112,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:1.6rem;color:var(--grn);animation:okP .6s ease both;box-shadow:0 0 35px rgba(92,184,112,.1)}
-@keyframes okP{from{transform:scale(0);opacity:0}60%{transform:scale(1.15)}to{transform:scale(1);opacity:1}}
-.okScr h2{font-weight:800;font-size:1.25rem;margin-bottom:.35rem}
-.okScr p{color:var(--txt2);font-size:.88rem;margin-bottom:1.8rem;max-width:260px;line-height:1.6}
-.toastC{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:.35rem;align-items:center;pointer-events:none}
-.tst{padding:.5rem 1rem;border-radius:10px;font-size:.78rem;font-weight:600;opacity:0;transform:translateY(8px) scale(.95);transition:all .3s;pointer-events:none;white-space:nowrap;backdrop-filter:blur(10px)}
-.tst.show{opacity:1;transform:translateY(0) scale(1)}
-.tst-ok{background:rgba(92,184,112,.15);color:var(--grn);border:1px solid rgba(92,184,112,.2)}
-.tst-err{background:rgba(217,85,80,.15);color:var(--red);border:1px solid rgba(217,85,80,.2)}
-@media(min-width:640px){.mnGrid{grid-template-columns:repeat(2,1fr);padding:.8rem 1.2rem 2rem}.mW{max-width:65%}.pCrd{max-width:320px}}
+:root{--safe-b:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;overflow:hidden;font-family:'Tajawal',sans-serif;background:#0A0A0A;color:#F0EBE0}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+svg.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:-0.14em;flex-shrink:0}
+svg.ic.fill{fill:currentColor;stroke:none}
+.screen{position:fixed;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;transform:translateY(12px);display:flex;flex-direction:column}
+.screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
+#landing{background:#0A0A0A;justify-content:center;align-items:center;overflow:hidden}
+.landing-bg{position:absolute;inset:0;z-index:0}
+.landing-bg img{width:100%;height:100%;object-fit:cover;opacity:.16;filter:saturate(.6)}
+.landing-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,rgba(212,168,83,.14) 0%,rgba(10,10,10,0) 55%),linear-gradient(180deg,rgba(10,10,10,.35) 0%,rgba(10,10,10,.78) 55%,#0A0A0A 100%)}
+.landing-content{position:relative;z-index:1;text-align:center;padding:1.5rem 1.5rem}
+.burger3d-scene{width:168px;height:168px;margin:0 auto -.5rem;perspective:900px;animation:fadeUp .9s ease-out both}
+.burger3d{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:spin3d 7s linear infinite}
+@media(prefers-reduced-motion:reduce){.burger3d{animation:none;transform:rotateX(58deg) rotateZ(-20deg)}}
+.b3d-layer{position:absolute;left:50%;top:50%;border-radius:50%;transform-style:preserve-3d}
+.b3d-shadow{width:132px;height:132px;background:radial-gradient(ellipse at center,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 70%);transform:translate(-50%,-50%) translateZ(-46px) rotateX(90deg)}
+.b3d-bun-top{width:150px;height:112px;background:radial-gradient(circle at 32% 28%,#E7BE73,#B87F2E 75%);transform:translate(-50%,-50%) translateZ(50px);box-shadow:inset 0 -6px 12px rgba(0,0,0,.25)}
+.b3d-bun-top::before{content:'';position:absolute;inset:14% 20%;border-radius:50%;background:radial-gradient(circle at 40% 30%,rgba(255,255,255,.35),transparent 60%)}
+.b3d-lettuce{width:158px;height:118px;background:repeating-conic-gradient(from 10deg,#4C7A3D 0deg 18deg,#5C9048 18deg 32deg);transform:translate(-50%,-50%) translateZ(36px);filter:saturate(1.1)}
+.b3d-cheese{width:150px;height:112px;background:linear-gradient(100deg,#E8B33B,#F4CB5E 45%,#E8B33B);transform:translate(-50%,-50%) translateZ(26px);clip-path:polygon(6% 30%,94% 8%,88% 92%,10% 74%)}
+.b3d-patty{width:146px;height:110px;background:radial-gradient(circle at 40% 35%,#7A4426,#4A2A17 80%);transform:translate(-50%,-50%) translateZ(14px);box-shadow:inset 0 4px 10px rgba(0,0,0,.4)}
+.b3d-bun-bottom{width:150px;height:100px;background:radial-gradient(circle at 40% 25%,#D9A45E,#A56E28 80%);transform:translate(-50%,-50%) translateZ(0px)}
+@keyframes spin3d{from{transform:rotateX(58deg) rotateZ(0deg)}to{transform:rotateX(58deg) rotateZ(360deg)}}
+.landing-logo{font-size:clamp(3.2rem,11vw,6.4rem);font-weight:900;letter-spacing:.07em;line-height:1;background:linear-gradient(135deg,#F0EBE0 25%,#D4A853 65%,#B8903A 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn 1s ease-out both}
+.landing-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:clamp(1.1rem,3.4vw,1.5rem);color:#C9A063;margin-top:.35rem;animation:fadeUp 1s .3s ease-out both}
+.landing-ctas{margin-top:2.25rem;display:flex;flex-direction:column;gap:.75rem;align-items:center;animation:fadeUp 1s .6s ease-out both}
+.btn-primary{background:linear-gradient(135deg,#E0B865,#D4A853 55%,#C1923F);color:#0A0A0A;font-weight:700;font-size:1.1rem;padding:.9rem 2.5rem;border:none;border-radius:60px;cursor:pointer;transition:all .25s;width:100%;max-width:300px;font-family:inherit;box-shadow:0 8px 24px -8px rgba(212,168,83,.55)}
+.btn-primary:hover{filter:brightness(1.06);transform:scale(1.03)}
+.btn-primary:active{transform:scale(.97)}
+.btn-secondary{background:transparent;color:#A39E93;font-weight:500;font-size:.95rem;padding:.75rem 2rem;border:1px solid #333;border-radius:60px;cursor:pointer;transition:all .25s;width:100%;max-width:300px;font-family:inherit}
+.btn-secondary:hover{border-color:#D4A853;color:#D4A853}
+.landing-deco{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:1;color:#333;font-size:1.1rem;animation:bounce 2s infinite}
+@keyframes logoIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+.tilt-3d{transition:transform .12s ease-out,border-color .2s;will-change:transform;transform-style:preserve-3d}
+.cat-icon{margin-left:.35rem}
+.chat-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid #1C1C1C;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);flex-shrink:0;z-index:5}
+.chat-header .back-btn{background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem;transition:color .2s}
+.chat-header .back-btn:hover{color:#F0EBE0}
+.ai-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#D4A853,#B8903A);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#0A0A0A;flex-shrink:0}
+.ai-name{font-weight:700;font-size:.95rem;display:block;line-height:1.3}
+.ai-status{font-size:.7rem;color:#5CB870;display:flex;align-items:center;gap:4px}
+.ai-status::before{content:'';width:6px;height:6px;border-radius:50%;background:#5CB870;display:inline-block}
+.chat-header .cart-btn{margin-right:auto;background:none;border:none;color:#A39E93;font-size:1.15rem;cursor:pointer;position:relative;padding:.4rem;transition:color .2s}
+.chat-header .cart-btn:hover{color:#D4A853}
+.cart-badge{position:absolute;top:-2px;right:-6px;background:#D4A853;color:#0A0A0A;font-size:.6rem;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s}
+.cart-badge.pop{animation:popBadge .4s ease}
+@keyframes popBadge{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.5rem;scroll-behavior:smooth}
+.msg{max-width:85%;animation:msgIn .35s ease-out both}
+.msg-ai{align-self:flex-start}
+.msg-user{align-self:flex-end}
+.msg-bubble{padding:.7rem 1rem;border-radius:18px;font-size:.92rem;line-height:1.65;white-space:pre-wrap}
+.msg-ai .msg-bubble{background:#161616;border:1px solid #222;border-bottom-right-radius:4px;color:#F0EBE0}
+.msg-user .msg-bubble{background:#D4A853;color:#0A0A0A;border-bottom-left-radius:4px;font-weight:500}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.typing-indicator{display:flex;gap:4px;padding:.7rem 1rem;align-self:flex-start}
+.typing-indicator span{width:7px;height:7px;background:#444;border-radius:50%;animation:typeDot 1.2s infinite}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes typeDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.product-card{background:#161616;border:1px solid #262626;border-radius:16px;overflow:hidden;margin-top:.5rem;max-width:320px;width:100%;cursor:default;transition:border-color .2s}
+.product-card:hover{border-color:#333}
+.pc-img{width:100%;height:160px;object-fit:cover;background:#111}
+.pc-body{padding:.85rem 1rem}
+.pc-name-ar{font-weight:800;font-size:1.05rem;margin-bottom:.15rem}
+.pc-name-en{font-size:.72rem;color:#6B665C;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+.pc-ingredients{font-size:.78rem;color:#A39E93;line-height:1.5;margin-bottom:.6rem}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.pc-price{font-weight:800;font-size:1.15rem;color:#D4A853}
+.pc-price span{font-size:.75rem;font-weight:400;color:#6B665C}
+.pc-actions{display:flex;gap:.4rem}
+.pc-btn{padding:.45rem .85rem;border-radius:20px;font-size:.78rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.pc-btn-add{background:#D4A853;color:#0A0A0A}
+.pc-btn-add:hover{background:#E0B865}
+.pc-btn-alt{background:transparent;color:#A39E93;border:1px solid #333}
+.pc-btn-alt:hover{border-color:#D4A853;color:#D4A853}
+.pc-badge{display:inline-block;padding:.15rem .5rem;border-radius:8px;font-size:.65rem;font-weight:700;margin-bottom:.4rem}
+.pc-badge.new{background:rgba(212,168,83,.15);color:#D4A853}
+.pc-badge.bestseller{background:rgba(92,184,112,.15);color:#5CB870}
+.pc-upsell{display:flex;align-items:flex-start;gap:.4rem;background:rgba(212,168,83,.08);border:1px dashed rgba(212,168,83,.3);border-radius:10px;padding:.5rem .6rem;font-size:.76rem;color:#E0B865;line-height:1.5;margin-bottom:.6rem}
+.pc-upsell svg{margin-top:.15rem;flex-shrink:0}
+.quick-actions{flex-shrink:0;padding:.5rem 1rem .25rem;display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.quick-actions::-webkit-scrollbar{display:none}
+.qa-chip{flex-shrink:0;padding:.5rem 1rem;border-radius:20px;font-size:.8rem;font-weight:500;border:1px solid #262626;background:#111;color:#A39E93;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.qa-chip:hover{border-color:#D4A853;color:#D4A853;background:rgba(212,168,83,.06)}
+.qa-chip:active{transform:scale(.95)}
+.chat-input-area{flex-shrink:0;display:flex;gap:.5rem;padding:.6rem 1rem calc(.6rem + var(--safe-b));border-top:1px solid #1C1C1C;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.chat-input-area input{flex:1;background:#161616;border:1px solid #262626;border-radius:24px;padding:.65rem 1.1rem;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
+.chat-input-area input::placeholder{color:#444}
+.chat-input-area input:focus{border-color:#D4A853}
+.send-btn{width:42px;height:42px;border-radius:50%;background:#D4A853;border:none;color:#0A0A0A;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.send-btn:hover{background:#E0B865;transform:scale(1.05)}
+.send-btn:active{transform:scale(.93)}
+.menu-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-bottom:1px solid #1C1C1C;background:rgba(10,10,10,.95);flex-shrink:0}
+.menu-header h2{font-weight:800;font-size:1.1rem;flex:1}
+.menu-cats{display:flex;gap:.5rem;padding:.75rem 1rem;overflow-x:auto;scrollbar-width:none;flex-shrink:0;background:#0D0D0D}
+.menu-cats::-webkit-scrollbar{display:none}
+.cat-tab{flex-shrink:0;padding:.5rem 1.1rem;border-radius:20px;font-size:.8rem;font-weight:600;border:1px solid #262626;background:transparent;color:#6B665C;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap}
+.cat-tab.active{background:#D4A853;color:#0A0A0A;border-color:#D4A853}
+.cat-tab:not(.active):hover{border-color:#444;color:#A39E93}
+.menu-grid{flex:1;overflow-y:auto;padding:.5rem 1rem 2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;align-content:start}
+.menu-item{background:#161616;border:1px solid #1E1E1E;border-radius:14px;overflow:hidden;transition:all .25s;animation:menuItemIn .4s ease-out both}
+.menu-item:hover{border-color:#333;transform:translateY(-2px)}
+@keyframes menuItemIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.mi-img{width:100%;height:140px;object-fit:cover;background:#111}
+.mi-no-img{width:100%;height:100px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#111,#1A1A1A);color:#333;font-size:2rem}
+.mi-body{padding:.75rem}
+.mi-top{display:flex;justify-content:space-between;align-items:start;gap:.5rem;margin-bottom:.25rem}
+.mi-name{font-weight:700;font-size:.95rem;line-height:1.3}
+.mi-price{font-weight:800;color:#D4A853;font-size:.95rem;white-space:nowrap}
+.mi-ingredients{font-size:.75rem;color:#6B665C;line-height:1.5;margin-bottom:.5rem}
+.mi-add{width:100%;padding:.5rem;border-radius:10px;background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.2);color:#D4A853;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.mi-add:hover{background:rgba(212,168,83,.2)}
+.mi-add:active{transform:scale(.97)}
+.mi-badges{display:flex;gap:.3rem;margin-bottom:.3rem}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-panel{position:fixed;top:0;left:0;bottom:0;width:min(400px,90vw);background:#111;z-index:51;transform:translateX(-100%);transition:transform .35s ease;display:flex;flex-direction:column;border-right:1px solid #1C1C1C}
+.cart-panel.open{transform:translateX(0)}
+.cart-panel-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #1C1C1C;flex-shrink:0}
+.cart-panel-header h2{font-weight:800;font-size:1.05rem}
+.cart-close{background:none;border:none;color:#6B665C;font-size:1.3rem;cursor:pointer;transition:color .2s}
+.cart-close:hover{color:#F0EBE0}
+.cart-items{flex:1;overflow-y:auto;padding:.75rem}
+.cart-empty{text-align:center;color:#444;padding:3rem 1rem;font-size:.9rem}
+.ci-item{display:flex;gap:.75rem;padding:.65rem 0;border-bottom:1px solid #1A1A1A;align-items:center}
+.ci-img{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#1A1A1A;flex-shrink:0}
+.ci-no-img{width:52px;height:52px;border-radius:10px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;color:#333;font-size:1.1rem;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{font-size:.8rem;color:#D4A853;font-weight:600}
+.ci-qty{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.ci-qty button{width:26px;height:26px;border-radius:50%;border:1px solid #333;background:transparent;color:#A39E93;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ci-qty button:hover{border-color:#D4A853;color:#D4A853}
+.ci-qty span{font-weight:600;font-size:.85rem;min-width:18px;text-align:center}
+.ci-remove{background:none;border:none;color:#444;font-size:.8rem;cursor:pointer;padding:.3rem;transition:color .2s}
+.ci-remove:hover{color:#D95550}
+.cart-footer{padding:1rem;border-top:1px solid #1C1C1C;flex-shrink:0;padding-bottom:calc(1rem + var(--safe-b))}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.cart-total-label{color:#A39E93;font-size:.9rem}
+.cart-total-val{font-weight:800;font-size:1.2rem;color:#D4A853}
+.checkout-btn{width:100%;padding:.8rem;border-radius:14px;background:#D4A853;color:#0A0A0A;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.checkout-btn:hover{background:#E0B865}
+.checkout-btn:disabled{opacity:.4;cursor:not-allowed}
+.checkout-screen{background:#0A0A0A}
+.checkout-body{flex:1;overflow-y:auto;padding:1rem}
+.checkout-body h2{font-weight:800;font-size:1.15rem;margin-bottom:1rem}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.82rem;color:#A39E93;margin-bottom:.35rem;font-weight:500}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:.7rem 1rem;background:#161616;border:1px solid #262626;border-radius:12px;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#D4A853}
+.form-group textarea{resize:none;height:70px}
+.form-group select option{background:#161616}
+.delivery-toggle{display:flex;gap:.5rem;margin-bottom:1rem}
+.dt-btn{flex:1;padding:.65rem;border-radius:12px;border:1px solid #262626;background:transparent;color:#A39E93;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.dt-btn.active{background:#D4A853;color:#0A0A0A;border-color:#D4A853}
+.order-summary-box{background:#161616;border:1px solid #222;border-radius:14px;padding:1rem;margin-top:1rem;margin-bottom:1rem}
+.osb-title{font-weight:700;font-size:.85rem;margin-bottom:.5rem;color:#A39E93}
+.osb-item{display:flex;justify-content:space-between;font-size:.85rem;padding:.3rem 0;color:#F0EBE0}
+.osb-item span:last-child{color:#A39E93}
+.osb-total{display:flex;justify-content:space-between;font-size:.95rem;padding:.5rem 0 0;border-top:1px solid #262626;margin-top:.4rem;font-weight:800}
+.osb-total span:last-child{color:#D4A853}
+.success-screen{background:#0A0A0A;justify-content:center;align-items:center;text-align:center;padding:2rem}
+.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(92,184,112,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#5CB870;animation:successPop .6s ease-out both}
+@keyframes successPop{from{transform:scale(0);opacity:0}60%{transform:scale(1.15)}to{transform:scale(1);opacity:1}}
+.success-screen h2{font-weight:800;font-size:1.4rem;margin-bottom:.5rem}
+.success-screen p{color:#A39E93;font-size:.95rem;margin-bottom:2rem;max-width:300px}
+.toast-container{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:100;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+.toast{padding:.6rem 1.2rem;border-radius:12px;font-size:.82rem;font-weight:600;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast-ok{background:#1a2e1f;color:#5CB870;border:1px solid #2a4a32}
+.toast-err{background:#2e1a1a;color:#D95550;border:1px solid #4a2a2a}
+.mode-tag{font-size:.6rem;padding:.1rem .4rem;border-radius:6px;background:rgba(212,168,83,.1);color:#D4A853;margin-right:.3rem;vertical-align:middle}
+@media(min-width:640px){.menu-grid{grid-template-columns:repeat(2,1fr);padding:1rem 1.5rem 2rem}.msg{max-width:65%}.product-card{max-width:360px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
-<div id="landing" class="screen on">
-  <div class="lBg"><img src="https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png" alt="" onerror="this.style.display='none'"><div></div></div>
-  <div class="lC">
-    <div class="lLogo">HATABA</div>
-    <p class="lSub">نعرف البرقر.. ونعرفك</p>
-    <div class="lLine"></div>
-    <div class="lCtas">
-      <button class="lBtn1" onclick="openChat()">خلنا نختار لك</button>
-      <button class="lBtn2" onclick="openMenu()">أبي أشوف المنيو</button>
+<div id="landing" class="screen active">
+  <div class="landing-bg">
+    <img src="https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png" alt="" onerror="this.style.display='none'">
+    <div></div>
+  </div>
+  <div class="landing-content">
+    <div class="burger3d-scene" aria-hidden="true">
+      <div class="burger3d">
+        <div class="b3d-layer b3d-shadow"></div>
+        <div class="b3d-layer b3d-bun-bottom"></div>
+        <div class="b3d-layer b3d-patty"></div>
+        <div class="b3d-layer b3d-cheese"></div>
+        <div class="b3d-layer b3d-lettuce"></div>
+        <div class="b3d-layer b3d-bun-top"></div>
+      </div>
+    </div>
+    <div class="landing-logo">HATABA</div>
+    <p class="landing-tag">نعرف البرقر.. ونعرفك</p>
+    <div class="landing-ctas">
+      <button class="btn-primary" onclick="openChat()">خلنا نختار لك</button>
+      <button class="btn-secondary" onclick="openMenu()">أبي أشوف المنيو</button>
     </div>
   </div>
+  <div class="landing-deco" id="icChevronDown"></div>
 </div>
 
 <div id="chat" class="screen">
-  <div class="chHd">
-    <button class="chBack" onclick="goHome()"><i class="fas fa-arrow-right"></i></button>
-    <div class="chAv">ح</div>
-    <div class="chInf"><span class="chNm">حطبة</span><span class="chSt" id="aiSt">متصل</span></div>
-    <button class="chCart" onclick="toggleCart()"><i class="fas fa-bag-shopping"></i><span class="cBadge" id="cb1" style="display:none">0</span></button>
+  <div class="chat-header">
+    <button class="back-btn" onclick="goHome()" id="icBackChat"></button>
+    <div class="ai-avatar">ح</div>
+    <div><span class="ai-name">حطبة</span><span class="ai-status" id="aiStatusText">متصل بالذكاء الاصطناعي</span></div>
+    <button class="cart-btn" onclick="toggleCart()" id="icCartChat"><span class="cart-badge" id="chat-badge" style="display:none">0</span></button>
   </div>
-  <div class="chMsgs" id="msgs"></div>
-  <div class="qaBar" id="qaBar"></div>
-  <div class="chIn">
-    <input type="text" id="chatIn" placeholder="اكتب رسالتك..." autocomplete="off">
-    <button class="chSnd" onclick="doSend()"><i class="fas fa-arrow-left"></i></button>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="quick-actions" id="quickActions"></div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="اكتب رسالتك..." autocomplete="off">
+    <button class="send-btn" onclick="sendMessage()" id="icSend"></button>
   </div>
 </div>
 
 <div id="menu" class="screen">
-  <div class="mnHd">
-    <button class="chBack" onclick="goHome()"><i class="fas fa-arrow-right"></i></button>
+  <div class="menu-header">
+    <button class="back-btn" onclick="goHome()" style="background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem" id="icBackMenu"></button>
     <h2>المنيو</h2>
-    <button class="chCart" onclick="toggleCart()"><i class="fas fa-bag-shopping"></i><span class="cBadge" id="cb2" style="display:none">0</span></button>
+    <button onclick="toggleCart()" style="margin-right:auto;background:none;border:none;color:#A39E93;font-size:1.15rem;cursor:pointer;position:relative;padding:.4rem" id="icCartMenu"><span class="cart-badge" id="menu-badge" style="display:none">0</span></button>
   </div>
-  <div class="mnCats" id="mnCats"></div>
-  <div class="mnGrid" id="mnGrid"></div>
+  <div class="menu-cats" id="menuCats"></div>
+  <div class="menu-grid" id="menuGrid"></div>
 </div>
 
-<div id="checkout" class="screen" style="background:var(--bg)">
-  <div class="mnHd"><button class="chBack" onclick="closeCart()"><i class="fas fa-arrow-right"></i></button><h2>إتمام الطلب</h2><div style="width:30px"></div></div>
-  <div class="ckBd" id="ckBd"></div>
+<div id="checkout" class="screen checkout-screen">
+  <div class="menu-header">
+    <button class="back-btn" onclick="closeCartPanel()" style="background:none;border:none;color:#A39E93;font-size:1.2rem;cursor:pointer;padding:.3rem" id="icBackCheckout"></button>
+    <h2>إتمام الطلب</h2>
+    <div style="width:32px"></div>
+  </div>
+  <div class="checkout-body" id="checkoutBody"></div>
 </div>
 
-<div id="success" class="screen okScr">
-  <div class="okIc"><i class="fas fa-check"></i></div>
+<div id="success" class="screen success-screen">
+  <div class="success-icon" id="icSuccessCheck"></div>
   <h2>تم تسجيل طلبك</h2>
   <p>رح نوصل لك الطلب في أقرب وقت. شكراً لثقتك بحطبة.</p>
-  <button class="lBtn1" onclick="goHome()" style="max-width:210px">الرئيسية</button>
+  <button class="btn-primary" onclick="goHome()" style="max-width:240px">الرئيسية</button>
 </div>
 
-<div class="cartOv" id="cartOv" onclick="toggleCart()"></div>
-<div class="cartPn" id="cartPn">
-  <div class="cartHd"><h2>سلة الطلبات</h2><button class="cartX" onclick="toggleCart()"><i class="fas fa-xmark"></i></button></div>
-  <div class="cartLs" id="cartLs"></div>
-  <div class="cartFt">
-    <div class="cartTr"><span class="cartTrL">المجموع</span><span class="cartTrV" id="cartTot">0 ر.س</span></div>
-    <button class="cartGo" id="cartGo" onclick="goCheckout()" disabled>إتمام الطلب</button>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-panel-header"><h2>سلة الطلبات</h2><button class="cart-close" onclick="toggleCart()" id="icCartClose"></button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row"><span class="cart-total-label">المجموع</span><span class="cart-total-val" id="cartTotal">0 ر.س</span></div>
+    <button class="checkout-btn" id="cartCheckoutBtn" onclick="goToCheckout()" disabled>إتمام الطلب</button>
   </div>
 </div>
 
-<div class="toastC" id="toastC"></div>
+<div class="toast-container" id="toastContainer"></div>
 
 <script>
-// ═══ بيانات المنيو ═══
-var MENU=[
+/* ══════════════════════════════════════════
+   أيقونات SVG (بديل Font Awesome)
+   ══════════════════════════════════════════ */
+const ICONS={
+  arrowBack:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  arrowSend:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  bag:'<path d="M6 8h12l-1.1 12.2a2 2 0 0 1-2 1.8H9.1a2 2 0 0 1-2-1.8L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/>',
+  burger:'<path d="M3.5 10c0-3.5 3.8-6 8.5-6s8.5 2.5 8.5 6"/><rect x="3" y="10.3" width="18" height="2.4" rx="1.2"/><rect x="3" y="14.3" width="18" height="2.2" rx="1.1"/><path d="M4 18.2c0 1.7 3.6 2.8 8 2.8s8-1.1 8-2.8"/>',
+  star:'<path d="M12 3.2l2.5 5.3 5.8.6-4.3 3.9 1.2 5.7L12 15.8l-5.2 2.9 1.2-5.7-4.3-3.9 5.8-.6L12 3.2z"/>',
+  fire:'<path d="M12 21c-3.9 0-6.5-2.6-6.5-6 0-3.2 2-4.8 2.7-7.4.3 1.6 1.2 2.5 2 2.5.7 0 .9-.9.6-2.1C10.3 5.6 11.6 3 13 2c.2 2.4-.6 3.6-.2 5.4.3 1.3 1.4 1.7 2 2.8.9 1.6 1.2 2.7 1.2 4.3 0 3.6-2.5 6.5-4 6.5z"/>',
+  drumstick:'<path d="M13.5 4.5a4.2 4.2 0 1 1 6 6c-1.1 1.1-2.9 1.7-4.6 1.3L9.3 17.4a2.6 2.6 0 1 1-3.7-3.7l6.6-6.6c-.5-1.7.1-3.5 1.3-4.6z"/><circle cx="6" cy="18" r="1.4"/>',
+  bowl:'<path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M12 11V6M8.5 11c-.3-2 1-4 3.5-4s3.8 2 3.5 4"/>',
+  utensils:'<path d="M6.5 3v7a2 2 0 0 0 2 2v9M6.5 3v7M9 3v7M4 3v7M16 3c-2 0-3.2 2-3.2 5s1.2 4.6 1.2 4.6V21"/>',
+  droplet:'<path d="M12 3c4.2 5 6.2 8.3 6.2 11.2a6.2 6.2 0 0 1-12.4 0C5.8 11.3 7.8 8 12 3z"/>',
+  circlePlus:'<circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/>',
+  glass:'<path d="M6.5 3h11l-1.4 14.6a3 3 0 0 1-3 2.7h-2.2a3 3 0 0 1-3-2.7L6.5 3z"/><path d="M7.4 8.5h9.2"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7"/>',
+  xmark:'<path d="M6 6l12 12M18 6L6 18"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  trash:'<path d="M4 7h16M9.5 7V4.3h5V7M6.5 7l1 13h9l1-13"/>',
+  moto:'<circle cx="6" cy="17.5" r="2.3"/><circle cx="18" cy="17.5" r="2.3"/><path d="M8.2 17.5h4.3l2.7-6h3M12.5 17.5l1.8-6-2.6-2.7H7.3l-1 3.7"/>',
+  store:'<path d="M4 9.5L5 4h14l1 5.5M4 9.5v9.5h16V9.5M4 9.5a2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0"/>',
+  chevronDown:'<path d="M6 9l6 6 6-6"/>',
+  sparkle:'<path d="M12 3v3.5M12 17.5V21M3 12h3.5M17.5 12H21M5.6 5.6l2.5 2.5M15.9 15.9l2.5 2.5M18.4 5.6l-2.5 2.5M8.1 15.9l-2.5 2.5"/>',
+  circle:'<circle cx="12" cy="12" r="8.5"/>'
+};
+function ic(name,cls){return `<svg class="ic ${cls||''}" viewBox="0 0 24 24">${ICONS[name]||ICONS.circle}</svg>`}
+
+/* ══════════════════════════════════════════
+   بيانات المنيو
+   ══════════════════════════════════════════ */
+const MENU=[
 {id:'hataba-truffle',nameAr:'حطبه ترافل',nameEn:'HATABA TRUFFLE',price:25,category:'new',type:'burger',protein:'beef',tags:['truffle','rich'],ingredients:['90g Angus Beef','Cheddar','Caramelized Onions','Truffle Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787277211160.png',isNew:true,bestSeller:false},
-{id:'creamy-truffle-fries',nameAr:'كريمي ترافل فرايز',nameEn:'CREAMY TRUFFLE FRIES',price:19,category:'new',type:'side',tags:['truffle','rich'],ingredients:['French Fries','Creamy Truffle Sauce','Caramelized Onions','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369018540.png',isNew:true,bestSeller:false},
-{id:'truffle-fries',nameAr:'ترافل فرايز',nameEn:'TRUFFLE FRIES',price:21,category:'new',type:'side',tags:['truffle','rich'],ingredients:['Thin-Cut Fries','Truffle Oil','Signature Seasoning','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369540136.png',isNew:true,bestSeller:false},
+{id:'creamy-truffle-fries',nameAr:'كريمي ترافل فرايز',nameEn:'CREAMY TRUFFLE FRIES',price:19,category:'new',type:'side',protein:null,tags:['truffle','rich'],ingredients:['French Fries','Creamy Truffle Sauce','Caramelized Onions','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369018540.png',isNew:true,bestSeller:false},
+{id:'truffle-fries',nameAr:'ترافل فرايز',nameEn:'TRUFFLE FRIES',price:21,category:'new',type:'side',protein:null,tags:['truffle','rich'],ingredients:['Thin-Cut Fries','Truffle Oil','Signature Seasoning','Parmesan Cheese'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787369540136.png',isNew:true,bestSeller:false},
 {id:'hataba-beef',nameAr:'حطبه بيف',nameEn:'HATABA BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','bestseller'],ingredients:['90g Angus Beef','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267562725.png',isNew:false,bestSeller:true},
-{id:'smash-beef',nameAr:'سماش بيف',nameEn:'SMASH BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','smash'],ingredients:['90g Angus Beef Smashed','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png',isNew:false,bestSeller:false},
+{id:'smash-beef',nameAr:'سماش بيف',nameEn:'SMASH BEEF',price:23,category:'beef',type:'burger',protein:'beef',tags:['classic','smash'],ingredients:['90g Angus Beef','Smashed on the griddle','Cheddar','Pickles','Hataba Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267093864.png',isNew:false,bestSeller:false},
 {id:'hataba-chicken',nameAr:'حطبه تشيكن',nameEn:'HATABA CHICKEN',price:23,category:'chicken',type:'burger',protein:'chicken',tags:['classic','bestseller'],ingredients:['80g Ground Chicken','Cheddar','Lettuce','Classic Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267610360.png',isNew:false,bestSeller:true},
 {id:'crispy-chicken',nameAr:'كرسبي تشيكن',nameEn:'CRISPY CHICKEN',price:23,category:'chicken',type:'burger',protein:'chicken',tags:['crispy','creamy'],ingredients:['Crispy Chicken','Coleslaw','Creamy Cheese Sauce','Classic Sauce'],image:'https://dozqwcczhaiqvoqcrrep.supabase.co/storage/v1/object/public/shop-product-images/93ab1515-a590-415e-8511-215fe775187d/edit-1787267642771.png',isNew:false,bestSeller:false},
-{id:'french-fries',nameAr:'فرنش فرايز',nameEn:'FRENCH FRIES',price:7,category:'fries',type:'side',tags:['classic'],ingredients:['French Fries'],image:null,isNew:false,bestSeller:false},
-{id:'seasoned-fries',nameAr:'فرايز مبهر',nameEn:'SEASONED FRIES',price:8,category:'fries',type:'side',tags:['classic','bestseller'],ingredients:['Seasoned Fries'],image:null,isNew:false,bestSeller:true},
-{id:'sweet-fries',nameAr:'فرايز حلوه',nameEn:'SWEET FRIES',price:10,category:'fries',type:'side',tags:['sweet'],ingredients:['Sweet Fries'],image:null,isNew:false,bestSeller:false},
-{id:'cheese-fries',nameAr:'تشيز فرايز',nameEn:'CHEESE FRIES',price:10,category:'fries',type:'side',tags:['cheese'],ingredients:['Fries with Cheese Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'french-fries',nameAr:'فرنش فرايز',nameEn:'FRENCH FRIES',price:7,category:'fries',type:'side',protein:null,tags:['classic'],ingredients:['French Fries'],image:null,isNew:false,bestSeller:false},
+{id:'seasoned-fries',nameAr:'فرايز مبهر',nameEn:'SEASONED FRIES',price:8,category:'fries',type:'side',protein:null,tags:['classic','bestseller'],ingredients:['Seasoned Fries'],image:null,isNew:false,bestSeller:true},
+{id:'sweet-fries',nameAr:'فرايز حلوه',nameEn:'SWEET FRIES',price:10,category:'fries',type:'side',protein:null,tags:['sweet'],ingredients:['Sweet Fries'],image:null,isNew:false,bestSeller:false},
+{id:'cheese-fries',nameAr:'تشيز فرايز',nameEn:'CHEESE FRIES',price:10,category:'fries',type:'side',protein:null,tags:['cheese'],ingredients:['Fries with Cheese Sauce'],image:null,isNew:false,bestSeller:false},
 {id:'chicken-fries-hataba',nameAr:'تشيكن فرايز حطبه',nameEn:'HATABA CHICKEN FRIES',price:18,category:'appetizers',type:'side',protein:'chicken',tags:['bestseller','loaded'],ingredients:['Fries topped with Chicken'],image:null,isNew:false,bestSeller:true},
 {id:'beef-fries-hataba',nameAr:'بيف فرايز حطبه',nameEn:'HATABA BEEF FRIES',price:20,category:'appetizers',type:'side',protein:'beef',tags:['bestseller','loaded'],ingredients:['Fries topped with Beef'],image:null,isNew:false,bestSeller:true},
 {id:'bbq-wings',nameAr:'أجنحة دجاج باربكيو',nameEn:'BBQ CHICKEN WINGS',price:15,category:'appetizers',type:'side',protein:'chicken',tags:['bestseller','bbq'],ingredients:['Chicken Wings','BBQ Sauce'],image:null,isNew:false,bestSeller:true},
-{id:'seasoned-corn',nameAr:'ذرة مبهرة',nameEn:'SEASONED CORN',price:13,category:'appetizers',type:'side',tags:['bestseller'],ingredients:['Seasoned Corn'],image:null,isNew:false,bestSeller:true},
-{id:'s-truffle',nameAr:'صوص ترافل',nameEn:'TRUFFLE SAUCE',price:4,category:'sauces',type:'sauce',tags:['truffle'],ingredients:['Truffle Sauce'],image:null,isNew:false,bestSeller:false},
-{id:'s-hataba',nameAr:'صوص حطبه',nameEn:'HATABA SAUCE',price:3,category:'sauces',type:'sauce',tags:['classic','bestseller'],ingredients:['Hataba Signature Sauce'],image:null,isNew:false,bestSeller:true},
-{id:'s-classic',nameAr:'صوص كلاسيك',nameEn:'CLASSIC SAUCE',price:3,category:'sauces',type:'sauce',tags:['classic'],ingredients:['Classic Sauce'],image:null,isNew:false,bestSeller:false},
-{id:'s-cheese',nameAr:'صوص جبن',nameEn:'CHEESE SAUCE',price:3,category:'sauces',type:'sauce',tags:['cheese'],ingredients:['Cheese Sauce'],image:null,isNew:false,bestSeller:false},
-{id:'s-spicy',nameAr:'صوص سبايسي',nameEn:'SPICY SAUCE',price:3,category:'sauces',type:'sauce',tags:['spicy'],ingredients:['Spicy Sauce'],image:null,isNew:false,bestSeller:false},
-{id:'s-ranch',nameAr:'صوص رانش',nameEn:'RANCH SAUCE',price:3,category:'sauces',type:'sauce',tags:['classic'],ingredients:['Ranch Sauce'],image:null,isNew:false,bestSeller:false},
-{id:'s-bbq',nameAr:'صوص باربكيو مدخن',nameEn:'SMOKED BBQ SAUCE',price:3,category:'sauces',type:'sauce',tags:['bbq'],ingredients:['Smoked BBQ Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'seasoned-corn',nameAr:'ذرة مبهرة',nameEn:'SEASONED CORN',price:13,category:'appetizers',type:'side',protein:null,tags:['bestseller'],ingredients:['Seasoned Corn'],image:null,isNew:false,bestSeller:true},
+{id:'s-truffle',nameAr:'صوص ترافل',nameEn:'TRUFFLE SAUCE',price:4,category:'sauces',type:'sauce',protein:null,tags:['truffle'],ingredients:['Truffle Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'s-hataba',nameAr:'صوص حطبه',nameEn:'HATABA SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['classic','bestseller'],ingredients:['Hataba Signature Sauce'],image:null,isNew:false,bestSeller:true},
+{id:'s-classic',nameAr:'صوص كلاسيك',nameEn:'CLASSIC SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['classic'],ingredients:['Classic Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'s-cheese',nameAr:'صوص جبن',nameEn:'CHEESE SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['cheese'],ingredients:['Cheese Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'s-spicy',nameAr:'صوص سبايسي',nameEn:'SPICY SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['spicy'],ingredients:['Spicy Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'s-ranch',nameAr:'صوص رانش',nameEn:'RANCH SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['classic'],ingredients:['Ranch Sauce'],image:null,isNew:false,bestSeller:false},
+{id:'s-bbq',nameAr:'صوص باربكيو مدخن',nameEn:'SMOKED BBQ SAUCE',price:3,category:'sauces',type:'sauce',protein:null,tags:['bbq'],ingredients:['Smoked BBQ Sauce'],image:null,isNew:false,bestSeller:false},
 {id:'a-beef',nameAr:'شريحة لحم',nameEn:'EXTRA BEEF PATTY',price:9,category:'additions',type:'addition',protein:'beef',tags:[],ingredients:['Extra Beef Patty'],image:null,isNew:false,bestSeller:false},
 {id:'a-chicken',nameAr:'شريحة دجاج',nameEn:'EXTRA CHICKEN',price:8,category:'additions',type:'addition',protein:'chicken',tags:[],ingredients:['Extra Chicken Patty'],image:null,isNew:false,bestSeller:false},
-{id:'a-cheese',nameAr:'شريحة جبن',nameEn:'EXTRA CHEESE',price:3,category:'additions',type:'addition',tags:['cheese'],ingredients:['Extra Cheese Slice'],image:null,isNew:false,bestSeller:false},
-{id:'a-onion',nameAr:'بصل مكرمل',nameEn:'CARAMELIZED ONIONS',price:3,category:'additions',type:'addition',tags:['rich'],ingredients:['Caramelized Onions'],image:null,isNew:false,bestSeller:false},
-{id:'a-pickle',nameAr:'مخلل',nameEn:'PICKLES',price:2,category:'additions',type:'addition',tags:['classic'],ingredients:['Pickles'],image:null,isNew:false,bestSeller:false},
-{id:'a-jalapeno',nameAr:'هالابينو',nameEn:'JALAPENO',price:2,category:'additions',type:'addition',tags:['spicy'],ingredients:['Jalapeno Peppers'],image:null,isNew:false,bestSeller:false},
-{id:'a-lettuce',nameAr:'خس',nameEn:'LETTUCE',price:2,category:'additions',type:'addition',tags:[],ingredients:['Lettuce'],image:null,isNew:false,bestSeller:false},
-{id:'d-cola',nameAr:'كولا',nameEn:'COLA',price:4,category:'drinks',type:'drink',tags:[],ingredients:['Cola 330ml'],image:null,isNew:false,bestSeller:false},
-{id:'d-cola-lite',nameAr:'كولا لايت',nameEn:'DIET COLA',price:4,category:'drinks',type:'drink',tags:[],ingredients:['Diet Cola 330ml'],image:null,isNew:false,bestSeller:false},
-{id:'d-sprite',nameAr:'سبرايت',nameEn:'SPRITE',price:4,category:'drinks',type:'drink',tags:[],ingredients:['Sprite 330ml'],image:null,isNew:false,bestSeller:false},
-{id:'d-citrus',nameAr:'حمضيات',nameEn:'CITRUS',price:4,category:'drinks',type:'drink',tags:[],ingredients:['Citrus Drink'],image:null,isNew:false,bestSeller:false},
-{id:'d-sun-cola',nameAr:'سن كولا',nameEn:'SUN COLA',price:3,category:'drinks',type:'drink',tags:[],ingredients:['Sun Cola'],image:null,isNew:false,bestSeller:false},
-{id:'d-rabie',nameAr:'عصير ربيع',nameEn:'RABIE JUICE',price:3,category:'drinks',type:'drink',tags:[],ingredients:['Rabie Juice'],image:null,isNew:false,bestSeller:false},
-{id:'d-water',nameAr:'ماء',nameEn:'WATER',price:1,category:'drinks',type:'drink',tags:[],ingredients:['Water'],image:null,isNew:false,bestSeller:false}
+{id:'a-cheese',nameAr:'شريحة جبن',nameEn:'EXTRA CHEESE',price:3,category:'additions',type:'addition',protein:null,tags:['cheese'],ingredients:['Extra Cheese Slice'],image:null,isNew:false,bestSeller:false},
+{id:'a-onion',nameAr:'بصل مكرمل',nameEn:'CARAMELIZED ONIONS',price:3,category:'additions',type:'addition',protein:null,tags:['rich'],ingredients:['Caramelized Onions'],image:null,isNew:false,bestSeller:false},
+{id:'a-pickle',nameAr:'مخلل',nameEn:'PICKLES',price:2,category:'additions',type:'addition',protein:null,tags:['classic'],ingredients:['Pickles'],image:null,isNew:false,bestSeller:false},
+{id:'a-jalapeno',nameAr:'هالابينو',nameEn:'JALAPENO',price:2,category:'additions',type:'addition',protein:null,tags:['spicy'],ingredients:['Jalapeno Peppers'],image:null,isNew:false,bestSeller:false},
+{id:'a-lettuce',nameAr:'خس',nameEn:'LETTUCE',price:2,category:'additions',type:'addition',protein:null,tags:[],ingredients:['Lettuce'],image:null,isNew:false,bestSeller:false},
+{id:'d-cola',nameAr:'كولا',nameEn:'COLA',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Cola 330ml'],image:null,isNew:false,bestSeller:false},
+{id:'d-cola-lite',nameAr:'كولا لايت',nameEn:'DIET COLA',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Diet Cola 330ml'],image:null,isNew:false,bestSeller:false},
+{id:'d-sprite',nameAr:'سبرايت',nameEn:'SPRITE',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Sprite 330ml'],image:null,isNew:false,bestSeller:false},
+{id:'d-citrus',nameAr:'حمضيات',nameEn:'CITRUS',price:4,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Citrus Drink'],image:null,isNew:false,bestSeller:false},
+{id:'d-sun-cola',nameAr:'سن كولا',nameEn:'SUN COLA',price:3,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Sun Cola'],image:null,isNew:false,bestSeller:false},
+{id:'d-rabie',nameAr:'عصير ربيع',nameEn:'RABIE JUICE',price:3,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Rabie Juice'],image:null,isNew:false,bestSeller:false},
+{id:'d-water',nameAr:'ماء',nameEn:'WATER',price:1,category:'drinks',type:'drink',protein:null,tags:[],ingredients:['Water'],image:null,isNew:false,bestSeller:false},
 ];
-var CATS=[{id:'new',n:'المنتجات الجديدة'},{id:'beef',n:'بيف برقر'},{id:'chicken',n:'تشيكن برقر'},{id:'fries',n:'الفرايز'},{id:'appetizers',n:'الأطباق الجانبية'},{id:'sauces',n:'الصوصات'},{id:'additions',n:'الإضافات'},{id:'drinks',n:'المشروبات'}];
 
-// ═══ حالة ═══
-var cart=[],activeCat='new',delType='delivery',convHist=[],apiOK=true;
+/* اقتراحات تكميلية — تُعرض كجملة تحفيزية تحت المنتج، المستخدم هو من يقرر يضيفها أو لا */
+const UPSELL_PAIRS={
+  'hataba-truffle':{with:'creamy-truffle-fries',line:m=>`لو جربتها مع ${m.nameAr} بيطلع توليفة رهيبة، ترافل مع ترافل 🔥`},
+  'smash-beef':{with:'s-hataba',line:m=>`تضبط أكثر مع ${m.nameAr} — نفس الصوص اللي يميز حطبه بيف`},
+  'hataba-beef':{with:'seasoned-fries',line:m=>`أغلب اللي يطلبونها يضيفون معها ${m.nameAr}، توليفة ما تخيب`},
+  'hataba-chicken':{with:'bbq-wings',line:m=>`لو تبي وجبة مشبعة، ${m.nameAr} تكملها بشكل رهيب`},
+  'crispy-chicken':{with:'cheese-fries',line:m=>`تنكهتها الكريمية تضبط مع ${m.nameAr}`},
+  'chicken-fries-hataba':{with:'d-cola',line:m=>`باردة وحلوة معها — ${m.nameAr} تكسر دسمها`},
+  'beef-fries-hataba':{with:'s-spicy',line:m=>`ضيف عليها ${m.nameAr} لو تحب نكهة قوية، تجربة مختلفة كل مرة`},
+  'bbq-wings':{with:'seasoned-corn',line:m=>`من أكثر التوليفات طلباً عندنا مع ${m.nameAr}`},
+  'french-fries':{with:'s-cheese',line:m=>`جربها مع ${m.nameAr}، فرق كبير بمبلغ بسيط`},
+  'truffle-fries':{with:'hataba-truffle',line:m=>`أصلاً هذي معمولة عشان تكمل ${m.nameAr} 👌`},
+};
+function getUpsellLine(item){
+  const u=UPSELL_PAIRS[item.id];if(!u)return null;
+  const m=MENU.find(i=>i.id===u.with);if(!m)return null;
+  return u.line(m);
+}
 
-// ═══ أدوات ═══
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function any(m,a){return a.some(function(k){return m.indexOf(k)!==-1})}
-function getTime(){var d=new Date();return('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
-function scrollBot(){var c=document.getElementById('msgs');setTimeout(function(){c.scrollTop=c.scrollHeight},60)}
-function findById(id){for(var i=0;i<MENU.length;i++)if(MENU[i].id===id)return MENU[i];return null}
-function catIcon(c){return{new:'star',beef:'fire',chicken:'drumstick-bite',fries:'bowl-food',appetizers:'utensils',sauces:'droplet',additions:'circle-plus',drinks:'glass-water'}[c]||'circle'}
+const CATEGORIES=[
+{id:'new',nameAr:'المنتجات الجديدة',icon:'star'},
+{id:'beef',nameAr:'بيف برقر',icon:'fire'},
+{id:'chicken',nameAr:'تشيكن برقر',icon:'drumstick'},
+{id:'fries',nameAr:'الفرايز',icon:'bowl'},
+{id:'appetizers',nameAr:'الأطباق الجانبية',icon:'utensils'},
+{id:'sauces',nameAr:'الصوصات',icon:'droplet'},
+{id:'additions',nameAr:'الإضافات',icon:'circlePlus'},
+{id:'drinks',nameAr:'المشروبات',icon:'glass'},
+];
 
-// ═══ تنقل ═══
-function showScr(id){var all=document.querySelectorAll('.screen');for(var i=0;i<all.length;i++)all[i].classList.remove('on');document.getElementById(id).classList.add('on')}
-function goHome(){showScr('landing');closeCart()}
+/* ══════════════════════════════════════════
+   حالة التطبيق
+   ══════════════════════════════════════════ */
+let cart=[];
+let currentScreen='landing';
+let activeCategory='new';
+let deliveryType='delivery';
+let conversationHistory=[];
+let apiAvailable=true; // يتحول false لو API تعطل
 
-// ═══ الشات — عرض ═══
+/* ══════════════════════════════════════════
+   محرك الذكاء الاصطناعي المحلي (Fallback)
+   ══════════════════════════════════════════ */
+class HatabaAI{
+  constructor(){this.reset()}
+  reset(){
+    this.prefs={budget:null,protein:null,flavor:null,truffle:false,spicy:false,hunger:null,people:1,goal:null,mealType:null,calorieConscious:false};
+    this.asked=new Set();
+    this.lastRecommendation=null;
+    this.messageCount=0;
+    this.awaitingAddResponse=null;
+    this.detectedGender=null; // 'male' | 'female' | null
+    this.detectedName=null;
+    this.mood=null; // 'playful' | 'sad' | 'angry' | 'hurried' | 'chatty' | null
+  }
+
+  /* ═══════ المعالجة الرئيسية ═══════ */
+  process(msg){
+    this.messageCount++;
+    const m=msg.trim();
+    if(!m)return null;
+
+    // لو ينتظر رد على إضافة
+    if(this.awaitingAddResponse){
+      const r=this.awaitingAddResponse;
+      this.awaitingAddResponse=null;
+      if(this.isYes(m))return r.onYes;
+      if(this.isNo(m))return r.onNo;
+    }
+
+    // 1) كشف الجنس والاسم (قبل أي شيء)
+    this.detectGenderName(m);
+
+    // 2) تحليل المزاج
+    this.detectMood(m);
+
+    // 3) تحيات وأحوال — نرد طبيعي ثم نرجع للأكل
+    const greeting=this.handleGreeting(m);
+    if(greeting)return greeting;
+
+    // 4) مزح — نرد بالمزح ثم نرجع
+    const joke=this.handleJoke(m);
+    if(joke)return joke;
+
+    // 5) مشاعر سلبية
+    const sad=this.handleEmotion(m);
+    if(sad)return sad;
+
+    // 6) مواضيع خارجية بذكاء
+    if(this.isOffTopic(m))return this.respOffTopic();
+
+    // 7) شكوى سعر
+    if(this.isPriceComplaint(m))return this.respPriceComplaint();
+
+    // 8) استخراج الكيانات
+    this.extractEntities(m);
+
+    // 9) طلب منتج بالاسم
+    const named=this.findProduct(m);
+    if(named&&this.messageCount<=3){
+      const g=this.detectedGender==='female'?'اختيار حلو':'اختيار ممتاز';
+      return{text:`${g}، ${named.nameAr} سعرها ${named.price} ريال.\nتبغى تضيفها للطلب؟`,products:[named],quickActions:['أضف للطلب','أبي أشوف خيارات ثانية']};
+    }
+
+    // 10) طلبات نوعية
+    if(this.hasAny(m,['ترافل','truffle'])){this.prefs.truffle=true;return this.respTruffle()}
+    if(this.hasAny(m,['أكثر مبيع','أعلى مبيع','الأكثر مبيعا','best seller','الأفضل','شعبي']))return this.respBestSeller();
+    if(this.hasAny(m,['جديد','جديدين','مستجد','حديث']))return this.respNew();
+    if(this.hasAny(m,['حار','حاره','حري','سبايسي','حريق','نار'])){this.prefs.spicy=true;return this.respSpicy()}
+    if(this.hasAny(m,['فرايز','بطاطس']))return this.respFries();
+    if(this.hasAny(m,['منيو','المنيو']))return{text:'تمام، تقدر تشوف المنيو من فوق. أو قولي وش تبغى وأنا ألخص لك.',quickActions:this.getQA()};
+    if(this.hasAny(m,['سلة','السلة','طلباتي']))return{text:'تقدر تفتح السلة من أيقونة الشنطة فوق.',quickActions:this.getQA()};
+    if(this.hasAny(m,['سعرات','كالوري','دايت','حمية','صحي','أخف','خفيف من المكونات'])){this.prefs.calorieConscious=true;return{text:'ما عندي معلومات السعرات الحرارية حالياً، لكن أقدر أساعدك تختار شيء أخف من ناحية المكونات.\nمثلاً حطبه تشيكن أخف من حطبه بيف.',quickActions:['أبي حطبه تشيكن','عادي ما يهم']};}
+    if(this.hasAny(m,['شكرا','شكراً','مشكور','يعطيك العافية','الله يجزاك','ممتاز','حلوة']))return{text:this.detectedGender==='female'?'العفو حبيبتي 😊 تبغى شيء ثاني؟':this.detectedGender==='male'?'العفو يا صاحبي 👍 تبغى شيء ثاني؟':'العفو 👍 تبغى شيء ثاني؟',quickActions:['أبي شيء ثاني','لا خلاص']};
+
+    // 11) عدد أشخاص
+    const ppl=m.match(/نحن\s*(\d+)|(\d+)\s*(أشخاص|اشخاص|شخص|نفر)/);
+    if(ppl){this.prefs.people=parseInt(ppl[1]||ppl[2]);return{text:`تمام، ${this.prefs.people} أشخاص.\nتحبون كل واحد يختار برقره ولا تبغون تشكيلة نتشاركها؟`,quickActions:['كل واحد يختار','تشكيلة نتشاركها']}}
+
+    // 12) توصية أم سؤال
+    if(this.shouldRecommend())return this.recommend();
+    return this.askNext();
+  }
+
+  /* ═══════ كشف الجنس والاسم ═══════ */
+  detectGenderName(m){
+    if(this.detectedGender)return;
+    const femaleNames=['فاطمة','سارة','نورة','هند','مريم','ليلى','ريم','لينا','دانة','غادة','عائشة','خلود','منال','رغد','جوهرة','لمياء','شيخة','مها','أمل','هيفاء','لمياء','عبير','نجلاء','هيا','جدان','رنا','حنين','أسماء','ملاك','جنات','فريدة','وعد','لوجين','تعويض','عنود','شهد','روز','لميس','بسمة','غدير','نوف','مليكة','صفية','شيماء','إيمان','نوف','آية','مريم','آمال','ثريا','هبه','يسرى','ميس','رزان','تالا','جوري'];
+    const maleNames=['محمد','عبدالله','فهد','سعود','خالد','ناصر','بندر','تركي','ماضي','فيصل','عبدالرحمن','سلطان','أحمد','عمر','يوسف','إبراهيم','علي','حسن','سامي','ماجد','وليد','زياد','طلال','مشعل','حمد','منصور','راشد','حمزة','يزيد','عبدالعزيز','سلمى','بدر','عتيب','حبيب','أنس','آدم','ياسر','نواف','عبدالملك','زياد','صقر','مبارك','جاسر','هاني','وليد','سلطان','رائد','عمار','أسامة','سيف','عبدالإله'];
+
+    for(const n of femaleNames){if(m.includes(n)){this.detectedGender='female';this.detectedName=n;return}}
+    for(const n of maleNames){if(m.includes(n)){this.detectedGender='male';this.detectedName=n;return}}
+
+    // كلمات تدل على أنثى
+    if(this.hasAny(m,['أنا بنت','أنا وحدة','أبغى شي حلو','يما','ياما','حبيبتي']))this.detectedGender='female';
+    // كلمات تدل على ذكر
+    if(this.hasAny(m,['أنا ولد','أنا شاب','يا صاحبي','يا عم','يا غالي']))this.detectedGender='male';
+  }
+
+  /* ═══════ كشف المزاج ═══════ */
+  detectMood(m){
+    if(this.hasAny(m,['ههه','هههه','لول','😂','🤣','💀','امزح','امزح معك','مزحة']))this.mood='playful';
+    else if(this.hasAny(m,['زعلان','زعلانة','حزين','متضايق','مقهور','كسلان','تعبان']))this.mood='sad';
+    else if(this.hasAny(m,['غاضب','يقهر','سخف','غبي','فاشل']))this.mood='angry';
+    else if(this.hasAny(m,['مستعجل','سريع','بسرعة','ضغط وقت','ما عندي وقت']))this.mood='hurried';
+  }
+
+  /* ═══════ التحيات ═══════ */
+  handleGreeting(m){
+    const greetings=['كيف حالك','كيفك','كيفحالك','شخبارك','شلونك','شخبار','وش أخبارك','اهلا','أهلا','هلا','السلام عليكم','مساء الخير','صباح الخير','هلا والله','هلا والله','حياك','حيالله','ايش اخبارك','عساك بخير','وش مسوي'];
+    const isGreeting=greetings.some(g=>m.includes(g))||(m.length<=5&&!this.hasAny(m,['بيف','تشيكن','برقر','فرايز','ترافل','ريال','ميزانية']));
+
+    if(!isGreeting)return null;
+
+    const g=this.detectedGender;
+    let response='';
+
+    if(g==='female'){
+      const opts=[
+        'الحمد لله بخير، والأهم كيفك؟ 😊\nوش تبغى تأكل اليوم نشدحلك شي يسرّك',
+        'أهلاً فيكِ، بخير الحمد لله. كيف حالك؟\nخلني أختار لك وجبة حلوة',
+        'هلا حبيبتي، الحمد لله بخير. وش تبغين اليوم؟',
+      ];
+      response=opts[Math.floor(Math.random()*opts.length)];
+    }else if(g==='male'){
+      const opts=[
+        'الحمد لله بخير، والأهم كيف أنت يا '+this.detectedName+'؟\nوش تبغى تأكل اليوم',
+        'هلا والله، بخير الحمد لله. كيف حالك يا صاحبي؟\nخلني أضبط لك طلبك',
+        'حياك الله، الحمد لله تمام. وش مسوي تبغى تأكل؟',
+      ];
+      response=opts[Math.floor(Math.random()*opts.length)];
+    }else{
+      const opts=[
+        'الحمد لله بخير، والأهم كيف أنت؟\nوش تبغى تأكل اليوم نشدحلك',
+        'هلا، بخير الحمد لله. كيف حالك؟\nخلني أختار لك وجبة تريحك',
+        'أهلاً وسهلاً، الحمد لله بخير. وش تبغى اليوم؟',
+      ];
+      response=opts[Math.floor(Math.random()*opts.length)];
+    }
+
+    return{text:response,quickActions:['اختار لي 🍔','معي 25 ريال','أبي الأكثر مبيعاً','أبي ترافل']};
+  }
+
+  /* ═══════ المزح ═══════ */
+  handleJoke(m){
+    if(this.mood!=='playful')return null;
+
+    // إذا هو اللي بدأ يمزح
+    const jokeStarters=['امزح معك','محتكر نكتة','عندك نكتة','اكتبلي نكتة','ضحكني','شيء مضحك'];
+    if(jokeStarters.some(j=>m.includes(j))){
+      const jokes=[
+        'هههه أنا اختصاصي البرقر مو النكت 😄\nلكن أقدر أضحكك بوجبة حطبه بيف، جربها وتشوف',
+        'النكتة الوحيدة اللي أعرفها إن بعض الناس يطلب برقر بدون صوص حطبه 😂\nهذا غريب صح؟',
+        'طيب عندك نكتة: وين يروح البرقر لما يتعب؟ → يحط نفسه في ساندويش 😄\nالمزح مزح، وش تبغى تأكل؟',
+      ];
+      return{text:jokes[Math.floor(Math.random()*jokes.length)],quickActions:['هههه حلوة','أبي بيف','أبي ترافل']};
+    }
+
+    // إذا هو رد بمزح على شيء قلته
+    if(this.messageCount>1){
+      const playfulReplies=[
+        'ههههه 😄 حلوة، بس أنا مجنون البرقر أكثر.\nخلني أرجع لك لميداني: وش تبغى تأكل؟',
+        'أحسن من المزحة طلب حطبه ترافل 😏 جربها وتشوف وش أقصد',
+        'هههه 👍 حلوة حلوة. طيب خلنا نحول المزح لوجبة حلوة، وش تبغى؟',
+      ];
+      return{text:playfulReplies[Math.floor(Math.random()*playfulReplies.length)],quickActions:['أبي برقر','أبي الأكثر مبيعاً','معي 30 ريال']};
+    }
+
+    return null;
+  }
+
+  /* ═══════ مشاعر ═══════ */
+  handleEmotion(m){
+    if(this.mood==='sad'){
+      const g=this.detectedGender;
+      if(g==='female')return{text:'زعلك في مكانه، لكن وجبة حطبة تاخذ نصف الزعل 😊\nوش تبغين؟ خلني أختار لك شي يرضيك',quickActions:['أبي شيء حلو','أبي ترافل','أبي الأكثر مبيعاً']};
+      if(g==='male')return{text:'يا صاحبي زعلك في مكانه، لكن البرقر يحل نصف المشاكل 👍\nوش تبغى؟ أختار لك شيء يرضيك',quickActions:['أبي بيف','أبي شيء مشبع','معي 30 ريال']};
+      return{text:'زعلك في مكانه، لكن وجبة حطبة تخفف كثير.\nوش تبغى؟ خلني أختار لك شي يريحك',quickActions:['أبي شيء حلو','أبي الأكثر مبيعاً']};
+    }
+    if(this.mood==='angry'){
+      return{text:'فهمتك، وآسف إذا في شيء ضايقك. خلني أركز في شيء إيجابي: وش تبغى تأكل وأنا أضبطه لك؟',quickActions:['أبي بيف','أبي شيء مشبع','معي 25 ريال']};
+    }
+    return null;
+  }
+
+  /* ═══════ كشف خارج النطاق ═══════ */
+  isOffTopic(m){
+    if(m.length>50)return false;
+    const o=['سيارة','سيارات','مباراة','كرة','فريق','انتخابات','سياسة','برمجة','كود','مدرسة','جامعة','طب','دكتور','علاج','دواء','طقس','سهم','أسهم','تداول','بنك','قرض','وظيفة','سفر','طيران','فندق','زواج','دين','فتوى','قرآن','صلاة','مسجد','ويكند','مول','سينما','فيلم','مسلسل','أنمي','لعبة','بلايستيشن','اكس بوكس'];
+    return o.some(k=>m.includes(k));
+  }
+
+  respOffTopic(){
+    const g=this.detectedGender;
+    if(g==='female'){
+      const opts=[
+        'هههه هذا مو مجالي 😄 أنا اختصاصي البرقر. خلني أختار لك شي يلذذك',
+        'يا حبيبتي هذا سؤال يحتاج خبير ثاني 😊 أنا هوني في البرقر. وش تبغين تاكلين؟',
+      ];
+      return{text:opts[Math.floor(Math.random()*opts.length)],quickActions:this.getQA()};
+    }
+    if(g==='male'){
+      const opts=[
+        'هههه يا '+this.detectedName+' هذا مو تخصصي 😄 أنا خبيري في البرقر. خلني أضبط طلبك',
+        'يا صاحبي السؤال بعيد 😄 أنا هنا عشان أخلصك من الجوع. وش تبغى تأكل؟',
+      ];
+      return{text:opts[Math.floor(Math.random()*opts.length)],quickActions:this.getQA()};
+    }
+    const opts=[
+      'هههه سؤال بعيد عن البرقر 😄 أنا شغلي أخليك تطلع من حطبة مبسوط. خلنا نضبط طلبك.',
+      'خلنا نخلي المواضيع الثانية على جنب 😄 أنا هنا عشان أساعدك تختار طلبك.',
+    ];
+    return{text:opts[Math.floor(Math.random()*opts.length)],quickActions:this.getQA()};
+  }
+
+  /* ═══════ استخراج الكيانات ═══════ */
+  extractEntities(m){
+    const bp=[/معي\s*(؟)?\s*(\d+)/,/ميزانيتي?\s*(؟)?\s*(\d+)/,/بـ?\s*(\d+)\s*ريال/,/(\d+)\s*ريال/,/حد\s*(؟)?\s*(\d+)/,/أقصى\s*(؟)?\s*(\d+)/,/ما\s*[أا]بغى\s*[أا]خرج\s*عن\s*(\d+)/,/ما\s*[أا]بي\s*[أا]طلع\s*عن\s*(\d+)/,/مابي\s*اخرج\s*عن\s*(\d+)/];
+    for(const p of bp){const x=m.match(p);if(x){this.prefs.budget=parseInt(x[x.length-1]);break}}
+    if(/^\d+$/.test(m.trim())&&!this.prefs.budget)this.prefs.budget=parseInt(m.trim());
+    if(this.hasAny(m,['بيف','لحم','beef']))this.prefs.protein='beef';
+    if(this.hasAny(m,['تشيكن','دجاج','chicken']))this.prefs.protein='chicken';
+    if(this.hasAny(m,['مشبع','شبعان','جوعان','ويان','أبي أكل كثير','جوع']))this.prefs.hunger='high';
+    if(this.hasAny(m,['خفيف','قليل','سناك','وجبة خفيفة','ما أبي كثير','شيء بسيط']))this.prefs.hunger='low';
+    if(this.hasAny(m,['يستاهل','قيمة','أفضل قيمة','وفر','مقابل سعر']))this.prefs.goal='best_value';
+    if(this.hasAny(m,['مهما كان السعر','الممتاز','الفخم','الاحترافي','الأفضل بلا حدود']))this.prefs.goal='best_experience';
+    if(this.hasAny(m,['أجرب','شيء جديد','تجربة جديدة','ما جربت','أبي أجرب']))this.prefs.goal='try_new';
+    if(this.hasAny(m,['كلاسيك','عادي','بسيط','معتاد','العادة','مألوف']))this.prefs.flavor='classic';
+    if(this.hasAny(m,['مختلف','تجربة','مميز','خاص','يجنن','قوي النكهة','نكهة قوية']))this.prefs.flavor='adventurous';
+    if(this.hasAny(m,['ترافل','truffle']))this.prefs.truffle=true;
+    if(this.hasAny(m,['برقر','برجر','ساندويش','ساندوتش']))this.prefs.mealType='burger';
+    if(this.hasAny(m,['وجبة','كمبو','سيت','meal','كامل']))this.prefs.mealType='full_meal';
+  }
+
+  /* ═══════ هل نوصّي؟ ═══════ */
+  shouldRecommend(){
+    const p=this.prefs;
+    if(p.budget&&p.protein)return true;
+    if(p.budget&&p.goal)return true;
+    if(p.protein&&p.flavor)return true;
+    if(p.protein&&p.truffle)return true;
+    if(p.budget&&this.messageCount>=3)return true;
+    if(p.protein&&p.hunger==='high')return true;
+    return false;
+  }
+
+  /* ═══════ السؤال التالي ═══════ */
+  askNext(){
+    const p=this.prefs;const g=this.detectedGender;
+    if(!p.protein&&!p.truffle&&!p.spicy&&!p.goal){
+      if(g==='female')return{text:'خلني أفهم ذوقك شوي.\nأنتي اليوم ناوية على برقر ولا شيء خفيف؟',quickActions:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
+      if(g==='male')return{text:'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟',quickActions:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
+      return{text:'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟',quickActions:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
+    }
+    if(!p.protein&&!p.truffle){
+      return{text:'بيف ولا تشيكن؟',quickActions:['بيف','تشيكن','لا يهم']};
+    }
+    if(!p.flavor&&!p.truffle&&!p.goal){
+      return{text:'تحب النكهة الكلاسيكية ولا ودك نجرب شيء مختلف؟',quickActions:['كلاسيكية','شيء مختلف','أبي ترافل']};
+    }
+    if(!p.budget){
+      if(g==='female')return{text:'ميزانيتك تقريباً كم؟ عشان أختار لك الأحسن.',quickActions:['معي 20 ريال','معي 25 ريال','معي 30 ريال','أبي أفضل شيء']};
+      return{text:'ميزانيتك تقريباً كم؟ عشان أضبط لك الخيارات.',quickActions:['معي 20 ريال','معي 25 ريال','معي 30 ريال','أبي أفضل شيء مهما كان السعر']};
+    }
+    return this.recommend();
+  }
+
+  /* ═══════ التوصية ═══════ */
+  recommend(){
+    const p=this.prefs;let candidates=[];
+    if(p.budget)candidates=this.buildCombos(p.budget);
+    else candidates=this.filterScore(MENU.filter(i=>i.type==='burger'),p);
+    if(!candidates.length)return{text:'ما لقيت شيء يناسب اللي تبغاه بهالميزانية. تبغى تزيد الميزانية شوي؟',quickActions:['زود 5 ريال','أبي أشوف المنيو']};
+    const top=candidates.slice(0,2);
+    const mains=[...new Map(top.map(c=>[c.items[0].id,c.items[0]])).values()];
+    let reason=this.buildReason(top[0],p);
+    let text='';
+    const g=this.detectedGender;
+    if(mains.length===1&&top[0].items.length===1){
+      text=g==='female'?`أعتقد هذي أقرب شيء لذوقك 👇\n${reason}`:`أعتقد هذا أقرب شيء لذوقك 👇\n${reason}`;
+    }else if(top[0].items.length>1){
+      text=`عندك وجبة كاملة ضمن ميزانيتك 👇\n${reason}`;
+    }else{
+      text=`عندك خيارين حلوين:\n${reason}`;
+    }
+    this.lastRecommendation=top;
+    const qa=['أشوف خيارات ثانية'];
+    if(top[0].items.length===1&&p.budget&&top[0].total<p.budget){
+      const rem=p.budget-top[0].total;
+      if(rem>=7)qa.unshift('أضيف له فرايز');
+      else if(rem>=3)qa.unshift('أضيف له صوص');
+    }
+    return{text,products:mains,quickActions:qa};
+  }
+
+  /* ═══════ بناء كمبات ═══════ */
+  buildCombos(budget){
+    const p=this.prefs;
+    const burgers=MENU.filter(i=>i.type==='burger');
+    const sides=MENU.filter(i=>i.type==='side'&&i.category!=='sauces');
+    const drinks=MENU.filter(i=>i.type==='drink');
+    const combos=[];
+    for(const b of burgers){
+      if(b.price>budget)continue;
+      combos.push({items:[b],total:b.price,score:this.scoreItem(b,p)});
+      const rem=budget-b.price;
+      for(const s of sides){
+        if(s.price<=rem){
+          combos.push({items:[b,s],total:b.price+s.price,score:this.scoreItem(b,p)+this.scoreItem(s,p)*.5+10});
+          const r2=rem-s.price;
+          for(const d of drinks){if(d.price<=r2)combos.push({items:[b,s,d],total:b.price+s.price+d.price,score:this.scoreItem(b,p)+this.scoreItem(s,p)*.5+this.scoreItem(d,p)*.2+20})}
+        }
+      }
+      for(const d of drinks){if(d.price<=rem)combos.push({items:[b,d],total:b.price+d.price,score:this.scoreItem(b,p)+this.scoreItem(d,p)*.2+5})}
+    }
+    combos.sort((a,b)=>{
+      const au=a.total/budget,bu=b.total/budget;
+      const ab=au>=.8&&au<=1?15:au>=.6?5:-10;
+      const bb=bu>=.8&&bu<=1?15:bu>=.6?5:-10;
+      return(b.score+bb)-(a.score+ab);
+    });
+    const seen=new Set();
+    return combos.filter(c=>{const k=c.items.map(i=>i.id).sort().join(',');if(seen.has(k))return false;seen.add(k);return true}).slice(0,4);
+  }
+
+  scoreItem(item,p){
+    let s=0;
+    if(p.protein&&item.protein===p.protein)s+=15;
+    if(p.protein&&item.protein&&item.protein!==p.protein)s-=20;
+    if(p.truffle&&item.tags.includes('truffle'))s+=15;
+    if(p.spicy&&item.tags.includes('spicy'))s+=12;
+    if(p.flavor==='classic'&&item.tags.includes('classic'))s+=10;
+    if(p.flavor==='adventurous'&&(item.tags.includes('truffle')||item.tags.includes('loaded')))s+=12;
+    if(p.goal==='best_value'&&item.bestSeller)s+=8;
+    if(p.goal==='best_experience'&&item.tags.includes('truffle'))s+=10;
+    if(p.goal==='try_new'&&item.isNew)s+=12;
+    if(item.bestSeller)s+=4;
+    if(item.isNew)s+=2;
+    return s;
+  }
+
+  filterScore(items,p){return items.map(i=>({items:[i],total:i.price,score:this.scoreItem(i,p)})).filter(c=>c.score>0).sort((a,b)=>b.score-a.score)}
+
+  buildReason(combo,p){
+    const m=combo.items[0];const r=[];
+    if(p.truffle&&m.tags.includes('truffle'))r.push('لأنك تحب الترافل');
+    if(p.protein==='beef'&&m.protein==='beef')r.push('بيف كما تبغى');
+    if(p.protein==='chicken'&&m.protein==='chicken')r.push('تشيكن كما تبغى');
+    if(p.flavor==='classic')r.push('نكهة كلاسيكية');
+    if(p.flavor==='adventurous')r.push('نكهة مميزة ومختلفة');
+    if(p.goal==='best_value')r.push('أفضل قيمة مقابل السعر');
+    if(p.goal==='best_experience')r.push('أفضل تجربة');
+    if(p.goal==='try_new')r.push('من المنتجات الجديدة');
+    if(m.bestSeller&&!r.length)r.push('الأكثر مبيعاً عندنا');
+    if(combo.items.length>1)r.push(`وجبة كاملة بـ${combo.total} ريال`);
+    else r.push(`سعرها ${m.price} ريال`);
+    return r.join('، ');
+  }
+
+  /* ═══════ ردود نوعية ═══════ */
+  respTruffle(){
+    const t=MENU.filter(i=>i.tags.includes('truffle'));
+    const g=this.detectedGender;
+    if(this.prefs.budget){
+      const w=t.filter(i=>i.price<=this.prefs.budget);
+      if(w.length){
+        const intro=g==='female'?'ذوقك حلو 👏 هذي خيارات الترافل 👇':g==='male'?'ذوقك ممتاز 👏 هذي خيارات الترافل 👇':'ذوقك ممتاز 👏 هذي خيارات الترافل 👇';
+        return{text:intro,products:w,quickActions:['أشوف خيارات ثانية']};
+      }
+    }
+    const intro=g==='female'?'ذوقك حلو 👏 عندنا خيارات ترافل. ميزانيتك تقريباً كم؟':g==='male'?'ذوقك ممتاز 👏 عندنا خيارات ترافل. ميزانيتك تقريباً كم؟':'ذوقك ممتاز 👏 عندنا خيارات ترافل. ميزانيتك تقريباً كم؟';
+    return{text:intro,products:t,quickActions:['معي 25 ريال','معي 30 ريال','أبي أفضل شيء']};
+  }
+
+  respBestSeller(){
+    const b=MENU.filter(i=>i.bestSeller&&i.type==='burger');
+    this.prefs.goal='best_value';
+    return{text:'هذي الأكثر مبيعاً عندنا 👇',products:b,quickActions:['أبي شيء مختلف','أبي فرايز معه']};
+  }
+
+  respNew(){
+    const n=MENU.filter(i=>i.isNew);this.prefs.goal='try_new';
+    return{text:'هذي آخر شيء أضفناه 👇',products:n,quickActions:['أبي الأكثر مبيعاً']};
+  }
+
+  respSpicy(){
+    return{text:'عندنا صوص سبايسي ممتاز، تقدر تضيفه لأي برقر ويصير شي ثاني.\nتبغى تختار برقر أولاً؟',quickActions:['بيف','تشيكن','أبي الأكثر مبيعاً']};
+  }
+
+  respFries(){
+    const f=MENU.filter(i=>i.category==='fries');
+    return{text:'هذي خيارات الفرايز 👇',products:f,quickActions:['أبي برقر مع فرايز','رجع للبرقرات']};
+  }
+
+  respPriceComplaint(){
+    this.prefs.budget=null;
+    const g=this.detectedGender;
+    if(g==='female')return{text:'معك حق حبيبتي، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟',quickActions:['15 ريال','20 ريال','25 ريال']};
+    return{text:'معك حق، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟',quickActions:['15 ريال','20 ريال','25 ريال']};
+  }
+
+  /* ═══════ إضافة منتج ═══════ */
+  onProductAdded(pid){
+    const p=MENU.find(i=>i.id===pid);if(!p)return null;
+    const rem=this.prefs.budget?this.prefs.budget-p.price:null;
+    if(rem&&rem>=7){
+      const f=MENU.find(i=>i.id==='french-fries');
+      this.awaitingAddResponse={
+        onYes:{text:`تمام، أضفنا الفرنش فرايز. طلبك الآن ${p.price+f.price} ريال 👍`,quickActions:['أتمم الطلب','أبي شيء ثاني']},
+        onNo:{text:'تمام، طلبك جاهز 👍',quickActions:['أتمم الطلب','أبي شيء ثاني']}
+      };
+      return{text:`حلو، أضفناه لك.\nباقي لك ${rem} ريال من ميزانيتك. لو تبغى تكملها، الفرنش فرايز بـ${f.price} ريال وتكون وجبتك كاملة.`,quickActions:['أيوا أضفها','لا خلاص']};
+    }
+    if(rem&&rem>=3){
+      const s=MENU.find(i=>i.id==='s-hataba');
+      this.awaitingAddResponse={
+        onYes:{text:`تمام، أضفنا صوص حطبه 👍`,quickActions:['أتمم الطلب','أبي شيء ثاني']},
+        onNo:{text:'تمام 👍',quickActions:['أتمم الطلب','أبي شيء ثاني']}
+      };
+      return{text:`حلو، أضفناه 👍\nباقي لك ${rem} ريال. تقدر تضيف صوص حطبه بـ${s.price} ريال يرفع النكهة.`,quickActions:['أيوا أضفه','لا خلاص']};
+    }
+    return{text:'تمام، أضفناه 👍',quickActions:['أتمم الطلب','أبي شيء ثاني']};
+  }
+
+  /* ═══════ أدوات ═══════ */
+  hasAny(m,kw){return kw.some(k=>m.includes(k))}
+  isPriceComplaint(m){return this.hasAny(m,['غالي','سعره عالي','مكلف','أغلى','ما يستاهل','مبالغ فيه'])}
+  isYes(m){return this.hasAny(m,['ايوا','نعم','أيوا','تمام','حلو','زين','ok','أكيد','طبعا','هلا','نعم','هيه','ايوه'])}
+  isNo(m){return this.hasAny(m,['لا','لاا','أبدا','ما أبي','ما أبغى','خلاص','لا يهم','لا لا'])}
+  findProduct(m){return MENU.find(i=>m.includes(i.nameAr)||m.toLowerCase().includes(i.nameEn.toLowerCase()))}
+  getQA(){
+    const p=this.prefs,b=[];
+    if(!p.protein)b.push('بيف','تشيكن');
+    if(!p.truffle)b.push('أبي ترافل');
+    if(!p.budget)b.push('معي 25 ريال');
+    b.push('أبي الأكثر مبيعاً','أبي شيء مشبع');
+    return b.slice(0,6);
+  }
+}
+const ai=new HatabaAI();
+
+/* ══════════════════════════════════════════
+   واجهة المستخدم
+   ══════════════════════════════════════════ */
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');currentScreen=id}
+function goHome(){showScreen('landing');closeCartPanel()}
 function openChat(){
-  showScr('chat');
-  var c=document.getElementById('msgs');
-  if(c.children.length===0){
-    addDateDiv('اليوم');
-    setTimeout(function(){
-      addAIMsg('هلا 👋 خلني أختار لك شيء يضبط مزاجك اليوم.');
-      renderQA(['اختار لي 🍔','معي 25 ريال','أبي شيء حار','أبي ترافل','الأكثر مبيعاً','أبي شيء مشبع']);
-    },500);
+  showScreen('chat');
+  const msgs=document.getElementById('chatMessages');
+  if(msgs.children.length===0){
+    setTimeout(()=>{addAIMessage('هلا 👋 خلني أختار لك شيء يضبط مزاجك اليوم.');renderQuickActions(['اختار لي 🍔','معي 25 ريال','أبي شيء حار','أبي ترافل','الأكثر مبيعاً','أبي شيء مشبع'])},600);
   }
 }
-function addDateDiv(t){var d=document.createElement('div');d.className='mDate';d.textContent=t;document.getElementById('msgs').appendChild(d);scrollBot()}
-function addAIMsg(text,products){
-  var c=document.getElementById('msgs');
-  var w=document.createElement('div');w.className='mW ai';
-  var h='<div class="mAv">ح</div><div>';
-  h+='<div class="mBb">'+esc(text)+'</div>';
-  if(products&&products.length){
-    for(var i=0;i<products.length;i++) h+=renderPC(products[i]);
-  }
-  h+='<div class="mTm">'+getTime()+'</div></div>';
-  w.innerHTML=h;c.appendChild(w);scrollBot();
+function openMenu(){showScreen('menu');renderMenu()}
+
+function addAIMessage(text,products=[]){
+  const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='msg msg-ai';
+  let h=`<div class="msg-bubble">${esc(text)}</div>`;
+  if(products.length)h+=products.map(p=>renderPC(p)).join('');
+  d.innerHTML=h;c.appendChild(d);scrollBottom();
 }
-function addUserMsg(text){
-  var c=document.getElementById('msgs');
-  var w=document.createElement('div');w.className='mW usr';
-  w.innerHTML='<div class="mAv"><i class="fas fa-user" style="font-size:.55rem"></i></div><div><div class="mBb">'+esc(text)+'</div><div class="mTm">'+getTime()+'</div></div>';
-  c.appendChild(w);scrollBot();
+function addUserMessage(text){
+  const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='msg msg-user';
+  d.innerHTML=`<div class="msg-bubble">${esc(text)}</div>`;c.appendChild(d);scrollBottom();
 }
-function showTyp(){
-  var c=document.getElementById('msgs');
-  var d=document.createElement('div');d.className='typW';d.id='typInd';
-  d.innerHTML='<div class="mAv">ح</div><div class="typD"><span></span><span></span><span></span></div>';
-  c.appendChild(d);scrollBot();
+function showTyping(){
+  const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='typing-indicator';d.id='typingInd';
+  d.innerHTML='<span></span><span></span><span></span>';c.appendChild(d);scrollBottom();
 }
-function hideTyp(){var e=document.getElementById('typInd');if(e)e.remove()}
+function hideTyping(){const e=document.getElementById('typingInd');if(e)e.remove()}
 
 function renderPC(p){
-  var bdg='';
-  if(p.isNew)bdg+='<span class="pBdg nw">جديد</span>';
-  if(p.bestSeller)bdg+='<span class="pBdg bs">الأكثر مبيعاً</span>';
-  var img=p.image?'<img class="pCImg" src="'+p.image+'" alt="'+p.nameAr+'" onerror="this.outerHTML=\'<div class=\\\'pCImgFb\\\'><i class=\\\'fas fa-burger\\\'></i></div>\'">':'<div class="pCImgFb"><i class="fas fa-burger"></i></div>';
-  return '<div class="pCrd">'+img+'<div class="pCBdg">'+bdg+'</div><div class="pCBd"><div class="pCNm">'+p.nameAr+'</div><div class="pCEn">'+p.nameEn+'</div><div class="pCIn">'+p.ingredients.join(' &bull; ')+'</div><div class="pCFt"><div class="pCPr">'+p.price+' <small>ر.س</small></div><div class="pCBts"><button class="pBt pBtAdd" onclick="addFromChat(\''+p.id+'\')">أضف للطلب</button><button class="pBt pBtAlt" onclick="doSendQA(\'أشوف خيارات ثانية\')">ثانية</button></div></div></div></div>';
+  let badges='';if(p.isNew)badges+='<span class="pc-badge new">جديد</span>';if(p.bestSeller)badges+='<span class="pc-badge bestseller">الأكثر مبيعاً</span>';
+  const img=p.image?`<img class="pc-img" src="${p.image}" alt="${p.nameAr}" onerror="this.outerHTML='<div class=\\'pc-img\\' style=\\'display:flex;align-items:center;justify-content:center;background:#111;color:#333;font-size:1.8rem\\'>${ic('burger')}</div>'">`:`<div class="pc-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#111,#1A1A1A);color:#333;font-size:1.8rem">${ic('burger')}</div>`;
+  const up=getUpsellLine(p);
+  return`<div class="product-card tilt-3d">${img}<div class="pc-body">${badges}<div class="pc-name-ar">${p.nameAr}</div><div class="pc-name-en">${p.nameEn}</div><div class="pc-ingredients">${p.ingredients.join(' • ')}</div>${up?`<div class="pc-upsell">${ic('sparkle')} ${up}</div>`:''}<div class="pc-footer"><div class="pc-price">${p.price} <span>ر.س</span></div><div class="pc-actions"><button class="pc-btn pc-btn-add" onclick="addFromChat('${p.id}')">أضف للطلب</button><button class="pc-btn pc-btn-alt" onclick="sendQuickAction('أشوف خيارات ثانية')">ثانية</button></div></div></div></div>`;
 }
 
-function renderQA(actions){
-  var c=document.getElementById('qaBar');var h='';
-  for(var i=0;i<actions.length;i++){
-    var cls='qaB'+(i===0&&actions.length>2?' gld':'');
-    var txt=actions[i].replace(/'/g,'&#39;');
-    h+='<button class="'+cls+'" onclick="doSendQA(\''+txt+'\')">'+actions[i]+'</button>';
+function renderQuickActions(actions){
+  const c=document.getElementById('quickActions');
+  c.innerHTML=actions.map(a=>`<button class="qa-chip" onclick="sendQuickAction('${a.replace(/'/g,"\\'")}')">${a}</button>`).join('');
+}
+function scrollBottom(){const c=document.getElementById('chatMessages');setTimeout(()=>c.scrollTop=c.scrollHeight,50)}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ══════════════════════════════════════════
+   إرسال الرسائل — API أولاً ثم Fallback
+   ══════════════════════════════════════════ */
+function sendMessage(){const i=document.getElementById('chatInput');const t=i.value.trim();if(!t)return;i.value='';processUserMsg(t)}
+function sendQuickAction(t){processUserMsg(t)}
+
+/* ملخص مضغوط للمنيو نمرره لكلود عشان يعرف الأصناف الحقيقية وأسعارها فقط */
+const MENU_FOR_AI=MENU.map(i=>({id:i.id,ar:i.nameAr,en:i.nameEn,price:i.price,type:i.type,category:i.category,protein:i.protein,tags:i.tags,bestSeller:i.bestSeller,isNew:i.isNew,ingredients:i.ingredients}));
+
+const CLAUDE_SYSTEM_PROMPT=`أنت "حطبة"، مساعد ذكي داخل تطبيق مطعم برقر سعودي اسمه HATABA. جمهورك سعودي/خليجي وتتكلم بلهجة سعودية دارجة، ودودة، فيها لمسة خفة دم بسيطة بدون مبالغة.
+
+مهمتك: تساعد الزبون يقرر وش يطلب من المنيو الحقيقي المرفق أدناه — لا تخترع أصناف أو أسعار غير موجودة فيه أبداً.
+
+قواعد أساسية:
+1) اسأل أسئلة قصيرة لما تحتاج تفهم الزبون: بيف ولا تشيكن، جوعان (وجبة مشبعة) ولا شيء خفيف، ميزانيته كم.
+2) لو الزبون قال إن السعر غالي أو اشتكى من السعر، لا تجادله — تعاطف بسرعة واسأله "كم عندك تقريباً؟" وبعدها رشّح له أصناف أو تشكيلة تناسب ميزانيته بالضبط من المنيو.
+3) دايم رشّح صنف رئيسي واحد أو اثنين بالضبط (مو أكثر) عن طريق حقل showProducts بمعرفات (id) حقيقية من المنيو.
+4) بعد ما ترشح، اقترح إضافة تكميلية بجملة مغرية طبيعية (مثال: "لو أخذت معه X بيطلع رهيب" أو "أغلب الزباين يضيفون معها Y" أو تذكير إنه من الأكثر مبيعاً / منتج جديد) — هذا اقتراح فقط، أنت لا تضيف شيء للسلة ولا "تطلب" نيابة عنه أبداً، الإضافة تصير فقط لما الزبون يضغط زر "أضف للطلب" في الواجهة. لا تقول أبداً "تم إضافة" أو "طلبك جاهز" لأنك لا تتحكم بالسلة.
+5) اكتشف من كلام الزبون جنسه إذا كان واضح (أسماء، ضمائر، "حبيبتي/يا صاحبي") وخاطبه بأسلوب مناسب بدون افتراضات غريبة، وإذا ذكر اسمه استخدمه بلطف بين فترة وفترة.
+6) لو مزح الزبون معك، جاوب بخفة دم بسيطة ورجّعه بسلاسة لموضوع الطلب.
+7) لو سأل عن شيء بره نطاق المطعم (سياسة، رياضة، طقس...)، اعتذر بلطف وخفة إنه مو مجالك وارجعه للطلب.
+8) خلي كل رد قصير: سطر أو سطرين كحد أقصى، ما يزيد عن 3 أسطر أبداً.
+9) لا تكرر نفس الصيغة كل مرة، نوّع بأسلوبك الطبيعي.
+
+مهم جداً بخصوص شكل الرد: رد فقط بكائن JSON صافي بدون أي نص قبله أو بعده وبدون Markdown fences، بهذا الشكل بالضبط:
+{"text":"نص الرد المعروض للزبون","showProducts":["id1","id2"],"quickActions":["رد سريع 1","رد سريع 2","رد سريع 3"]}
+- showProducts: مصفوفة معرفات (id) من المنيو المرفق فقط، فاضية [] لو ما فيه داعي تعرض منتج.
+- quickActions: 2 إلى 4 اقتراحات ردود قصيرة جداً (كلمة لين ٣ كلمات) الزبون يقدر يضغطها بدل ما يكتب.
+
+هذا المنيو الكامل (JSON)، هذا مصدر الحقيقة الوحيد للأصناف والأسعار:
+${JSON.stringify(MENU_FOR_AI)}`;
+
+async function processUserMsg(text){
+  addUserMessage(text);
+  conversationHistory.push({role:'user',text});
+  renderQuickActions([]);
+  showTyping();
+
+  if(apiAvailable){
+    try{
+      const res=await callClaudeAPI(text);
+      hideTyping();
+      const products=(res.showProducts||[]).map(id=>MENU.find(i=>i.id===id)).filter(Boolean);
+      addAIMessage(res.text,products);
+      renderQuickActions(res.quickActions||[]);
+      conversationHistory.push({role:'model',text:res.text});
+      updateLocalPrefs(text); // نحدث تفضيلات المحرك المحلي أيضاً احتياطاً
+      return;
+    }catch(e){
+      console.log('تعذر الوصول لكلود، ننتقل للمحرك المحلي:',e.message);
+      apiAvailable=false;
+      document.getElementById('aiStatusText').textContent='وضع محلي';
+    }
   }
-  c.innerHTML=h;
+
+  // Fallback: المحرك المحلي
+  const delay=600+Math.random()*600;
+  setTimeout(()=>{
+    hideTyping();
+    const resp=ai.process(text);
+    if(!resp)return;
+    addAIMessage(resp.text,resp.products||[]);
+    renderQuickActions(resp.quickActions||[]);
+    conversationHistory.push({role:'model',text:resp.text});
+  },delay);
 }
 
-// ═══ الشات — إرسال ═══
-function doSend(){var inp=document.getElementById('chatIn');var t=inp.value.trim();if(!t)return;inp.value='';doProcess(t)}
-function doSendQA(t){doProcess(t)}
+function updateLocalPrefs(text){ai.extractEntities(text)}
 
-function doProcess(text){
-  addUserMsg(text);
-  convHist.push({role:'user',text:text});
-  renderQA([]);
-  showTyp();
-  if(apiOK){
-    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history:convHist.slice(-14),preferences:{}})})
-    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
-    .then(function(data){
-      hideTyp();
-      var prods=[];
-      if(data.showProducts)for(var i=0;i<data.showProducts.length;i++){var p=findById(data.showProducts[i]);if(p)prods.push(p)}
-      addAIMsg(data.text||'',prods);
-      renderQA(data.quickActions||[]);
-      convHist.push({role:'model',text:data.text||''});
-    })
-    .catch(function(e){
-      console.log('API fail:',e);
-      apiOK=false;
-      document.getElementById('aiSt').textContent='محلي';
-      fallbackProcess(text);
+/* نداء مباشر لـ Claude عبر واجهة Anthropic Messages API */
+async function callClaudeAPI(message){
+  const msgs=conversationHistory.slice(-14).map(h=>({role:h.role==='user'?'user':'assistant',content:h.text}));
+  msgs.push({role:'user',content:message});
+  const response=await fetch('/api/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system:CLAUDE_SYSTEM_PROMPT,messages:msgs})
+  });
+  if(!response.ok){
+    let msg=`HTTP ${response.status}`;
+    try{const e=await response.json();if(e.error)msg=e.error}catch(_){}
+    throw new Error(msg);
+  }
+  const parsed=await response.json();
+  if(!parsed.text)throw new Error('bad shape');
+  return parsed;
+}
+
+function addFromChat(pid){
+  addToCart(pid);
+  const product=MENU.find(i=>i.id===pid);
+  const addMsg=`أضفت ${product.nameAr} للسلة`;
+  if(apiAvailable){
+    addUserMessage(addMsg);
+    conversationHistory.push({role:'user',text:addMsg});
+    showTyping();
+    callClaudeAPI(addMsg).then(res=>{
+      hideTyping();
+      const products=(res.showProducts||[]).map(id=>MENU.find(i=>i.id===id)).filter(Boolean);
+      addAIMessage(res.text,products);
+      renderQuickActions(res.quickActions||[]);
+      conversationHistory.push({role:'model',text:res.text});
+    }).catch(()=>{
+      hideTyping();
+      apiAvailable=false;
+      document.getElementById('aiStatusText').textContent='وضع محلي';
+      const resp=ai.onProductAdded(pid);
+      if(resp){addAIMessage(resp.text,resp.products||[]);renderQuickActions(resp.quickActions||[]);conversationHistory.push({role:'model',text:resp.text})}
     });
   }else{
-    fallbackProcess(text);
+    const resp=ai.onProductAdded(pid);
+    if(resp){showTyping();setTimeout(()=>{hideTyping();addAIMessage(resp.text,resp.products||[]);renderQuickActions(resp.quickActions||[]);conversationHistory.push({role:'model',text:resp.text})},500)}
   }
 }
 
-function fallbackProcess(text){
-  setTimeout(function(){
-    hideTyp();
-    var r=localAI(text);
-    if(!r)return;
-    addAIMsg(r.text,r.products||[]);
-    renderQA(r.qa||[]);
-    convHist.push({role:'model',text:r.text});
-  },500+Math.random()*500);
-}
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMessage()});
 
-// ═══ إضافة من الشات ═══
-function addFromChat(pid){
-  var p=findById(pid);if(!p)return;
-  addToCart(pid);
-  if(apiOK){
-    var m='أضفت '+p.nameAr+' للسلة';
-    addUserMsg(m);convHist.push({role:'user',text:m});showTyp();
-    fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m,history:convHist.slice(-14),preferences:{}})})
-    .then(function(r){return r.json()})
-    .then(function(data){hideTyp();var prods=[];if(data.showProducts)for(var i=0;i<data.showProducts.length;i++){var pp=findById(data.showProducts[i]);if(pp)prods.push(pp)}addAIMsg(data.text||'',prods);renderQA(data.quickActions||[]);convHist.push({role:'model',text:data.text||''})})
-    .catch(function(){hideTyp();var r=onAddResp(pid);if(r){addAIMsg(r.text,r.products||[]);renderQA(r.qa||[]);convHist.push({role:'model',text:r.text})}});
-  }else{
-    var r=onAddResp(pid);
-    if(r){showTyp();setTimeout(function(){hideTyp();addAIMsg(r.text,r.products||[]);renderQA(r.qa||[]);convHist.push({role:'model',text:r.text})},400)}
-  }
-}
-
-document.getElementById('chatIn').addEventListener('keydown',function(e){if(e.key==='Enter')doSend()});
-
-// ═══ المحرك المحلي ═══
-function localAI(msg){
-  var m=msg.trim();
-  // تحيات
-  if(any(m,['كيف حالك','كيفك','كيفحالك','شخبارك','شلونك','شخبار','اهلا','أهلا','هلا','السلام عليكم','مساء الخير','صباح الخير','هلا والله','حياك','حيالله','عساك بخير','وش مسوي'])){
-    var rs=['الحمد لله بخير، والأهم كيف أنت؟\nوش تبغى تأكل اليوم نشدحلك','هلا والله، بخير الحمد لله. كيف حالك؟\nخلني أضبط لك طلبك','أهلاً وسهلاً، الحمد لله بخير. وش تبغى اليوم؟'];
-    return{text:rs[Math.floor(Math.random()*rs.length)],qa:['اختار لي 🍔','معي 25 ريال','أبي الأكثر مبيعاً','أبي ترافل']};
-  }
-  // شكر
-  if(any(m,['شكرا','شكراً','مشكور','يعطيك العافية','الله يجزاك','ممتاز','حلوة'])){return{text:'العفو 👍 تبغى شيء ثاني؟',qa:['أبي شيء ثاني','لا خلاص']};}
-  // ترافل
-  if(any(m,['ترافل','truffle'])){var tr=[];for(var i=0;i<MENU.length;i++)if(MENU[i].tags.indexOf('truffle')!==-1)tr.push(MENU[i]);return{text:'ذوقك ممتاز 👏 هذي خيارات الترافل 👇',products:tr,qa:['أشوف خيارات ثانية']};}
-  // الأكثر مبيعاً
-  if(any(m,['أكثر مبيع','أعلى مبيع','الأكثر مبيعا','best seller','الأفضل','شعبي'])){var bs=[];for(var i=0;i<MENU.length;i++)if(MENU[i].bestSeller&&MENU[i].type==='burger')bs.push(MENU[i]);return{text:'هذي الأكثر مبيعاً عندنا 👇',products:bs,qa:['أبي شيء مختلف','أبي فرايز معه']};}
-  // جديد
-  if(any(m,['جديد','جديدين'])){var nw=[];for(var i=0;i<MENU.length;i++)if(MENU[i].isNew)nw.push(MENU[i]);return{text:'هذي آخر شيء أضفناه 👇',products:nw,qa:['أبي الأكثر مبيعاً']};}
-  // حار
-  if(any(m,['حار','حاره','حري','سبايسي','حريق','نار'])){return{text:'عندنا صوص سبايسي ممتاز، تقدر تضيفه لأي برقر ويصير شي ثاني.\nتبغى تختار برقر أولاً؟',qa:['بيف','تشيكن','أبي الأكثر مبيعاً']};}
-  // فرايز
-  if(any(m,['فرايز','بطاطس'])){var fr=[];for(var i=0;i<MENU.length;i++)if(MENU[i].category==='fries')fr.push(MENU[i]);return{text:'هذي خيارات الفرايز 👇',products:fr,qa:['أبي برقر مع فرايز','رجع للبرقرات']};}
-  // سعرات
-  if(any(m,['سعرات','كالوري','دايت','حمية','صحي','أخف'])){return{text:'ما عندي معلومات السعرات الحرارية حالياً، لكن أقدر أساعدك تختار شيء أخف.\nمثلاً حطبه تشيكن أخف من حطبه بيف.',qa:['أبي حطبه تشيكن','عادي ما يهم']};}
-  // شكوى سعر
-  if(any(m,['غالي','سعره عالي','مكلف','أغلى','ما يستاهل','مبالغ فيه'])){return{text:'معك حق، خلنا ننزلها شوي. كم حاب يكون الحد الأعلى؟',qa:['15 ريال','20 ريال','25 ريال']};}
-  // منتج بالاسم
-  for(var i=0;i<MENU.length;i++){
-    if(m.indexOf(MENU[i].nameAr)!==-1){
-      return{text:MENU[i].nameAr+'، اختيار ممتاز. سعرها '+MENU[i].price+' ريال.\nتبغى تضيفها للطلب؟',products:[MENU[i]],qa:['أضف للطلب','أبي أشوف خيارات ثانية']};
-    }
-  }
-  // ميزانية
-  var budget=null;
-  var bp=[/معي\s*(\d+)/,/ميزانيتي?\s*(\d+)/,/بـ?\s*(\d+)\s*ريال/,/(\d+)\s*ريال/,/حد\s*(\d+)/,/أقصى\s*(\d+)/];
-  for(var i=0;i<bp.length;i++){var x=m.match(bp[i]);if(x){budget=parseInt(x[x.length-1]);break}}
-  if(/^\d+$/.test(m.trim()))budget=parseInt(m.trim());
-  // بروتين
-  var protein=null;
-  if(any(m,['بيف','لحم','beef']))protein='beef';
-  if(any(m,['تشيكن','دجاج','chicken']))protein='chicken';
-  // توصية
-  if(budget&&protein){
-    var best=null,bestSc=-999;
-    for(var i=0;i<MENU.length;i++){
-      var it=MENU[i];if(it.type!=='burger')continue;if(it.price>budget)continue;
-      var sc=0;if(it.protein===protein)sc+=15;if(it.bestSeller)sc+=5;if(it.isNew)sc+=3;if(sc>bestSc){bestSc=sc;best=it}
-    }
-    if(best){
-      var rem=budget-best.price;var extra='';
-      if(rem>=7)extra='\nباقي لك '+rem+' ريال. الفرنش فرايز بـ7 ريال تكمل وجبتك.';
-      else if(rem>=3)extra='\nباقي لك '+rem+' ريال. تقدر تضيف صوص حطبه بـ3 ريال.';
-      return{text:'عندك '+budget+' ريال. أنصحك بـ'+best.nameAr+' 👇'+extra,products:[best],qa:rem>=7?['أضيف له فرايز','أشوف خيارات ثانية']:['أشوف خيارات ثانية']};
-    }
-    return{text:'ما لقيت شيء يناسب ميزانيتك. تبغى تزيدها شوي؟',qa:['زود 5 ريال','أبي أشوف المنيو']};
-  }
-  if(budget){
-    var best=null,bestSc=-999;
-    for(var i=0;i<MENU.length;i++){var it=MENU[i];if(it.type!=='burger')continue;if(it.price>budget)continue;var sc=0;if(it.bestSeller)sc+=5;if(it.isNew)sc+=3;if(sc>bestSc){bestSc=sc;best=it}}
-    if(best)return{text:'عندك '+budget+' ريال. أرشح لك '+best.nameAr+' 👇',products:[best],qa:['أبي بيف','أبي تشيكن','أشوف خيارات ثانية']};
-  }
-  if(protein){
-    var items=[];for(var i=0;i<MENU.length;i++)if(MENU[i].type==='burger'&&MENU[i].protein===protein)items.push(MENU[i]);
-    return{text:'هذي خيارات ال'+(protein==='beef'?'بيف':'تشيكن')+' 👇',products:items,qa:['أبي شيء مختلف','أبي فرايز معه']};
-  }
-  // خارج النطاق
-  if(any(m,['سيارة','سيارات','مباراة','كرة','فريق','انتخابات','سياسة','برمجة','كود','مدرسة','جامعة','طب','دكتور','علاج','دواء','طقس','سهم','أسهم','تداول','بنك','قرض','وظيفة','سفر','طيران','فندق','زواج','دين','فتوى'])){
-    var rs=['هههه سؤال بعيد عن البرقر 😄 أنا شغلي أخليك تطلع من حطبة مبسوط.','خلنا نخلي المواضيع الثانية على جنب 😄 أنا هنا عشان أساعدك تختار طلبك.'];
-    return{text:rs[Math.floor(Math.random()*rs.length)],qa:['اختار لي 🍔','معي 25 ريال','أبي الأكثر مبيعاً']};
-  }
-  // افتراضي
-  if(!protein)return{text:'خلني أضبطها لك.\nأنت اليوم داخل على برقر ولا شيء خفيف؟',qa:['برقر','شيء خفيف','أبي الأكثر مبيعاً']};
-  if(!budget)return{text:'ميزانيتك تقريباً كم؟ عشان أضبط لك الخيارات.',qa:['معي 20 ريال','معي 25 ريال','معي 30 ريال','أبي أفضل شيء مهما كان السعر']};
-  return{text:'وش تبغى بالضبط؟',qa:['أبي بيف','أبي تشيكن','أبي ترافل','أبي الأكثر مبيعاً']};
-}
-
-function onAddResp(pid){
-  var p=findById(pid);if(!p)return null;
-  return{text:'حلو، أضفناه 👍',qa:['أتمم الطلب','أبي شيء ثاني']};
-}
-
-// ═══ المنيو ═══
-function openMenu(){showScr('menu');renderMenu()}
+/* ══════════════════════════════════════════
+   المنيو
+   ══════════════════════════════════════════ */
 function renderMenu(){
-  var c=document.getElementById('mnCats');var h='';
-  for(var i=0;i<CATS.length;i++){
-    h+='<button class="mnTab'+(CATS[i].id===activeCat?' on':'')+'" onclick="swCat(\''+CATS[i].id+'\')">'+CATS[i].n+'</button>';
-  }
-  c.innerHTML=h;renderMItems();
+  document.getElementById('menuCats').innerHTML=CATEGORIES.map(c=>`<button class="cat-tab ${c.id===activeCategory?'active':''}" data-cat="${c.id}" onclick="switchCat('${c.id}')"><span class="cat-icon">${ic(c.icon)}</span>${c.nameAr}</button>`).join('');
+  renderMenuItems();
 }
-function swCat(id){activeCat=id;renderMenu()}
-function renderMItems(){
-  var g=document.getElementById('mnGrid');var h='';var idx=0;
-  for(var i=0;i<MENU.length;i++){
-    var it=MENU[i];if(it.category!==activeCat)continue;
-    var bdg='';if(it.isNew)bdg+='<span class="pBdg nw">جديد</span>';if(it.bestSeller)bdg+='<span class="pBdg bs">الأكثر مبيعاً</span>';
-    var img=it.image?'<img class="mnImg" src="'+it.image+'" alt="'+it.nameAr+'" onerror="this.outerHTML=\'<div class=\\\'mnNi\\\'><i class=\\\'fas fa-burger\\\'></i></div>\'">':'<div class="mnNi"><i class="fas fa-'+catIcon(it.category)+'"></i></div>';
-    h+='<div class="mnIt" style="animation-delay:'+idx*.06+'s">'+img+'<div class="mnBd"><div class="mnBd" style="padding:0 0 .25rem">'+bdg+'</div><div class="mnTop"><div class="mnNm">'+it.nameAr+'</div><div class="mnPr">'+it.price+' ر.س</div></div><div class="mnIn">'+it.nameEn+(it.ingredients.length?' &bull; '+it.ingredients.join(', '):'')+'</div><button class="mnAdd" onclick="addToCart(\''+it.id+'\')"><i class="fas fa-plus" style="margin-left:.2rem"></i>أضف للسلة</button></div></div>';
-    idx++;
-  }
-  g.innerHTML=h;
+function switchCat(id){activeCategory=id;document.querySelectorAll('.cat-tab').forEach(t=>t.classList.toggle('active',t.dataset.cat===id));renderMenuItems()}
+function renderMenuItems(){
+  const g=document.getElementById('menuGrid');const items=MENU.filter(i=>i.category===activeCategory);
+  g.innerHTML=items.map((item,idx)=>{
+    let badges='';if(item.isNew)badges+='<span class="pc-badge new">جديد</span>';if(item.bestSeller)badges+='<span class="pc-badge bestseller">الأكثر مبيعاً</span>';
+    const img=item.image?`<img class="mi-img" src="${item.image}" alt="${item.nameAr}" onerror="this.outerHTML='<div class=\\'mi-no-img\\'>${ic('burger')}</div>'">`:`<div class="mi-no-img">${ic(getIcon(item.category))}</div>`;
+    return`<div class="menu-item tilt-3d" style="animation-delay:${idx*.07}s">${img}<div class="mi-body"><div class="mi-badges">${badges}</div><div class="mi-top"><div class="mi-name">${item.nameAr}</div><div class="mi-price">${item.price} ر.س</div></div><div class="mi-ingredients">${item.nameEn}${item.ingredients.length?' • '+item.ingredients.join(', '):''}</div><button class="mi-add" onclick="addToCart('${item.id}')">${ic('plus')} أضف للسلة</button></div></div>`;
+  }).join('');
 }
+function getIcon(c){return{new:'star',beef:'fire',chicken:'drumstick',fries:'bowl',appetizers:'utensils',sauces:'droplet',additions:'circlePlus',drinks:'glass'}[c]||'circle'}
 
-// ═══ السلة ═══
-function addToCart(pid){
-  var p=findById(pid);if(!p)return;
-  var found=false;
-  for(var i=0;i<cart.length;i++){if(cart[i].id===pid){cart[i].qty++;found=true;break}}
-  if(!found)cart.push({id:p.id,nameAr:p.nameAr,nameEn:p.nameEn,price:p.price,image:p.image,category:p.category,qty:1});
-  updateCart();toast('تمت إضافة '+p.nameAr);
+/* ══════════════════════════════════════════
+   السلة
+   ══════════════════════════════════════════ */
+function addToCart(pid){const p=MENU.find(i=>i.id===pid);if(!p)return;const e=cart.find(i=>i.id===pid);if(e)e.qty++;else cart.push({...p,qty:1});updateCartUI();showToast(`تمت إضافة ${p.nameAr}`)}
+function removeFromCart(pid){cart=cart.filter(i=>i.id!==pid);updateCartUI();renderCartItems()}
+function changeQty(pid,d){const i=cart.find(x=>x.id===pid);if(!i)return;i.qty+=d;if(i.qty<=0){removeFromCart(pid);return}updateCartUI();renderCartItems()}
+function getCartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
+function getCartCount(){return cart.reduce((s,i)=>s+i.qty,0)}
+function updateCartUI(){
+  const count=getCartCount();const total=getCartTotal();
+  ['chat-badge','menu-badge'].forEach(id=>{const b=document.getElementById(id);if(count>0){b.style.display='flex';b.textContent=count;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}else b.style.display='none'});
+  document.getElementById('cartTotal').textContent=total+' ر.س';
+  document.getElementById('cartCheckoutBtn').disabled=count===0;
+  renderCartItems();
 }
-function remCart(pid){var nc=[];for(var i=0;i<cart.length;i++)if(cart[i].id!==pid)nc.push(cart[i]);cart=nc;updateCart();renderCartList()}
-function chgQty(pid,d){
-  for(var i=0;i<cart.length;i++){
-    if(cart[i].id===pid){cart[i].qty+=d;if(cart[i].qty<=0){remCart(pid);return}break}
-  }
-  updateCart();renderCartList();
+function renderCartItems(){
+  const c=document.getElementById('cartItems');
+  if(!cart.length){c.innerHTML=`<div class="cart-empty"><div style="font-size:2.2rem;margin-bottom:.75rem;opacity:.5">${ic('bag')}</div>السلة فاضية</div>`;return}
+  c.innerHTML=cart.map(i=>{
+    const img=i.image?`<img class="ci-img" src="${i.image}" alt="" onerror="this.outerHTML='<div class=\\'ci-no-img\\'>${ic('burger')}</div>'">`:`<div class="ci-no-img">${ic(getIcon(i.category))}</div>`;
+    return`<div class="ci-item">${img}<div class="ci-info"><div class="ci-name">${i.nameAr}</div><div class="ci-price">${i.price*i.qty} ر.س</div></div><div class="ci-qty"><button onclick="changeQty('${i.id}',-1)">${ic('minus')}</button><span>${i.qty}</span><button onclick="changeQty('${i.id}',1)">${ic('plus')}</button></div><button class="ci-remove" onclick="removeFromCart('${i.id}')">${ic('trash')}</button></div>`;
+  }).join('');
 }
-function cartTot(){var s=0;for(var i=0;i<cart.length;i++)s+=cart[i].price*cart[i].qty;return s}
-function cartCnt(){var s=0;for(var i=0;i<cart.length;i++)s+=cart[i].qty;return s}
-function updateCart(){
-  var cnt=cartCnt(),tot=cartTot();
-  var b1=document.getElementById('cb1'),b2=document.getElementById('cb2');
-  if(cnt>0){b1.style.display='flex';b1.textContent=cnt;b1.classList.remove('pop');void b1.offsetWidth;b1.classList.add('pop');b2.style.display='flex';b2.textContent=cnt;b2.classList.remove('pop');void b2.offsetWidth;b2.classList.add('pop')}
-  else{b1.style.display='none';b2.style.display='none'}
-  document.getElementById('cartTot').textContent=tot+' ر.س';
-  document.getElementById('cartGo').disabled=cnt===0;
-  renderCartList();
-}
-function renderCartList(){
-  var c=document.getElementById('cartLs');
-  if(!cart.length){c.innerHTML='<div class="cartEmp"><i class="fas fa-bag-shopping"></i>السلة فاضية</div>';return}
-  var h='';
-  for(var i=0;i<cart.length;i++){
-    var it=cart[i];
-    var img=it.image?'<img class="ciImg" src="'+it.image+'" alt="">':'<div class="ciNi"><i class="fas fa-'+catIcon(it.category)+'"></i></div>';
-    h+='<div class="ci">'+img+'<div class="ciInf"><div class="ciNm">'+it.nameAr+'</div><div class="ciPr">'+it.price*it.qty+' ر.س</div></div><div class="ciQt"><button onclick="chgQty(\''+it.id+'\') ,-1)"><i class="fas fa-minus" style="font-size:.5rem"></i></button><span>'+it.qty+'</span><button onclick="chgQty(\''+it.id+'\',1)"><i class="fas fa-plus" style="font-size:.5rem"></i></button></div><button class="ciDl" onclick="remCart(\''+it.id+'\')"><i class="fas fa-trash-can"></i></button></div>';
-  }
-  c.innerHTML=h;
-}
-function toggleCart(){
-  var o=document.getElementById('cartOv'),p=document.getElementById('cartPn');
-  if(p.classList.contains('on')){o.classList.remove('on');p.classList.remove('on')}
-  else{renderCartList();o.classList.add('on');p.classList.add('on')}
-}
-function closeCart(){document.getElementById('cartOv').classList.remove('on');document.getElementById('cartPn').classList.remove('on')}
+function toggleCart(){const o=document.getElementById('cartOverlay'),p=document.getElementById('cartPanel');if(p.classList.contains('open')){o.classList.remove('open');p.classList.remove('open')}else{renderCartItems();o.classList.add('open');p.classList.add('open')}}
+function closeCartPanel(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartPanel').classList.remove('open')}
 
-// ═══ تسجيل الطلب ═══
-function goCheckout(){if(!cart.length)return;closeCart();showScr('checkout');renderCK()}
-function renderCK(){
-  var b=document.getElementById('ckBd');var t=cartTot();
-  var addrField=delType==='delivery'?'<div class="fg"><label>عنوان التوصيل</label><textarea id="cAddr" placeholder="الحي، الشارع، رقم المبنى"></textarea></div>':'';
-  var h='<h2>بيانات التوصيل</h2><div class="dTog"><button class="'+(delType==='delivery'?'on':'')+'" onclick="setDT(\'delivery\')"><i class="fas fa-motorcycle" style="margin-left:.2rem"></i>توصيل</button><button class="'+(delType==='pickup'?'on':'')+'" onclick="setDT(\'pickup\')"><i class="fas fa-store" style="margin-left:.2rem"></i>استلام</button></div><div class="fg"><label>الاسم</label><input type="text" id="cName" placeholder="اسمك الكامل"></div><div class="fg"><label>رقم الجوال</label><input type="tel" id="cPhone" placeholder="05XXXXXXXX" dir="ltr" style="text-align:right"></div>'+addrField+'<div class="fg"><label>ملاحظات (اختياري)</label><textarea id="cNotes" placeholder="أي طلبات خاصة"></textarea></div><div class="osb"><div class="osbT">ملخص الطلب</div>';
-  for(var i=0;i<cart.length;i++)h+='<div class="osbI"><span>'+cart[i].nameAr+' × '+cart[i].qty+'</span><span>'+cart[i].price*cart[i].qty+' ر.س</span></div>';
-  h+='<div class="osbTot"><span>المجموع</span><span>'+t+' ر.س</span></div></div><button class="ckGo" onclick="submitOrder()">تأكيد الطلب — '+t+' ر.س</button>';
-  b.innerHTML=h;
+/* ══════════════════════════════════════════
+   تسجيل الطلب
+   ══════════════════════════════════════════ */
+function goToCheckout(){if(!cart.length)return;closeCartPanel();showScreen('checkout');renderCheckout()}
+function renderCheckout(){
+  const b=document.getElementById('checkoutBody');const t=getCartTotal();
+  b.innerHTML=`<h2>بيانات التوصيل</h2><div class="delivery-toggle"><button class="dt-btn ${deliveryType==='delivery'?'active':''}" onclick="setDT('delivery')">${ic('moto')} توصيل</button><button class="dt-btn ${deliveryType==='pickup'?'active':''}" onclick="setDT('pickup')">${ic('store')} استلام</button></div><div id="deliveryFields"><div class="form-group"><label>الاسم</label><input type="text" id="cName" placeholder="اسمك الكامل"></div><div class="form-group"><label>رقم الجوال</label><input type="tel" id="cPhone" placeholder="05XXXXXXXX" dir="ltr" style="text-align:right"></div>${deliveryType==='delivery'?'<div class="form-group"><label>عنوان التوصيل</label><textarea id="cAddress" placeholder="الحي، الشارع، رقم المبنى"></textarea>':''}<div class="form-group"><label>ملاحظات (اختياري)</label><textarea id="cNotes" placeholder="أي طلبات خاصة"></textarea></div></div><div class="order-summary-box"><div class="osb-title">ملخص الطلب</div>${cart.map(i=>`<div class="osb-item"><span>${i.nameAr} × ${i.qty}</span><span>${i.price*i.qty} ر.س</span></div>`).join('')}<div class="osb-total"><span>المجموع</span><span>${t} ر.س</span></div></div><button class="checkout-btn" onclick="submitOrder()" style="margin-top:1rem">تأكيد الطلب — ${t} ر.س</button>`;
 }
-function setDT(t){delType=t;renderCK()}
+function setDT(t){deliveryType=t;renderCheckout()}
 function submitOrder(){
-  var n=document.getElementById('cName');var p=document.getElementById('cPhone');
-  if(!n||!n.value.trim()){toast('أدخل اسمك','err');return}
-  if(!p||!p.value.trim()||p.value.trim().length<10){toast('أدخل رقم جوال صحيح','err');return}
-  if(delType==='delivery'){var a=document.getElementById('cAddr');if(!a||!a.value.trim()){toast('أدخل عنوان التوصيل','err');return}}
-  cart=[];updateCart();showScr('success');
+  const name=document.getElementById('cName')?.value.trim();const phone=document.getElementById('cPhone')?.value.trim();
+  if(!name){showToast('أدخل اسمك','err');return}if(!phone||phone.length<10){showToast('أدخل رقم جوال صحيح','err');return}
+  if(deliveryType==='delivery'){const a=document.getElementById('cAddress')?.value.trim();if(!a){showToast('أدخل عنوان التوصيل','err');return}}
+  cart=[];updateCartUI();showScreen('success');
 }
 
-// ═══ توست ═══
-function toast(msg,type){
-  var c=document.getElementById('toastC');var t=document.createElement('div');
-  t.className='tst tst-'+(type||'ok');t.textContent=msg;c.appendChild(t);
-  requestAnimationFrame(function(){t.classList.add('show')});
-  setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove()},350)},2200);
+/* ══════════════════════════════════════════
+   توست
+   ══════════════════════════════════════════ */
+function showToast(msg,type='ok'){
+  const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className=`toast toast-${type}`;t.textContent=msg;c.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},2200);
 }
 
-updateCart();
+/* ══════════════════════════════════════════
+   تعبئة الأيقونات الثابتة + تأثير الإمالة 3D
+   ══════════════════════════════════════════ */
+document.getElementById('icChevronDown').innerHTML=ic('chevronDown');
+document.getElementById('icBackChat').innerHTML=ic('arrowBack');
+document.getElementById('icCartChat').insertAdjacentHTML('afterbegin',ic('bag'));
+document.getElementById('icSend').innerHTML=ic('arrowSend');
+document.getElementById('icBackMenu').innerHTML=ic('arrowBack');
+document.getElementById('icCartMenu').insertAdjacentHTML('afterbegin',ic('bag'));
+document.getElementById('icBackCheckout').innerHTML=ic('arrowBack');
+document.getElementById('icSuccessCheck').innerHTML=ic('check');
+document.getElementById('icCartClose').innerHTML=ic('xmark');
+
+const hoverCapable=window.matchMedia('(hover:hover)').matches;
+if(hoverCapable){
+  function bindTilt(container){
+    container.addEventListener('mousemove',e=>{
+      const el=e.target.closest('.tilt-3d');
+      if(!el||!container.contains(el))return;
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-0.5;
+      const y=(e.clientY-r.top)/r.height-0.5;
+      el.style.transform=`perspective(700px) rotateY(${x*9}deg) rotateX(${-y*9}deg) translateY(-2px)`;
+    });
+    container.addEventListener('mouseleave',e=>{
+      const el=e.target.closest&&e.target.closest('.tilt-3d');
+      container.querySelectorAll('.tilt-3d').forEach(c=>c.style.transform='');
+    },true);
+  }
+  bindTilt(document.getElementById('chatMessages'));
+  bindTilt(document.getElementById('menuGrid'));
+}
+
+updateCartUI();
 </script>
 </body>
 </html>
